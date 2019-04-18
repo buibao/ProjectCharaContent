@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 
-define('APP_BASE_URL','http://localhost:8080/Backup');
+define('APP_BASE_URL','http://localhost:8080/perfex_crm/ProjectCharaContent/');
 
 /*
 |--------------------------------------------------------------------------
@@ -44,7 +44,7 @@ define('APP_DB_USERNAME','root');
 /* The password used to connect to the database */
 define('APP_DB_PASSWORD','');
 /* The name of the database you want to connect to */
-define('APP_DB_NAME','dev');
+define('APP_DB_NAME','test1');
 
 
 /**

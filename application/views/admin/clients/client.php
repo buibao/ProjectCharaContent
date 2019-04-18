@@ -38,6 +38,9 @@
             </button>
             <?php } ?>
          </div>
+
+         <div>
+         </div>
          <?php } ?>
          <?php if(isset($client)){ ?>
          <div class="col-md-3">

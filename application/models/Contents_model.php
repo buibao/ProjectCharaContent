@@ -48,25 +48,28 @@ class Contents_model extends CRM_Model {
 	public function get($id = '', $where = [], $for_editor = false) {
 
 		if (is_numeric($id)) {
+			// $this->db->where('tblcontents.id', $id);
+			// $content = $this->db->get('tblcontents')->row();
+			// if ($content) {
+			// 	$content->attachments = $this->get_content_attachments('', $content->id);
+			// 	if ($for_editor == false) {
+			// 		$merge_fields = [];
+			// 		$merge_fields = array_merge($merge_fields, get_content_merge_fields($id));
+			// 		$merge_fields = array_merge($merge_fields, get_client_contact_merge_fields($content->client));
+			// 		$merge_fields = array_merge($merge_fields, get_other_merge_fields());
+			// 		foreach ($merge_fields as $key => $val) {
+			// 			if (stripos($content->content, $key) !== false) {
+			// 				$content->content = str_ireplace($key, $val, $content->content);
+			// 			} else {
+			// 				$content->content = str_ireplace($key, '', $content->content);
+			// 			}
+			// 		}
+			// 	}
+			// }
+
+			// return $content;
 			$this->db->where('tblcontents.id', $id);
 			$content = $this->db->get('tblcontents')->row();
-			if ($content) {
-				$content->attachments = $this->get_content_attachments('', $content->id);
-				if ($for_editor == false) {
-					$merge_fields = [];
-					$merge_fields = array_merge($merge_fields, get_content_merge_fields($id));
-					$merge_fields = array_merge($merge_fields, get_client_contact_merge_fields($content->client));
-					$merge_fields = array_merge($merge_fields, get_other_merge_fields());
-					foreach ($merge_fields as $key => $val) {
-						if (stripos($content->content, $key) !== false) {
-							$content->content = str_ireplace($key, $val, $content->content);
-						} else {
-							$content->content = str_ireplace($key, '', $content->content);
-						}
-					}
-				}
-			}
-
 			return $content;
 		}
 		$contents = $this->db->get('tblcontents')->result_array();

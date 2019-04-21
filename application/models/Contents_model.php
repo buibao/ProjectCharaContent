@@ -48,10 +48,10 @@ class Contents_model extends CRM_Model {
 	public function get($id = '', $where = [], $for_editor = false) {
 
 		if (is_numeric($id)) {
-			// $this->db->where('tblcontents.id', $id);
-			// $content = $this->db->get('tblcontents')->row();
+			$this->db->where('tblcontents.id', $id);
+			$content = $this->db->get('tblcontents')->row();
+			// $content->attachments = null;
 			// if ($content) {
-			// 	$content->attachments = $this->get_content_attachments('', $content->id);
 			// 	if ($for_editor == false) {
 			// 		$merge_fields = [];
 			// 		$merge_fields = array_merge($merge_fields, get_content_merge_fields($id));
@@ -66,10 +66,9 @@ class Contents_model extends CRM_Model {
 			// 		}
 			// 	}
 			// }
-
-			// return $content;
 			$this->db->where('tblcontents.id', $id);
 			$content = $this->db->get('tblcontents')->row();
+			$content->attachments = null;
 			return $content;
 		}
 		$contents = $this->db->get('tblcontents')->result_array();
@@ -90,24 +89,42 @@ class Contents_model extends CRM_Model {
 	 * @return object
 	 * Retrieve contract attachments from database
 	 */
-	public function get_content_attachments($attachment_id = '', $id = '') {
-		if (is_numeric($attachment_id)) {
-			$this->db->where('id', $attachment_id);
-
-			return $this->db->get('tblfiles')->row();
-		}
-		$this->db->order_by('dateadded', 'desc');
-		$this->db->where('rel_id', $id);
-		$this->db->where('rel_type', 'content');
-
-		return $this->db->get('tblfiles')->result_array();
-	}
+	public function get_content_attachments($contentid, $file_id)
+    {
+        
+        $this->db->where('rel_id', $contentid);
+        $this->db->where('id',$file_id);
+        $this->db->where('rel_type', 'content');
+        return $this->db->get('tblfiles')->result_array();
+    }
 
 	/**
 	 * @param   array $_POST data
 	 * @return  integer Insert ID
 	 * Add new content
 	 */
+	// public function add($data) {
+	// 	if (isset($data['status']) && ($data['status'] == 1 || $data['status'] === 'on')) {
+	// 		$data['status'] = 1;
+	// 	} else {
+	// 		$data['status'] = 2;
+	// 	}
+
+	// 	$data['hash'] = app_generate_hash();
+	// 	$this->db->insert('tblcontents', $data);
+	// 	$insert_id = $this->db->insert_id();
+	// 	if ($insert_id) {
+	// 		if (isset($custom_fields)) {
+	// 			handle_custom_fields_post($insert_id, $custom_fields);
+	// 		}
+	// 		do_action('after_content_added', $insert_id);
+	// 		logActivity('New Content Added [' . $data['subject'] . ']');
+
+	// 		return $insert_id;
+	// 	}
+
+	// 	return false;
+	// }
 	public function add($data) {
 		if (isset($data['status']) && ($data['status'] == 1 || $data['status'] === 'on')) {
 			$data['status'] = 1;
@@ -130,6 +147,7 @@ class Contents_model extends CRM_Model {
 
 		return false;
 	}
+
 
 	/**
 	 * @param  array $_POST data
@@ -225,5 +243,52 @@ class Contents_model extends CRM_Model {
 		$this->db->update('tblcontents', ['status' => 5]);
 		return true;
 	}
+	public function remove_content_attachment($id)
+    {
+        $comment_removed = false;
+        $deleted         = false;
+        // Get the attachment
+        $this->db->where('id', $id);
+        $attachment = $this->db->get('tblfiles')->row();
+
+        if ($attachment) {
+            if (empty($attachment->external)) {
+                $relPath  = APP_BASE_URL.'uploads/content/' . $attachment->rel_id . '/';
+                $fullPath = $relPath . $attachment->file_name;
+                unlink($fullPath);
+                $fname     = pathinfo($fullPath, PATHINFO_FILENAME);
+                $fext      = pathinfo($fullPath, PATHINFO_EXTENSION);
+                $thumbPath = $relPath . $fname . '_thumb.' . $fext;
+                if (file_exists($thumbPath)) {
+                    unlink($thumbPath);
+                }
+            }
+
+            $this->db->where('id', $attachment->id);
+            $this->db->delete('tblfiles');
+            if ($this->db->affected_rows() > 0) {
+                $deleted = true;
+                logActivity('Content Image Deleted [ContentID: ' . $attachment->rel_id . ']');
+            }
+
+            if (is_dir(APP_BASE_URL.'uploads/content/' . $attachment->rel_id)) {
+                // Check if no attachments left, so we can delete the folder also
+                $other_attachments = list_files(APP_BASE_URL.'uploads/content/' . $attachment->rel_id);
+                if (count($other_attachments) == 0) {
+                    // okey only index.html so we can delete the folder also
+                    delete_dir(APP_BASE_URL.'uploads/content/' . $attachment->rel_id);
+                }
+            }
+        }
+
+        if ($deleted) {
+            $this->db->set('file_id', 0);
+           	$this->db->where('id', $attachment->rel_id);
+           	$this->db->update('tblcontents');
+        }
+
+        return ['success' => $deleted, 'comment_removed' => $comment_removed];
+    }
+	
 
 }

@@ -3722,3 +3722,4 @@ $lang['post_content']                = 'Post Content';
 $lang['post_contents']               = 'Post Content';
 $lang['posted_successfully']         = '%s Posted Successfully.';
 $lang['error_page_id']               = 'Please Add FanPage Link For Project';
+$lang['photo_content']               = 'Photo';

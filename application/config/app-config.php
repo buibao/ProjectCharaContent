@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 
-define('APP_BASE_URL','http://localhost:8080/BackUp');
+define('APP_BASE_URL','http://localhost:8080/Backup');
 
 /*
 |--------------------------------------------------------------------------

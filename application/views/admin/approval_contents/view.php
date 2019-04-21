@@ -90,6 +90,23 @@ foreach ($staffInfo as $value) {
                                     </tr>
                                     <tr>
                                         <td class="bold">
+                                            <?php echo _l('Project_id'); ?>
+                                        </td>
+                                        <td>
+                                            <?php
+foreach ($projectid as $value) {
+	if ($content->project_id == $value['id']) {
+		echo $value['name'];
+
+	}
+}
+
+?>
+                                        </td>
+                                        <!-- <td><?php echo $content->assignto; ?></td> -->
+                                    </tr>
+                                    <tr>
+                                        <td class="bold">
                                             <?php echo _l('content_description'); ?>
                                         </td>
                                         <td>

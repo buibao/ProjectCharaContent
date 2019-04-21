@@ -171,6 +171,8 @@ class Contents extends Admin_controller {
 		$data['staffTask'] = $staffTask;
 		$staffInfo = $this->db->get('tblstaff')->result_array();
 		$data['staffInfo'] = $staffInfo;
+		$projectid = $this->db->get('tblprojects')->result_array();
+		$data['projectid'] = $projectid;
 
 		$data['content'] = $content;
 		$data['title'] = $content->subject;

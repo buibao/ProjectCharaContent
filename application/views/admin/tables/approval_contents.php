@@ -85,22 +85,59 @@ foreach ($rResult as $aRow) {
 
 		$row[] = $name;
 
-		foreach ($ids as $rows) {
-			if ($rows['id'] == $aRow['task_title']) {
-				$row[] = $rows['name'];
-				break;
+		if ($aRow['task_title'] == 0) {
+			$row[] = "#";
+		} else {
+			foreach ($ids as $rows) {
+				if ($rows['id'] == $aRow['task_title']) {
+					$row[] = $rows['name'];
+					break;
+				}
 			}
+
 		}
 
-		$row[] = _d($aRow['datestart']);
+		// foreach ($ids as $rows) {
+		// 	if ($rows['id'] == $aRow['task_title']) {
+		// 		$row[] = $rows['name'];
+		// 		break;
+		// 	}
+		// }
 
-		$row[] = _d($aRow['dateend']);
+		if ($aRow['datestart'] == 0) {
+			$row[] = "#";
+		} else {
+			$row[] = _d($aRow['datestart']);
+
+		}
+
+		if ($aRow['dateend'] == 0) {
+			$row[] = "#";
+		} else {
+			$row[] = _d($aRow['dateend']);
+
+		}
+
+		//$row[] = _d($aRow['datestart']);
+
+		//$row[] = _d($aRow['dateend']);
 
 		// $row[] = $aRow['status'];
 		$status = get_content_status_by_id($aRow['status']);
 		$row[] = '<span class="label label inline-block project-status-' . $aRow['status'] . '" style="color:' . $status['color'] . ';border:1px solid ' . $status['color'] . '">' . $status['name'] . '</span>';
 
-		$row[] = $aRow['project_id'];
+		//$row[] = $aRow['project_id'];
+		if ($aRow['project_id'] == 0) {
+			$row[] = "#";
+		} else {
+			foreach ($project_id as $value1) {
+				if ($value1['id'] == $aRow['project_id']) {
+					$row[] = $value1['name'];
+					break;
+				}
+
+			}
+		}
 //fix assignto
 		foreach ($staff as $value) {
 			if ($value['staffid'] == $aRow['assignto']) {
@@ -109,7 +146,7 @@ foreach ($rResult as $aRow) {
 			}
 		}
 
-		//$row[] = $aRow['assignto'];
+		$row[] = $aRow['assignto'];
 
 		// Custom fields add values
 		foreach ($customFieldsColumns as $customFieldColumn) {

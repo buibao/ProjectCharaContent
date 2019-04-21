@@ -86,8 +86,8 @@ $("#submitdraft").click(function() {
     inputs.checked = true;
 });
     _validate_form($('#content-form'), {
-       task_title: 'required'
-
+       task_title: 'required',
+       subject:'required'
     });
 
 

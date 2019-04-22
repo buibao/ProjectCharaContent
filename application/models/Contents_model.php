@@ -110,25 +110,53 @@ class Contents_model extends CRM_Model {
 	 */
 	public function add($data) {
 		if (isset($data['status']) && ($data['status'] == 1 || $data['status'] === 'on')) {
-			$data['status'] = 1;
+			$status = 1;
 		} else {
-			$data['status'] = 2;
+			$status = 2;
 		}
 
-		$data['hash'] = app_generate_hash();
-		$this->db->insert('tblcontents', $data);
-		$insert_id = $this->db->insert_id();
-		if ($insert_id) {
-			if (isset($custom_fields)) {
-				handle_custom_fields_post($insert_id, $custom_fields);
-			}
-			do_action('after_contract_added', $insert_id);
-			logActivity('New Contract Added [' . $data['subject'] . ']');
+		$hostname = $this->db->hostname;
+		$username = $this->db->username;
+		$password = $this->db->password;
+		$database = $this->db->database;
+$conn = mysqli_connect($hostname,$username,$password,$database);
+$conn->set_charset('utf8mb4');
+$comment = isset($data['description']) ? trim($data['description']) : "";
+$subject = isset($data['subject']) ? $data['subject'] : "";
+$task_title = isset($data['task_title']) ? $data['task_title'] : "";
+$hash = app_generate_hash();
+$datestart = isset($data['datestart']) ? $data['datestart'] : "";
+$dateend = isset($data['dateend']) ? $data['dateend'] : "";
+$projectId = isset($data['project_id']) ? $data['project_id'] : "";
+$query = "INSERT INTO tblcontents(subject,task_title,description,status,assignto,hash,datestart,dateend,project_id) VALUES (?,?,?,?,?,?,?,?,?)";
+$assignto = $GLOBALS['current_user']->staffid;
+$sql_stmt = $conn->prepare($query);
+// d = number -- s = string
+$param_type = "sssssssss";
+$param_value_array = array(
+	$subject,
+	$task_title,
+    $comment,
+    $status,
+    $assignto,
+    $hash,
+    $datestart,
+    $dateend,
+    $projectId
+);
+$param_value_reference[] = & $param_type;
+for ($i = 0; $i < count($param_value_array); $i ++) {
+    $param_value_reference[] = & $param_value_array[$i];
+}
+call_user_func_array(array(
+    $sql_stmt,
+    'bind_param'
+), $param_value_reference);
 
-			return $insert_id;
-		}
+$sql_stmt->execute();
+logActivity('New Contract Added [' . $subject . ']');
+return 1;
 
-		return false;
 	}
 
 	/**

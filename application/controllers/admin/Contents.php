@@ -30,7 +30,7 @@ class Contents extends Admin_controller {
 					access_denied('contents');
 				}
 				$id = $this->contents_model->add($this->input->post());
-				if ($id) {
+				if ($id > 0) {
 					set_alert('success', _l('added_successfully', _l('content')));
 					// redirect(admin_url('contents'));
 					redirect(admin_url('contents'));
@@ -75,6 +75,24 @@ class Contents extends Admin_controller {
 				}
 			}
 		}
+		if ($id != '') {
+		$hostname = $this->db->hostname;
+		$username = $this->db->username;
+		$password = $this->db->password;
+		$database = $this->db->database;
+		$conn = mysqli_connect($hostname,$username,$password,$database);
+		$conn->set_charset('utf8mb4');
+		$record_set = array();
+		$sql = "SELECT description FROM tblcontents WHERE id = " . $id;
+		$result = $conn->query($sql);
+		if ($result->num_rows > 0) {
+    	while($row = $result->fetch_assoc()) {
+        array_push($record_set, $row);
+          }
+        }
+        $data['jsonData'] =  json_encode($record_set);
+		}
+	
 		// json get staff task
 		// $task_id = $this->input->get("task_id");
 		// $data['json'] = $this->contents->get_task_json($task_id);
@@ -176,6 +194,22 @@ class Contents extends Admin_controller {
 
 		$data['content'] = $content;
 		$data['title'] = $content->subject;
+
+		$hostname = $this->db->hostname;
+		$username = $this->db->username;
+		$password = $this->db->password;
+		$database = $this->db->database;
+		$conn = mysqli_connect($hostname,$username,$password,$database);
+		$conn->set_charset('utf8mb4');
+		$record_set = array();
+		$sql = "SELECT * FROM tblcontents WHERE id = " . $id;
+		$result = $conn->query($sql);
+		if ($result->num_rows > 0) {
+    	while($row = $result->fetch_assoc()) {
+        array_push($record_set, $row);
+          }
+        }
+        $data['jsonData'] =  json_encode($record_set);
 		$this->load->view('admin/contents/view', $data);
 	}
 }

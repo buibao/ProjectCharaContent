@@ -41,6 +41,23 @@ class Post_contents extends Admin_controller {
 		}
 		$data['content'] = $content;
 		$data['title'] = $content->subject;
+
+        $hostname = $this->db->hostname;
+        $username = $this->db->username;
+        $password = $this->db->password;
+        $database = $this->db->database;
+        $conn = mysqli_connect($hostname,$username,$password,$database);
+        $conn->set_charset('utf8mb4');
+        $record_set = array();
+        $sql = "SELECT * FROM tblcontents WHERE id = " . $id;
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+        array_push($record_set, $row);
+    }
+}
+$data['jsonData'] =  json_encode($record_set);
+
 		$this->load->view('admin/post_contents/view', $data);
 		
 	}
@@ -48,10 +65,9 @@ class Post_contents extends Admin_controller {
     $success = false;
     $message = '';
 
-    if(!empty($_POST['id_page']))
-    {
+    
         $id = $_POST['id'];
-        $id_page = $_POST['id_page'];
+        $id_page = '443982263016094';
         $user_access_token = $_POST['user_access_token'];
         $caption = $_POST['description'];
         $urlPhoto = $_POST['urlPhoto'];
@@ -98,11 +114,7 @@ class Post_contents extends Admin_controller {
             'message' => $message,
         ]);
         }
-    }
-    else{
-    	set_alert('danger', _l('error_page_id', _l('project')));
-        $id = $this->contents_model->add(null);
-    }
+    
  }
 
 }

@@ -1,4 +1,6 @@
 <?php init_head();?>
+<link href='<?php echo base_url('assets/plugins/editor/vendor/emoji-picker/lib/css/emoji.css'); ?>' rel='stylesheet' />
+<link href='<?php echo base_url('assets/plugins/editor/style2.css'); ?>' rel="stylesheet">
 <div id="wrapper">
     <div class="content">
         <div class="row">
@@ -76,7 +78,8 @@ foreach ($projectid as $value) {
                                     </tr>
                            <tr>
                               <td class="bold"><?php echo _l('content_description'); ?></td>
-                              <td><?php echo $content->description; ?></td>
+                              <!-- <td><?php //echo $content->description; ?></td> -->
+							                 <td id="output"></td>
                            </tr>
                         </tbody>
                      </table>
@@ -126,6 +129,63 @@ foreach ($projectid as $value) {
         </div>
     </div>
     <?php init_tail();?>
+<script src='<?php echo base_url('assets/plugins/editor/vendor/emoji-picker/lib/js/config.js'); ?>'></script>
+<script src='<?php echo base_url('assets/plugins/editor/vendor/emoji-picker/lib/js/util.js'); ?>'></script>
+<script src='<?php echo base_url('assets/plugins/editor/vendor/emoji-picker/lib/js/jquery.emojiarea.js'); ?>'></script>
+<script src='<?php echo base_url('assets/plugins/editor/vendor/emoji-picker/lib/js/emoji-picker.js'); ?>'></script>
+<script>
+
+            $(document).ready(function () {
+                listComment();
+            });
+
+            function listComment() {
+                $.post("",
+                        function (data) {
+                          var datarecieve = '<?php echo $jsonData ?>';
+                          console.log(JSON.stringify(datarecieve));
+                          // console.log(datarecieve);
+                          datarecieve = datarecieve.replace(/\n/g, "<br\>")  
+               // .replace(/\'/g, "\\'")
+               // .replace(/\"/g, '\\"')
+               // .replace(/\&/g, "\\&")
+               .replace(/\r/g, "\\r")
+               .replace(/\t/g, "\\t")
+               .replace(/\f/g, "\\f");
+
+               // .replace(/\n/g, "\\n")
+               //  .replace(/\r/g, "\\r")
+               //  .replace(/\t/g, "\\t")
+               //  .replace(/\f/g, "\\f");
+
+            // remove non-printable and other non-valid JSON chars
+        //datarecieve = datarecieve.replace(/[\u0000-\u001F]+/g,""); 
+
+                           var data = JSON.parse(datarecieve);
+                           console.log(data);
+                            var comments = "";
+                            
+                            var results = new Array();
+
+                            // var list = $("<ul class='outer-comment'>");
+                            // var item = $("<li>").html(comments);
+
+                            for (var i = 0; (i < data.length); i++)
+                            {
+                                
+                                    comments = data[i]['description'] ;
+                                   
+                            }
+                           
+                            $("#output").html(comments);
+                        });
+            }
+
+      
+
+         
+
+        </script>
         <style>
             .ft {
                 float: right;

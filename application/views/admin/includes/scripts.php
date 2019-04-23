@@ -1,5 +1,6 @@
 <?php include_once(APPPATH.'views/admin/includes/helpers_bottom.php'); ?>
 <?php do_action('before_js_scripts_render'); ?>
+<script src="<?php echo base_url('assets/plugins/app-build/vendor.js?v='.get_app_version()); ?>"></script>
 <script src="<?php echo base_url('assets/plugins/jquery/jquery-migrate.'.(ENVIRONMENT === 'production' ? 'min.' : '').'js'); ?>"></script>
 <script src="<?php echo base_url('assets/plugins/datatables/datatables.min.js?v='.get_app_version()); ?>"></script>
 <script src="<?php echo base_url('assets/plugins/app-build/moment.min.js'); ?>"></script>

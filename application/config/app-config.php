@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
  */
 
-define('APP_BASE_URL', 'http://localhost/ProjectCharaContent');
+define('APP_BASE_URL', 'http://localhost/peojectchara');
 
 /*
 |--------------------------------------------------------------------------

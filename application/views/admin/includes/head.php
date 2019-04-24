@@ -119,6 +119,7 @@ $headers = [
 <script type="text/javascript" src="<?php echo base_url('assets/plugins/callcenter/jquery-3.2.1.min.js'); ?>"></script>
 <script src="<?php echo base_url('assets/plugins/app-build/vendor.js?v='.get_app_version()); ?>"></script>
 <script type="text/javascript" src="<?php echo base_url('assets/plugins/callcenter/StringeeSoftPhone-lastest.js'); ?>"></script>
+
 <script type="text/javascript" src="<?php echo base_url('assets/plugins/callcenter/socket.io-2.0.3.js'); ?>"></script>     
 <script type="text/javascript"  src="<?php echo base_url('assets/plugins/callcenter/StringeeSDK-1.3.5.js'); ?>"></script>
 <script type="text/javascript">

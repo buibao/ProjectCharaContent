@@ -75,7 +75,7 @@ class Contents extends Admin_controller {
 				}
 			}
 		}
-		if ($id != '') {
+		
 		$hostname = $this->db->hostname;
 		$username = $this->db->username;
 		$password = $this->db->password;
@@ -91,7 +91,7 @@ class Contents extends Admin_controller {
           }
         }
         $data['jsonData'] =  json_encode($record_set);
-		}
+		
 	
 		// json get staff task
 		// $task_id = $this->input->get("task_id");

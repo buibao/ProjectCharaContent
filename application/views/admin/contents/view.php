@@ -61,7 +61,7 @@ foreach ($staffInfo as $value) {
                            </tr>
                            <tr>
                                         <td class="bold">
-                                            <?php echo _l('Project_id'); ?>
+                                            <?php echo _l('project_id'); ?>
                                         </td>
                                         <td>
                                             <?php
@@ -79,10 +79,11 @@ foreach ($projectid as $value) {
                            <tr>
                               <td class="bold"><?php echo _l('content_description'); ?></td>
                               <!-- <td><?php //echo $content->description; ?></td> -->
-							                 <td id="output"></td>
+							                
                            </tr>
                         </tbody>
                      </table>
+                      <div id="output"></div>
                         <?php if ($content->status == 1) {?>
 
                      <hr class="hr-panel-heading" />

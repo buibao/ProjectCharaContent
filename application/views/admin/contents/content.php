@@ -4,18 +4,15 @@
 <div id="wrapper">
    <div class="content">
       <div class="row">
-         <div class="col-md-8 left-column">
-            <div class="panel_s">
+        <div class="col-md-12">
+             <div class="panel_s">
 
-                       <!-- breadcrumb -->
-                  <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                      <li class="breadcrumb-item"><a href="<?php echo admin_url('contents'); ?>"><?php echo _l('content') ?></a></li>
-                      <li class="breadcrumb-item active" aria-current="page"><?php echo $title; ?></li>
-                    </ol>
-                  </nav>
+            
                   <div class="panel-body">
-                     <?php echo form_open($this->uri->uri_string(), array('id' => 'content-form')); ?>
+                    <div class="row">
+                      <div class="col-md-4 border-right project-overview-left">
+                        
+                           <?php echo form_open($this->uri->uri_string(), array('id' => 'content-form')); ?>
                         <h3 class="no-margin">
                             <?php echo $title; ?>
                            </h3>
@@ -59,16 +56,30 @@ echo render_select('task_title', $tasksCustom, array('id', 'name'), 'task_title'
                            <?php $value = (isset($content) ? _d($content->dateend) : '');?>
                            <?php echo render_date_input('dateend', 'contract_end_date', $value,array('name'=>'dateend','id'=>'dateend')); ?>
                         </div>
-						      <div class="col-md-12">
+              
+                     </div>
+                     
+                      </div>
+                      <div class="col-md-8 project-overview-right">
+                            <div class="col-md-12">
                           
                          <p class="emoji-picker-container">
-                            <?php $value = (isset($content) ? $content->description : ''); ?>
-                   
-                           <?php echo render_textarea('description','content_description',$value,array('rows'=>25,'cols'=>7,'data-emojiable'=>'true','data-emoji-input'=>'unicode','type'=>'text','name'=>'description','id'=>'description','class'=>'input-field','placeholder'=>'Description')); ?>
+                            <?php 
+                          //  $jsonData =  str_replace('\r\n', "<br/>",$jsonData);
+                             $data = json_decode($jsonData);
+                           //  echo $data[0]->description;
+                             $data =  $data[0]->description;
+                          //  $data = str_replace('\r\n',"\\n",$data);
+                             $value = (isset($content) ? $data : ''); 
+                             echo render_textarea('description','content_description',$value,array('rows'=>25,'cols'=>7,'data-emojiable'=>'true','data-emoji-input'=>'unicode','type'=>'text','name'=>'description','id'=>'description','class'=>'input-field','placeholder'=>'Description')); 
+                             ?>
             
               </p>
               </div>
-                     </div>
+
+                      </div>
+                    </div>
+                  
                       <div class="btn-bottom-toolbar text-right">
                         <button type="submit" class="btn btn-info"><?php echo _l('submit'); ?></button>
 
@@ -81,6 +92,16 @@ echo render_select('task_title', $tasksCustom, array('id', 'name'), 'task_title'
                   </div>
           </div>
         </div>
+         <div class="col-md-6 border-right project-overview-left">
+                     <!-- breadcrumb -->
+                  <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item"><a href="<?php echo admin_url('contents'); ?>"><?php echo _l('content') ?></a></li>
+                      <li class="breadcrumb-item active" aria-current="page"><?php echo $title; ?></li>
+                    </ol>
+                  </nav>
+               
+        </div>
      </div>
     </div>
   </div>
@@ -90,7 +111,59 @@ echo render_select('task_title', $tasksCustom, array('id', 'name'), 'task_title'
 <script src='<?php echo base_url('assets/plugins/editor/vendor/emoji-picker/lib/js/util.js'); ?>'></script>
 <script src='<?php echo base_url('assets/plugins/editor/vendor/emoji-picker/lib/js/jquery.emojiarea.js'); ?>'></script>
 <script src='<?php echo base_url('assets/plugins/editor/vendor/emoji-picker/lib/js/emoji-picker.js'); ?>'></script>
+<script>
 
+            $(document).ready(function () {
+                listComment();
+            });
+
+            function listComment() {
+                $.post("",
+                        function (data) {
+                          var datarecieve = '<?php echo $jsonData ?>';
+                          console.log(JSON.stringify(datarecieve));
+                          // console.log(datarecieve);
+                          datarecieve = datarecieve.replace(/\n/g, "<br\>")  
+               // .replace(/\'/g, "\\'")
+               // .replace(/\"/g, '\\"')
+               // .replace(/\&/g, "\\&")
+               .replace(/\r/g, "\\r")
+               .replace(/\t/g, "\\t")
+               .replace(/\f/g, "\\f");
+
+               // .replace(/\n/g, "\\n")
+               //  .replace(/\r/g, "\\r")
+               //  .replace(/\t/g, "\\t")
+               //  .replace(/\f/g, "\\f");
+
+            // remove non-printable and other non-valid JSON chars
+        //datarecieve = datarecieve.replace(/[\u0000-\u001F]+/g,""); 
+
+                           var data = JSON.parse(datarecieve);
+                           console.log(data);
+                            var comments = "";
+                            
+                            var results = new Array();
+
+                            // var list = $("<ul class='outer-comment'>");
+                            // var item = $("<li>").html(comments);
+
+                            for (var i = 0; (i < data.length); i++)
+                            {
+                                
+                                    comments = data[i]['description'] ;
+                                   
+                            }
+                           
+                            $("#description").val(comments);
+                        });
+            }
+
+      
+
+         
+
+        </script>
 <script type="text/javascript">
 
 				$("#submitButton").click(function () {
@@ -175,6 +248,23 @@ $("#submitdraft").click(function() {
     padding-left: 0;
     padding-top: 0;
   }
+  .emoji-menu {
+    position: absolute;
+    right: 0;
+    margin-top: -32%;
+    margin-right: 2%;
+    z-index: 999;
+    width: 225px;
+    overflow: hidden;
+    border: 1px #dfdfdf solid;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    overflow: hidden;
+    -webkit-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
+}
 </style>
 </body>
 </html>

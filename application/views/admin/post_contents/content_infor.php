@@ -71,7 +71,9 @@
                            <br />
                            <br />
                            <div class="col-md-5 text-center project-percent-col mtop10">
-                              <?php echo '<img src="https://graph.facebook.com/v3.2/443982263016094/picture?access_token="EAAJGSplFaE0BAE8wEDYeZBFYfbin9I5f2TD8IseascDHbjQCRLxZBl3uWKSzfFmRY9zNE1n2mXlEAsZCbGRTjk06jhZBIrjU6FQy5dlfw0p5lv4wSaYASadaa0o4924QZAevXViOqmrZCpM4XC15jurJSknZBZC2dKRyE2c3OsAPrR8ZC2ixfC2W5L9TyPl4S9Uvo72PGhro67AZDZD" style="width:100px; height:100px;"/>' ?>
+                              <?php echo '<img src="https://graph.facebook.com/v3.2/443982263016094/picture?access_token="EAAJGSplFaE0BAE8wEDYeZBFYfbin9I5f2TD8IseascDHbjQCRLxZBl3uWKSzfFmRY9zNE1n2mXlEAsZCbGRTjk06jhZBIrjU6FQy5dlfw0p5lv4wSaYASadaa0o4924QZAevXViOqmrZCpM4XC15jurJSknZBZC2dKRyE2c3OsAPrR8ZC2ixfC2W5L9TyPl4S9Uvo72PGhro67AZDZD" style="width:100px; height:100px; border-radius: 25px;
+  z-index: -1;
+  animation: 1s clockwise infinite;"/>' ?>
 
                            </div>
                         </div>

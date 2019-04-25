@@ -28,60 +28,9 @@ class Post_contents extends Admin_controller {
 		]);
 
     }
-    public function interaction($id){
-
-		$content = $this->contents_model->get($id);
-
-		//fix show name task title and assignto
-		$staffTask = $this->db->get('tblstafftasks')->result_array();
-		$data['staffTask'] = $staffTask;
-		$staffInfo = $this->db->get('tblstaff')->result_array();
-		$data['staffInfo'] = $staffInfo;
-		$projectid = $this->db->get('tblprojects')->result_array();
-		$data['projectid'] = $projectid;
-		$file_id = $content->file_id;
-		$data['attachments'] = $this->contents_model->get_content_attachments($id,$file_id);
-		$data['id_content'] = $content->id;
-		$data['content'] = $content;
-        $data['title'] = $content->subject;
-        $task = $this->tasks_model->get($content->task_title);
-
-		if($task->rel_type == "project")
-        {
-		$project = $this->projects_model->get($task->rel_id);
-		$data['fanpage_id'] = $project->fanpage_id;
-		$data['link_fanpage'] = $project->link_page;
-		}
-		$this->load->view('admin/post_contents/interaction', $data);
-	}
-
-
+   
     public function view($id) {
-		if ($this->input->post()) {
-			$action = $this->input->post('action');
-			switch ($action) {
-			case 'approval0':
-				redirect(admin_url('contents'));
-				break;
-			case 'approval1':
-				$this->db->where('id', $id);
-				$this->db->update('tblcontents', [
-					'status' => 1,
-				]);
-				set_alert('success', _l('saved_draft'));
-				redirect(admin_url('contents'));
-				break;
-			case 'approval2':
-				$this->db->where('id', $id);
-				$this->db->update('tblcontents', [
-					'status' => 2,
-				]);
-				set_alert('success', _l('sent_to_leader'));
-				redirect(admin_url('contents'));
-				break;
-			}
-
-		}
+		
 		$content = $this->contents_model->get($id);
 
 		//fix show name task title and assignto

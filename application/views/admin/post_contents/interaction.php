@@ -21,23 +21,9 @@
 
 
     /*top tooltip*/
-    .tooltip.top>.tooltip-arrow {
-        visibility: hidden;
-    }
+  
 
-        {}
-
-    /*tooltip inner*/
-    .tooltip>.tooltip-inner {
-        background-color: #2d343f;
-        text-shadow: 0 1px 1px #000;
-        font-weight: normal;
-        margin-bottom: -15px;
-        border-radius: 23px;
-        padding: 5px 17px 5px 17px;
-        font-size: 1.5em;
-        font-weight: bold;
-    }
+    
 
 
     .col_half {
@@ -167,8 +153,6 @@
                     </div>
                 </div>
             </div>
-            <br />
-            <br />
         </div>
     </div>
 </div>
@@ -179,9 +163,5 @@
                 selector: "[data-toggle='tooltip']",
                 container: "body"
             })
-            //Popover, activated by clicking
-            
-       
-
     });
 </script>

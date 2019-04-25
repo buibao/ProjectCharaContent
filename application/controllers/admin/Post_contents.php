@@ -80,37 +80,52 @@ class Post_contents extends Admin_controller {
         $query = http_build_query($data);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
         $result = curl_exec($ch);
-        print $result;
+		//Check Access Token
+		$checkAccessToken  = json_decode($result,true);
+		
+		if($checkAccessToken['access_token']){
         //POST content
-        $tab                = json_decode($result, true);
-        $page_access_token  = $tab["access_token"];
-        $endpoint1              = "photos";
-        $url1                   = "https://graph.facebook.com/".$id_page."/".$endpoint1;
-        $data["caption"]        = $caption;
-        $data["url"]            = $urlPhoto;
-        $data["access_token"]   = $page_access_token;
-        $method1                = "POST";
-        $ch1 = curl_init();
-        curl_setopt($ch1, CURLOPT_URL, $url1);
-        curl_setopt($ch1,CURLOPT_RETURNTRANSFER , true);
-        curl_setopt($ch1, CURLOPT_SSL_VERIFYPEER , false);
-        curl_setopt($ch1, CURLOPT_CUSTOMREQUEST, $method1);
-        $query1 = http_build_query($data);
-        curl_setopt($ch1, CURLOPT_POSTFIELDS, $query1);
-        $result1 = curl_exec($ch1);
-        $data = array(
+        	$tab                = json_decode($result, true);
+        	$page_access_token  = $tab["access_token"];
+        	$endpoint1              = "photos";
+        	$url1                   = "https://graph.facebook.com/".$id_page."/".$endpoint1;
+        	$data["caption"]        = $caption;
+        	$data["url"]            = $urlPhoto;
+        	$data["access_token"]   = $page_access_token;
+        	$method1                = "POST";
+        	$ch1 = curl_init();
+        	curl_setopt($ch1, CURLOPT_URL, $url1);
+        	curl_setopt($ch1,CURLOPT_RETURNTRANSFER , true);
+        	curl_setopt($ch1, CURLOPT_SSL_VERIFYPEER , false);
+        	curl_setopt($ch1, CURLOPT_CUSTOMREQUEST, $method1);
+        	$query1 = http_build_query($data);
+        	curl_setopt($ch1, CURLOPT_POSTFIELDS, $query1);
+			$result1 = curl_exec($ch1);
+			$checkImage  = json_decode($result,true);
+			if($checkImage['post_id']){
+        		$data = array(
                'status' => 5              
-            );
-        $this->db->where('id', $id);
-        $success = $this->db->update('tblcontents', $data); 
-        if ($success) {
-           set_alert('success', _l('posted_successfully', _l('content')));
-           echo json_encode([
-            'success' => $success,
-            'message' => $message,
-        ]);
-        }
-    }
+            	);
+        		$this->db->where('id', $id);
+        		$success = $this->db->update('tblcontents', $data); 
+        		if ($success) {
+           		set_alert('success', _l('posted_successfully', _l('content')));
+           		echo json_encode([
+            		'success' => $success,
+            		'message' => $message,
+        			]);
+				}
+			}
+			else
+			{
+
+			}
+		}
+		else
+			{
+
+			}
+	}
     else{
     	set_alert('danger', _l('error_page_id', _l('project')));
         $id = $this->contents_model->add(null);

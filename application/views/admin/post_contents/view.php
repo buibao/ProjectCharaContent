@@ -1,113 +1,4 @@
-<style>
-   /*-=-=-=-=-=-=-=-=-=-=-=- */
-   /* Column Grids */
-   /*-=-=-=-=-=-=-=-=-=-=-=- */
-   .over {
-      margin-left: auto;
-      margin-right: auto;
-      vertical-align: middle;
-      transition: transform .3s;
-      display: block;
-   }
 
-
-   .over:hover {
-      -webkit-transform: scale(1.3, 1.3);
-      -moz-transform: scale(1.3, 1.3);
-      -ms-transform: scale(1.3, 1.3);
-      -o-transform: scale(1.3, 1.3);
-
-   }
-
-   .col_half {
-      width: 49%;
-   }
-
-   .col_third {
-      width: 32%;
-
-   }
-
-   .col_fourth {
-      width: 14%;
-
-   }
-
-   .col_fifth {
-      width: 15.4%;
-   }
-
-   .col_sixth {
-      width: 15%;
-   }
-
-   .col_three_fourth {
-      width: 74.5%;
-   }
-
-   .col_twothird {
-      width: 66%;
-   }
-
-   .col_half,
-   .col_third,
-   .col_twothird,
-   .col_fourth,
-   .col_three_fourth,
-   .col_fifth {
-      position: relative;
-      display: inline;
-      display: inline-block;
-      float: left;
-      margin-right: 2%;
-      margin-bottom: 20px;
-   }
-
-   .end {
-      margin-right: 0 !important;
-   }
-
-   /* Column Grids End */
-
-   .wrapper {
-      width: 980px;
-      margin: 10px auto;
-      position: relative;
-   }
-
-   .counter {
-      border-right: 1px solid hsl(200, 98%, 93%);
-
-   }
-
-   .count-title {
-      font-size: 17px;
-      font-weight: normal;
-      margin-top: -10px;
-      text-align: center;
-      font-family: 'Raleway', sans-serif;
-      color: #2057AA;
-      font-weight: bold;
-
-   }
-
-   .count-text {
-      font-size: 13px;
-      font-weight: normal;
-      margin-top: 10px;
-      margin-bottom: 40px;
-      text-align: center;
-   }
-
-   .fa-2x {
-      margin: 0 auto;
-      float: none;
-      display: table;
-      color: #4ad1e5;
-   }
-
-   }
-</style>
 <?php init_head(); ?>
 
 <div id="wrapper">
@@ -248,7 +139,7 @@
                                        </tr>
                                        <tr>
                                           <td class="bold">
-                                             <?php echo _l('link_fanpage'); ?>
+                                             <?php echo _l('project_link_page'); ?>
                                           </td>
                                           <td>
                                              <?php
@@ -265,7 +156,14 @@
                                  </table>
                               </div>
                               <div class="col-md-4 text-center project-percent-col mtop10">
-                                 <?php echo '<img src="https://graph.facebook.com/v3.2/'.$fanpage_id.'/picture?type=large" style="padding-left"/>' ?>
+                                 <?php if(!$fanpage_id){?>
+                                    <img src="<?php echo APP_BASE_URL .'\assets\images\image-not-found.png'?>" style="height:20%;width:90% " data-toggle="tooltip" data-title="Not Found"/>
+                                    <?php } 
+                                    else {
+                                    echo '<img src="https://graph.facebook.com/v3.2/'.$fanpage_id.'/picture?type=large" style="padding-left"/>';
+                                    }
+                                    ?>
+                                 
                               </div>
                            </div>
                         </div>
@@ -415,7 +313,7 @@
       </div>
    </div>
 </div>
-<hr class="hr-panel-heading" />
+
 </div>
 <?php init_tail(); ?>
 <script type="text/javascript">
@@ -424,7 +322,7 @@
    data.id_page = "<?php echo $fanpage_id; ?>";
    data.user_access_token = "EAAJGSplFaE0BANFHYI9X6oSFN3kZBj5bEH7EXNskZCqZAIZAwZAXfgZAbYUbqYIyGnZBxhZClzPPPTcFZBlM1UOlrZBX6x3Tfb4rqOBwTdgb1XjttWQ7U3mEVmEo4fTHIp6k1xZCRd79OCXbPnRgJ4fBRIymWEZBmMUb4j5RbuZAfCvGTPO1TAZB0GsJLK3KwiIrTxvNYNmiw0Rxgq7gZDZD";
    data.description = "<?php echo $content->description; ?>";
-   data.urlPhoto = "<?php echo APP_BASE_URL . '/uploads/content/' . $id_content . '/' . $attachment['file_name']; ?>";
+   data.urlPhoto = "<?php echo `APP_BASE_URL` . '/uploads/content/' . $id_content . '/' . $attachment['file_name']; ?>";
    $("#post_content").click(function() {
       $.post(admin_url + 'post_contents/post_content', data).done(function(response) {
          response = JSON.parse(response);
@@ -436,6 +334,117 @@
       });
    });
 </script>
+
 </body>
 
 </html>
+<style>
+   /*-=-=-=-=-=-=-=-=-=-=-=- */
+   /* Column Grids */
+   /*-=-=-=-=-=-=-=-=-=-=-=- */
+   .over {
+      margin-left: auto;
+      margin-right: auto;
+      vertical-align: middle;
+      transition: transform .3s;
+      display: block;
+   }
+
+
+   .over:hover {
+      -webkit-transform: scale(1.3, 1.3);
+      -moz-transform: scale(1.3, 1.3);
+      -ms-transform: scale(1.3, 1.3);
+      -o-transform: scale(1.3, 1.3);
+
+   }
+
+   .col_half {
+      width: 49%;
+   }
+
+   .col_third {
+      width: 32%;
+
+   }
+
+   .col_fourth {
+      width: 14%;
+
+   }
+
+   .col_fifth {
+      width: 15.4%;
+   }
+
+   .col_sixth {
+      width: 15%;
+   }
+
+   .col_three_fourth {
+      width: 74.5%;
+   }
+
+   .col_twothird {
+      width: 66%;
+   }
+
+   .col_half,
+   .col_third,
+   .col_twothird,
+   .col_fourth,
+   .col_three_fourth,
+   .col_fifth {
+      position: relative;
+      display: inline;
+      display: inline-block;
+      float: left;
+      margin-right: 2%;
+      margin-bottom: 20px;
+   }
+
+   .end {
+      margin-right: 0 !important;
+   }
+
+   /* Column Grids End */
+
+   .wrapper {
+      width: 980px;
+      margin: 10px auto;
+      position: relative;
+   }
+
+   .counter {
+      border-right: 1px solid hsl(200, 98%, 93%);
+
+   }
+
+   .count-title {
+      font-size: 17px;
+      font-weight: normal;
+      margin-top: -10px;
+      text-align: center;
+      font-family: 'Raleway', sans-serif;
+      color: #2057AA;
+      font-weight: bold;
+
+   }
+
+   .count-text {
+      font-size: 13px;
+      font-weight: normal;
+      margin-top: 10px;
+      margin-bottom: 40px;
+      text-align: center;
+   }
+
+   .fa-2x {
+      margin: 0 auto;
+      float: none;
+      display: table;
+      color: #4ad1e5;
+   }
+
+   
+</style>

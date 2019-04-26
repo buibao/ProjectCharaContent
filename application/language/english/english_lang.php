@@ -3726,4 +3726,6 @@ $lang['photo_content']               = 'Photo';
 $lang['content_infor']               = 'Content Information';
 $lang['content_interaction']               = 'Content Interaction';
 $lang['project_id']               = 'Project';
+$lang['post_config']    = 'Config Access Token';
+$lang['get_token']    = 'Add Token';
 

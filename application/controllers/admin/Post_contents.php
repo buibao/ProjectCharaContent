@@ -27,7 +27,13 @@ class Post_contents extends Admin_controller {
 			'clientid' => $clientid, 'ids' => $idtask,
 		]);
 
-    }
+	}
+	public function post_config(){
+		// $data = $this->input->post();
+		// $this->session->set_user_access_token('token', $data['token']);
+		$this->load->view('admin/post_contents/config');
+
+	}
    
     public function view($id) {
 		
@@ -101,7 +107,7 @@ class Post_contents extends Admin_controller {
         	$query1 = http_build_query($data);
         	curl_setopt($ch1, CURLOPT_POSTFIELDS, $query1);
 			$result1 = curl_exec($ch1);
-			$checkImage  = json_decode($result,true);
+			$checkImage  = json_decode($result1,true);
 			if($checkImage['post_id']){
         		$data = array(
                'status' => 5              
@@ -118,12 +124,22 @@ class Post_contents extends Admin_controller {
 			}
 			else
 			{
-
+				echo json_encode([
+            		'success' => $success,
+            		'message' => $message,
+					]);
+				set_alert('success', _l('Image is invalid', _l('content')));
+				$id = $this->contents_model->add(null);
 			}
 		}
 		else
 			{
-
+				echo json_encode([
+            		'success' => $success,
+            		'message' => $message,
+					]);
+				set_alert('success', _l('The token has expired', _l('content')));
+				$id = $this->contents_model->add(null);
 			}
 	}
     else{

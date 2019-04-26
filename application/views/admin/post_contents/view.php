@@ -188,6 +188,7 @@
                                        $comments_attachments = array();
                                        $attachments_data = array();
                                        $show_more_link_task_attachments = do_action('show_more_link_task_attachments', 2);
+
                                        foreach ($attachments as $attachment) { ?>
                                           <?php ob_start(); ?>
                                           <div data-num="<?php echo $i; ?>" data-commentid="<?php echo $attachment['comment_file_id']; ?>" data-comment-attachment="<?php echo $attachment['task_comment_id']; ?>" data-task-attachment-id="<?php echo $attachment['id']; ?>" class="task-attachment-col-12<?php if ($i > $show_more_link_task_attachments) {
@@ -318,11 +319,11 @@
 <?php init_tail(); ?>
 <script type="text/javascript">
    var data = {};
-   data.id = "<?php echo $content->id; ?>";
+   data.id = "<?php echo $id_content; ?>";
    data.id_page = "<?php echo $fanpage_id; ?>";
-   data.user_access_token = "EAAJGSplFaE0BANFHYI9X6oSFN3kZBj5bEH7EXNskZCqZAIZAwZAXfgZAbYUbqYIyGnZBxhZClzPPPTcFZBlM1UOlrZBX6x3Tfb4rqOBwTdgb1XjttWQ7U3mEVmEo4fTHIp6k1xZCRd79OCXbPnRgJ4fBRIymWEZBmMUb4j5RbuZAfCvGTPO1TAZB0GsJLK3KwiIrTxvNYNmiw0Rxgq7gZDZD";
+   data.user_access_token = "EAAFZAt5Tt6X0BANmw5QUmP9DEUSi87yvi5qY4QZB2VN6LH5Bg5cCZBFc58ldPefhu1QlpShPXhCNIrvZAbalZCS6Wff8n6n9l7JZBlGvT8JQfK4Kc0PZCqmXJpBCWeXYe4cvO6wJp8YbwrmF2UjwaFNC43cClmmYoTiZCEbeqTScifeGEVh5As4SNvg7yaY6Jo26kZCbPMahQRgZDZD";
    data.description = "<?php echo $content->description; ?>";
-   data.urlPhoto = "<?php echo `APP_BASE_URL` . '/uploads/content/' . $id_content . '/' . $attachment['file_name']; ?>";
+   data.urlPhoto = "http://localhost:8080/ProjectCharaContent/assets/images/image-not-found.png";
    $("#post_content").click(function() {
       $.post(admin_url + 'post_contents/post_content', data).done(function(response) {
          response = JSON.parse(response);

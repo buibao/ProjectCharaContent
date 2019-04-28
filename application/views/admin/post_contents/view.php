@@ -7,11 +7,10 @@
          <div class="col-md-12">
             <!-- breadcrumb -->
             <div class="panel_s project-top-panel panel-full">
-
                <div class="panel-body _buttons">
 
                   <div class="row">
-
+                  <?php echo $tokenTest?>
                      <div class="col-md-7 project-heading">
                         <div id="project_view_name" class="pull-left">
 

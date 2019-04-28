@@ -9,28 +9,16 @@
             <ol class="breadcrumb">
               <li class="breadcrumb-item active" aria-current="page"><?php echo _l('post_content'); ?></li>
             </ol>
-
           </nav>
-          <div>
-      
-          <!--Form Token-->
-          <div id="myForm" class="hide">
-            <form action="/echo/html/" id="popForm" method="post">
-              <div>
-                <div class="input-group">
-                <input type="text" name="email" id="email" class="form-control input-md" style="float: right" >
-                </div>
-              </div>
-              <div class="pull-left" style="margin-right:5px">
-                <button class="btn btn-primary" type="submit" style="float: right" >Save</button>
-              </div>
-              
-              </div>
-            </form>
-          </div>
+          
           <div class="panel-body">
             <div class="_buttons">
-              <button class="btn btn-primary" id="btntoken">Add Token</button>
+            <?php echo form_open(); ?>
+            <button id="popoverId" class="btn btn-primary">Add Token</button>
+            <div class="col-md-4 ">
+            <?php echo render_input('tokenAccess','',$value); ?>
+            </div>
+            <?php echo form_close(); ?>  
             </div>
             <div class="clearfix"></div>
             <hr class="hr-panel-heading" />
@@ -94,32 +82,22 @@
 
       initDataTable('.table-post_contents', admin_url + 'post_contents/table', undefined, undefined, ContentsServerParams, <?php echo do_action('post_contents_table_default_order', json_encode(array(5, 'asc'))); ?>);
     });
-    $(document).ready(function () {
-    $('#example').popover();
-    })
   </script>
-  <script>
-    $(function(){
-    $('#btntoken').popover({
-        placement: 'bottom',
-        html:true,
-        content:  $('#myForm').html()
-    }).on('click', function(){
-      
-      $('.btn-primary').click(function(){
-       $('#result').after("form submitted by " + $('#email').val())
-        $.post('/echo/html/',  {
-            email: $('#email').val(),
-            name: $('#name').val(),
-            gender: $('#gender').val()
-        }, function(r){
-          $('#pops').popover('hide')
-          $('#result').html('resonse from server could be here' )
-        })
-      })
-  })
-})
-  </script>
+
   </body>
 
   </html>
+  <script>
+    $('#popoverId').click(function(e) {
+        var data = {};
+        data.token = $("#tokenAccess").val();
+        $.post(admin_url + 'post_contents/update_token', data).done(function(response) {
+         response = JSON.parse(response);
+         if (response.success == true) {
+            alert_float('success', response.message);
+         } else {
+            alert_float('danger', response.message);
+         }
+      });
+    });
+  </script>

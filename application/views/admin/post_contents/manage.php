@@ -53,7 +53,7 @@
                 <div class="clearfix"></div>
 
               </div>
-              
+              </div>
              
               <div class="clearfix"></div>
               <hr class="hr-panel-heading" />
@@ -61,7 +61,7 @@
 
               <?php echo form_hidden('custom_view'); ?>
               <?php $this->load->view('admin/post_contents/table_html'); ?>
-            </div>
+            
           </div>
         </div>
       </div>

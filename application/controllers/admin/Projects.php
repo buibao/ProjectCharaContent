@@ -11,6 +11,7 @@ class Projects extends Admin_controller
         //Load Project Type Model
         $this->load->model('project_types_model');
         $this->load->model('currencies_model');
+        $this->load->model('AccessToken_model');
         $this->load->helper('date');
     }
 
@@ -77,8 +78,53 @@ class Projects extends Admin_controller
                 if (!has_permission('projects', '', 'create')) {
                     access_denied('Projects');
                 }
+                
+                if(!empty($data['link_page']))
+                {
+                $tokenGet = $this->AccessToken_model->getCurrentToken();
+                $user_access_token = $tokenGet->token;
+                $urlPage            = $data['link_page'];
+                $access_tokenStr = '';
+                    if($urlPage[-1] == '/')
+                    {
+                        $access_tokenStr = '?access_token=';
+                    }
+                    else
+                    {
+                        $access_tokenStr = '&access_token=';
+                    }
+                    //Get access token page
+                //$url        = "https://graph.facebook.com/v3.2/".$urlPage.$access_tokenStr.$user_access_token;
+                $url = "https://graph.facebook.com/v3.2/".$urlPage.$access_tokenStr.$user_access_token;
+                $data_json       = array();
+                $method     = "GET";
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, $url);
+                curl_setopt($ch,CURLOPT_RETURNTRANSFER , true);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER , false);
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+                $query = http_build_query($data_json);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
+                $result = json_decode(curl_exec($ch),true);
+                
+                if(empty($result['name']))
+                {
+                    set_alert('danger', $url, _l('project'));
+                    $id = $this->projects_model->add(null);
+                }
+                else{
+                    $data["fanpage_id"] = $result['id'];
+                    $id = $this->projects_model->add($data);
+                }
+
+              }
+
+              if(empty($id) && empty($data['link_page']))
+              {
                 $id = $this->projects_model->add($data);
-                if ($id) {
+              }
+             
+              if ($id) {
                     set_alert('success', _l('added_successfully', _l('project')));
                     redirect(admin_url('projects/view/' . $id));
                 }

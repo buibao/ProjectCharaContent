@@ -3722,3 +3722,10 @@ $lang['post_content']                = 'Post Content';
 $lang['post_contents']               = 'Post Content';
 $lang['posted_successfully']         = '%s Posted Successfully.';
 $lang['error_page_id']               = 'Please Add FanPage Link For Project';
+$lang['photo_content']               = 'Photo';
+$lang['content_infor']               = 'Content Information';
+$lang['content_interaction']               = 'Content Interaction';
+$lang['project_id']               = 'Project';
+$lang['post_config']    = 'Config Access Token';
+$lang['get_token']    = 'Add Token';
+

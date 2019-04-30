@@ -14,10 +14,14 @@
           <div class="panel-body">
             <div class="_buttons">
             <?php echo form_open(); ?>
+            <div class="col-md-1 ">
             <button id="popoverId" class="btn btn-primary">Add Token</button>
-            <div class="col-md-4 ">
+            </div>
+            <div class="col-md-10 ">
             <?php echo render_input('tokenAccess','',$value); ?>
             </div>
+
+            
             <?php echo form_close(); ?>  
             </div>
             <div class="clearfix"></div>
@@ -29,38 +33,28 @@
             ?>
             <div class="row" id="content_summary">
               <div class="col-md-12">
-                <h4 class="no-margin text-success"><?php echo _l('content_summary_heading'); ?></h4>
+                <h4 class="no-margin text-success"><?php echo _l('summary_heading'); ?></h4>
               </div>
               <br />
               <br />
               <div class="col-md-2 col-xs-4 border-right">
-                <h3 class="bold">
-                  <?php echo total_rows('tblcontents') ?>
-                </h3>
+                <h3 class="bold"><?php echo total_rows('tblcontents', array_merge(array('status' => 4), $where_own)) + total_rows('tblcontents', array_merge(array('status' => 5), $where_own)); ?></h3>
                 <span class="bold text-primary"><?php echo _l('total_content'); ?></span>
               </div>
               <div class="col-md-2 col-xs-4 border-right">
-                <h3 class="bold"><?php echo total_rows('tblcontents', array_merge(array('status' => 1), $where_own)); ?></h3>
-                <span class="bold text-info"><?php echo _l('draft'); ?></span>
-                <div class="clearfix"></div>
-
-              </div>
-              <div class="col-md-2 col-xs-4 border-right">
-                <h3 class="bold"><?php echo total_rows('tblcontents', array_merge(array('status' => 2), $where_own)); ?></h3>
-                <span class="bold text-success"><?php echo _l('waiting_for_leader'); ?></span>
-                <div class="clearfix"></div>
-
-              </div>
-              <div class="col-md-2 col-xs-4 border-right">
-                <h3 class="bold"><?php echo total_rows('tblcontents', array_merge(array('status' => 3), $where_own)); ?></h3>
-                <span class="bold text-warning"><?php echo _l('waiting_for_customer'); ?></span>
-                <div class="clearfix"></div>
-
-              </div>
-              <div class="col-md-2 col-xs-4 border-right">
                 <h3 class="bold"><?php echo total_rows('tblcontents', array_merge(array('status' => 4), $where_own)); ?></h3>
-                <span class="bold" style="color:#5f00bf;"><?php echo _l('approvedcontent'); ?></span>
+                <span class="bold text-info"><?php echo _l('waiting_for_posting'); ?></span>
+                <div class="clearfix"></div>
+
               </div>
+              <div class="col-md-2 col-xs-4 border-right">
+                <h3 class="bold"><?php echo total_rows('tblcontents', array_merge(array('status' => 5), $where_own)); ?></h3>
+                <span class="bold text-success"><?php echo _l('posted'); ?></span>
+                <div class="clearfix"></div>
+
+              </div>
+              
+             
               <div class="clearfix"></div>
               <hr class="hr-panel-heading" />
               <!-- end fix -->

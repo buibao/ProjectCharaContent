@@ -156,10 +156,10 @@
                               </div>
                               <div class="col-md-4 text-center project-percent-col mtop10">
                                  <?php if(!$fanpage_id){?>
-                                    <img src="<?php echo APP_BASE_URL .'\assets\images\image-not-found.png'?>" style="height:20%;width:90% " data-toggle="tooltip" data-title="Not Found"/>
+                                    <img class="img img-responsive" src="<?php echo APP_BASE_URL .'\assets\images\image-not-found.png'?>" style="height:20%;width:90% " data-toggle="tooltip" data-title="Not Found"/>
                                     <?php } 
                                     else {
-                                    echo '<img src="https://graph.facebook.com/v3.2/'.$fanpage_id.'/picture?type=large" style="padding-left"/>';
+                                    echo '<img class="img img-responsive" src="https://graph.facebook.com/v3.2/'.$fanpage_id.'/picture?type=large" style="padding-left"/>';
                                     }
                                     ?>
                                  
@@ -187,7 +187,7 @@
                                        $comments_attachments = array();
                                        $attachments_data = array();
                                        $show_more_link_task_attachments = do_action('show_more_link_task_attachments', 2);
-
+                                       $file_name_str = "";
                                        foreach ($attachments as $attachment) { ?>
                                           <?php ob_start(); ?>
                                           <div data-num="<?php echo $i; ?>" data-commentid="<?php echo $attachment['comment_file_id']; ?>" data-comment-attachment="<?php echo $attachment['task_comment_id']; ?>" data-task-attachment-id="<?php echo $attachment['id']; ?>" class="task-attachment-col-12<?php if ($i > $show_more_link_task_attachments) {
@@ -204,6 +204,7 @@
                                                    $externalPreview = false;
                                                    $is_image = false;
                                                    $path = APP_BASE_URL . '/uploads/content/' . $id_content . '/' . $attachment['file_name'];
+                                                   $file_name_str = $path;
                                                    $href_url = APP_BASE_URL . '/uploads/content/' . $id_content . '/' . $attachment['file_name'];
                                                    $isHtml5Video = is_html5_video($path);
                                                    if (empty($attachment['external'])) {
@@ -292,6 +293,7 @@
                            </div>
                         </div>
                      </div>
+                     
                      <div class="btn-bottom-toolbar text-right">
                         <?php echo form_open(); ?>
                         <?php if ($content->status != 5) { ?>
@@ -320,9 +322,8 @@
    var data = {};
    data.id = "<?php echo $id_content; ?>";
    data.id_page = "<?php echo $fanpage_id; ?>";
-   data.user_access_token = "EAAFZAt5Tt6X0BANmw5QUmP9DEUSi87yvi5qY4QZB2VN6LH5Bg5cCZBFc58ldPefhu1QlpShPXhCNIrvZAbalZCS6Wff8n6n9l7JZBlGvT8JQfK4Kc0PZCqmXJpBCWeXYe4cvO6wJp8YbwrmF2UjwaFNC43cClmmYoTiZCEbeqTScifeGEVh5As4SNvg7yaY6Jo26kZCbPMahQRgZDZD";
    data.description = "<?php echo $content->description; ?>";
-   data.urlPhoto = "http://localhost:8080/ProjectCharaContent/assets/images/image-not-found.png";
+   data.urlPhoto = "<?php echo $file_name_str?>";
    $("#post_content").click(function() {
       $.post(admin_url + 'post_contents/post_content', data).done(function(response) {
          response = JSON.parse(response);

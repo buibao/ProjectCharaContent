@@ -78,9 +78,8 @@ class Post_contents extends Admin_controller
 		$data['id_content'] = $content->id;
 		$data['content'] = $content;
 		$data['title'] = $content->subject;
-		$task = $this->tasks_model->get($content->task_title);
 
-		$data['tokenTest'] = abc['tokenCheck'];
+		$task = $this->tasks_model->get($content->task_title);
 		if ($task->rel_type == "project") {
 				$project = $this->projects_model->get($task->rel_id);
 				$data['fanpage_id'] = $project->fanpage_id;
@@ -97,7 +96,8 @@ class Post_contents extends Admin_controller
 		if (!empty($_POST['id_page'])) {
 				$id = $_POST['id'];
 				$id_page = $_POST['id_page'];
-				$user_access_token = $this->AccessToken_model->getCurrentToken();
+				$tokenGet = $this->AccessToken_model->getCurrentToken();
+				$user_access_token = $tokenGet->token;
 				$caption = $_POST['description'];
 				$urlPhoto = $_POST['urlPhoto'];
 				$endpoint   = $id_page . "?fields=access_token,id,name&access_token=" . $user_access_token;
@@ -137,7 +137,8 @@ class Post_contents extends Admin_controller
 					$checkImage  = json_decode($result1, true);
 					if ($checkImage['post_id']) {
 						$data = array(
-							'status' => 5
+							'status' => 5,
+							'post_id' => $checkImage['post_id']
 						);
 						$this->db->where('id', $id);
 						$success = $this->db->update('tblcontents', $data);

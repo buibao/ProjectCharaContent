@@ -11,6 +11,7 @@ class Projects extends Admin_controller
         //Load Project Type Model
         $this->load->model('project_types_model');
         $this->load->model('currencies_model');
+        $this->load->model('AccessToken_model');
         $this->load->helper('date');
     }
 
@@ -77,9 +78,11 @@ class Projects extends Admin_controller
                 if (!has_permission('projects', '', 'create')) {
                     access_denied('Projects');
                 }
+                
                 if(!empty($data['link_page']))
                 {
-                $user_access_token  = "https://graph.facebook.com/v3.2/https://www.facebook.com/u.ti.quan/?ref=bookmarks&access_token=EAAJGSplFaE0BANFHYI9X6oSFN3kZBj5bEH7EXNskZCqZAIZAwZAXfgZAbYUbqYIyGnZBxhZClzPPPTcFZBlM1UOlrZBX6x3Tfb4rqOBwTdgb1XjttWQ7U3mEVmEo4fTHIp6k1xZCRd79OCXbPnRgJ4fBRIymWEZBmMUb4j5RbuZAfCvGTPO1TAZB0GsJLK3KwiIrTxvNYNmiw0Rxgq7gZDZD";
+                $tokenGet = $this->AccessToken_model->getCurrentToken();
+                $user_access_token = $tokenGet->token;
                 $urlPage            = $data['link_page'];
                 $access_tokenStr = '';
                     if($urlPage[-1] == '/')
@@ -91,7 +94,8 @@ class Projects extends Admin_controller
                         $access_tokenStr = '&access_token=';
                     }
                     //Get access token page
-                $url        = "https://graph.facebook.com/v3.2/".$urlPage.$access_tokenStr.$user_access_token;
+                //$url        = "https://graph.facebook.com/v3.2/".$urlPage.$access_tokenStr.$user_access_token;
+                $url = "https://graph.facebook.com/v3.2/".$urlPage.$access_tokenStr.$user_access_token;
                 $data_json       = array();
                 $method     = "GET";
                 $ch = curl_init();
@@ -105,7 +109,7 @@ class Projects extends Admin_controller
                 
                 if(empty($result['name']))
                 {
-                    set_alert('danger', _l('error_link_page_id', _l('project')));
+                    set_alert('danger', $url, _l('project'));
                     $id = $this->projects_model->add(null);
                 }
                 else{

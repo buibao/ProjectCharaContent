@@ -114,6 +114,7 @@ class Projects extends Admin_controller
                 }
                 else{
                     $data["fanpage_id"] = $result['id'];
+                    $data["fanpage_name"] = $result['name'];
                     $id = $this->projects_model->add($data);
                 }
 

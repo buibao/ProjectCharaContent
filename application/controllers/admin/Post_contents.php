@@ -84,6 +84,7 @@ class Post_contents extends Admin_controller
 				$project = $this->projects_model->get($task->rel_id);
 				$data['fanpage_id'] = $project->fanpage_id;
 				$data['link_fanpage'] = $project->link_page;
+				$data['fanpage_name'] = $project->fanpage_name;
 			}
 		$this->load->view('admin/post_contents/view', $data);
 	}

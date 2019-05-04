@@ -27,9 +27,12 @@ class Post_contents extends Admin_controller
 			ajax_access_denied();
 		}
 
+		$idstaff = $this->db->get('tblstaff')->result_array();
 		$idtask = $this->db->get('tblstafftasks')->result_array();
-		$this->app->get_table_data('post_contents', [
-			'clientid' => $clientid, 'ids' => $idtask,
+		$project = $this->db->get('tblprojects')->result_array();
+
+		$this->app->get_table_data('contents', [
+			'clientid' => $clientid, 'ids' => $idtask, 'staff' => $idstaff,
 		]);
 	}
 	public function update_token()
@@ -84,6 +87,7 @@ class Post_contents extends Admin_controller
 				$project = $this->projects_model->get($task->rel_id);
 				$data['fanpage_id'] = $project->fanpage_id;
 				$data['link_fanpage'] = $project->link_page;
+				$data['fanpage_name'] = $project->fanpage_name;
 			}
 		$this->load->view('admin/post_contents/view', $data);
 	}

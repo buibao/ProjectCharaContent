@@ -27,9 +27,12 @@ class Post_contents extends Admin_controller
 			ajax_access_denied();
 		}
 
+		$idstaff = $this->db->get('tblstaff')->result_array();
 		$idtask = $this->db->get('tblstafftasks')->result_array();
-		$this->app->get_table_data('post_contents', [
-			'clientid' => $clientid, 'ids' => $idtask,
+		$project = $this->db->get('tblprojects')->result_array();
+
+		$this->app->get_table_data('contents', [
+			'clientid' => $clientid, 'ids' => $idtask, 'staff' => $idstaff,
 		]);
 	}
 	public function update_token()

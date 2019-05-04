@@ -127,7 +127,7 @@ class Contents extends Admin_controller {
 		$project = $this->db->get('tblprojects')->result_array();
 
 		$this->app->get_table_data('contents', [
-			'clientid' => $clientid, 'ids' => $idtask, 'staff' => $idstaff, 'project_id' => $project,
+			'clientid' => $clientid, 'ids' => $idtask, 'staff' => $idstaff,
 		]);
 		// END FIX
 

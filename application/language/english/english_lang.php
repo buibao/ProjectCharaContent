@@ -3729,3 +3729,10 @@ $lang['project_id']               = 'Project';
 $lang['post_config']    = 'Config Access Token';
 $lang['get_token']    = 'Add Token';
 
+$lang['summary_heading']    = 'Summary';
+$lang['total_content']    = 'Total';
+$lang['waiting_for_posting']    = 'Waiting For Posting';
+$lang['posted']    = 'Posted';
+
+
+

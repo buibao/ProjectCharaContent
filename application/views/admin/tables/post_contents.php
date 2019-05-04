@@ -75,7 +75,14 @@ foreach ($rResult as $aRow) {
 		$status = get_content_status_by_id($aRow['status']);
 		$row[] = '<span class="label label inline-block project-status-' . $aRow['status'] . '" style="color:' . $status['color'] . ';border:1px solid ' . $status['color'] . '">' . $status['name'] . '</span>';
 
-		$row[] = $aRow['assignto'];
+		foreach ($staff as $value) {
+		if ($value['staffid'] == $aRow['assignto']) {
+			$row[] = $value['firstname'] . " " . $value['lastname'];
+			break;
+			}
+		}
+
+		
 
 		// Custom fields add values
 		foreach ($customFieldsColumns as $customFieldColumn) {

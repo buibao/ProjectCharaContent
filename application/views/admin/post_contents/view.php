@@ -81,7 +81,6 @@
                            </div>
                            <div id="newsfeed_data" style="position:relative; top:-30px;">
                               <div class="col-md-12">
-
                                  <?php $urlImage;
                                  foreach ($attachments as $attachment) {
                                     $urlImage = APP_BASE_URL . '/uploads/content/' . $content->id . '/' . $attachment['file_name'];
@@ -92,7 +91,7 @@
 
                            </div>
                            <div id="newsfeed_data">
-                              <div class="col-md-12">
+                              <div class="col-md-12" style="position: relative; top:-27px;">
                                  <div class="post_likes_wrapper" data-likes-postid="1">
                                     <div class="panel-footer user-post-like">
                                        <div class="row">
@@ -107,7 +106,7 @@
                                           </div>
                                        </div>
                                     </div>
-                                    <div class="panel-footer post-likes"></div>
+                                    
                                  </div>
                                  <div class="post_comments_wrapper" data-comments-postid="1">
                                  </div>
@@ -129,7 +128,7 @@
                                  <h4 class="bold no-margin" style="color:#1E48AB;"><?php echo _l('contentoverview') ?></h4>
                               </div>
                               
-                              <div class="col-md-10">
+                              <div class="col-md-12">
                                  <table class="table">
                                     <tbody>
                                        <tr>

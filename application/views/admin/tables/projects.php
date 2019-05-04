@@ -112,8 +112,6 @@ foreach ($rResult as $aRow) {
 
     $row[] = '<a href="' . admin_url('clients/client/' . $aRow['clientid']) . '">' . $aRow['company'] . '</a>';
 
-    $row[] = render_tags($aRow['tags']);
-
     $row[] = _d($aRow['start_date']);
 
     $row[] = _d($aRow['deadline']);

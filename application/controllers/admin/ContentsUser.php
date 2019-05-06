@@ -30,9 +30,15 @@ class Contents extends Admin_controller {
 					access_denied('contents');
 				}
 				$id = $this->contents_model->add($this->input->post());
-				if ($id > 0) {
+				if ($id) {
+					$uploadedFiles = handle_content_attachments_array($id);
+                    if ($uploadedFiles && is_array($uploadedFiles)) {
+                        foreach ($uploadedFiles as $file) {
+                            $this->misc_model->add_attachment_to_database($id, 'content', [$file]);
+                        }
+					}
+					
 					set_alert('success', _l('added_successfully', _l('content')));
-					// redirect(admin_url('contents'));
 					redirect(admin_url('contents'));
 				}
 			}
@@ -43,6 +49,12 @@ class Contents extends Admin_controller {
 				}
 				$success = $this->contents_model->update($this->input->post(), $id);
 				if ($success) {
+					$uploadedFiles = handle_content_attachments_array($id);
+                    if ($uploadedFiles && is_array($uploadedFiles)) {
+                        foreach ($uploadedFiles as $file) {
+                            $this->misc_model->add_attachment_to_database($id, 'content', [$file]);
+                        }
+                    }
 					set_alert('success', _l('updated_successfully', _l('content')));
 				}
 				redirect(admin_url('contents'));
@@ -75,24 +87,6 @@ class Contents extends Admin_controller {
 				}
 			}
 		}
-		
-		$hostname = $this->db->hostname;
-		$username = $this->db->username;
-		$password = $this->db->password;
-		$database = $this->db->database;
-		$conn = mysqli_connect($hostname,$username,$password,$database);
-		$conn->set_charset('utf8mb4');
-		$record_set = array();
-		$sql = "SELECT description FROM tblcontents WHERE id = " . $id;
-		$result = $conn->query($sql);
-		if ($result->num_rows > 0) {
-    	while($row = $result->fetch_assoc()) {
-        array_push($record_set, $row);
-          }
-        }
-        $data['jsonData'] =  json_encode($record_set);
-		
-	
 		// json get staff task
 		// $task_id = $this->input->get("task_id");
 		// $data['json'] = $this->contents->get_task_json($task_id);
@@ -100,6 +94,9 @@ class Contents extends Admin_controller {
 		$data['content_merge_fields'] = $_content_merge_fields;
 		$title = $data['content']->subject;
 		$data['title'] = $title;
+		$file_id = $data['content']->file_id;
+		$data['attachments'] = $this->contents_model->get_content_attachments($id,$file_id);
+		$data['id_content'] = $data['content']->id;
 		// $data['title']         = _l('new_content');
 		$data['bodyclass'] = 'content';
 		$this->load->view('admin/contents/content', $data);
@@ -191,25 +188,17 @@ class Contents extends Admin_controller {
 		$data['staffInfo'] = $staffInfo;
 		$projectid = $this->db->get('tblprojects')->result_array();
 		$data['projectid'] = $projectid;
-
+		$file_id = $content->file_id;
+		$data['attachments'] = $this->contents_model->get_content_attachments($id,$file_id);
+		$data['id_content'] = $content->id;
 		$data['content'] = $content;
 		$data['title'] = $content->subject;
-
-		$hostname = $this->db->hostname;
-		$username = $this->db->username;
-		$password = $this->db->password;
-		$database = $this->db->database;
-		$conn = mysqli_connect($hostname,$username,$password,$database);
-		$conn->set_charset('utf8mb4');
-		$record_set = array();
-		$sql = "SELECT * FROM tblcontents WHERE id = " . $id;
-		$result = $conn->query($sql);
-		if ($result->num_rows > 0) {
-    	while($row = $result->fetch_assoc()) {
-        array_push($record_set, $row);
-          }
-        }
-        $data['jsonData'] =  json_encode($record_set);
 		$this->load->view('admin/contents/view', $data);
 	}
+	public function remove_content_attachment($id)
+    {
+        if ($this->input->is_ajax_request()) {
+            echo json_encode($this->contents_model->remove_content_attachment($id));
+        }
+    }
 }

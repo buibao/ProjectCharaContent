@@ -111,9 +111,12 @@
                      <?php echo render_input('lastname','staff_add_edit_lastname',$value); ?>
                      <?php $value = (isset($member) ? $member->email : ''); ?>
                      <?php echo render_input('email','staff_add_edit_email',$value,'email',array('autocomplete'=>'on')); ?>
-			 <?php $value = (isset($member) ? $member->leader_id : ''); ?>
+			            <?php $value = (isset($member) ? $member->leader_id : ''); ?>
+                     <?php
+                         $selected = $value;
+                     ?>
                          <?php
-                           echo render_select('leader_id',$tasksCustom,array('staffid',array('firstname','lastname')),'Leader'); 
+                           echo render_select('leader_id',$tasksCustom,array('staffid',array('firstname','lastname')),'Leader',$selected); 
                            ?> 
                          <?php
                         do_action('staff_render_permissions');

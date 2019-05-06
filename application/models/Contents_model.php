@@ -90,7 +90,7 @@ class Contents_model extends CRM_Model {
 	 * @return object
 	 * Retrieve contract attachments from database
 	 */
-	public function get_content_attachments($attachment_id = '', $id = '') {
+	public function get_content_attachments($id, $attachment_id) {
 		if (is_numeric($attachment_id)) {
 			$this->db->where('id', $attachment_id);
 
@@ -282,4 +282,45 @@ return 1;
 		return true;
 	}
 
+	public function remove_content_attachment($id)
+    {
+        $comment_removed = false;
+        $deleted         = false;
+        // Get the attachment
+        $this->db->where('id', $id);
+        $attachment = $this->db->get('tblfiles')->row();
+        if ($attachment) {
+            if (empty($attachment->external)) {
+                $relPath  = APP_BASE_URL.'uploads/content/' . $attachment->rel_id . '/';
+                $fullPath = $relPath . $attachment->file_name;
+                unlink($fullPath);
+                $fname     = pathinfo($fullPath, PATHINFO_FILENAME);
+                $fext      = pathinfo($fullPath, PATHINFO_EXTENSION);
+                $thumbPath = $relPath . $fname . '_thumb.' . $fext;
+                if (file_exists($thumbPath)) {
+                    unlink($thumbPath);
+                }
+            }
+            $this->db->where('id', $attachment->id);
+            $this->db->delete('tblfiles');
+            if ($this->db->affected_rows() > 0) {
+                $deleted = true;
+                logActivity('Content Image Deleted [ContentID: ' . $attachment->rel_id . ']');
+            }
+            if (is_dir(APP_BASE_URL.'uploads/content/' . $attachment->rel_id)) {
+                // Check if no attachments left, so we can delete the folder also
+                $other_attachments = list_files(APP_BASE_URL.'uploads/content/' . $attachment->rel_id);
+                if (count($other_attachments) == 0) {
+                    // okey only index.html so we can delete the folder also
+                    delete_dir(APP_BASE_URL.'uploads/content/' . $attachment->rel_id);
+                }
+            }
+        }
+        if ($deleted) {
+            $this->db->set('file_id', 0);
+           	$this->db->where('id', $attachment->rel_id);
+           	$this->db->update('tblcontents');
+        }
+        return ['success' => $deleted, 'comment_removed' => $comment_removed];
+    }
 }

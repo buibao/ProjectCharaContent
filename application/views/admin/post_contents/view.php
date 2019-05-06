@@ -81,11 +81,7 @@
                            </div>
                            <div id="newsfeed_data" style="position:relative; top:-30px;">
                               <div class="col-md-12">
-                                 <?php $urlImage;
-                                 foreach ($attachments as $attachment) {
-                                    $urlImage = APP_BASE_URL . '/uploads/content/' . $content->id . '/' . $attachment['file_name'];
-                                    list($width, $height) = getimagesize($urlImage);
-                                 } ?>
+                                 <?php $urlImage = APP_BASE_URL . '/uploads/content/' . $content->id . '/' . $file_name;?>
                                  <img src="<?php echo $urlImage ?>" class="img img-responsive" />
                               </div>
 

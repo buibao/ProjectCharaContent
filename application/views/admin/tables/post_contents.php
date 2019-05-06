@@ -81,7 +81,6 @@ foreach ($rResult as $aRow) {
 			break;
 			}
 		}
-
 		
 
 		// Custom fields add values

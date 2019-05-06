@@ -85,7 +85,7 @@ class Projects extends Admin_controller
                 $user_access_token = $tokenGet->token;
                 $urlPage            = $data['link_page'];
                 $access_tokenStr = '';
-                    if($urlPage[-1] == '/')
+                    if(substr($urlPage, -1) == '/')
                     {
                         $access_tokenStr = '?access_token=';
                     }
@@ -113,6 +113,7 @@ class Projects extends Admin_controller
                     $id = $this->projects_model->add(null);
                 }
                 else{
+                     set_alert('danger', $url, _l('project'));
                     $data["fanpage_id"] = $result['id'];
                     $data["fanpage_name"] = $result['name'];
                     $id = $this->projects_model->add($data);

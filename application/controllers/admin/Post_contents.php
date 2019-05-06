@@ -31,7 +31,7 @@ class Post_contents extends Admin_controller
 		$idtask = $this->db->get('tblstafftasks')->result_array();
 		$project = $this->db->get('tblprojects')->result_array();
 
-		$this->app->get_table_data('contents', [
+		$this->app->get_table_data('post_contents', [
 			'clientid' => $clientid, 'ids' => $idtask, 'staff' => $idstaff,
 		]);
 	}
@@ -78,6 +78,7 @@ class Post_contents extends Admin_controller
 		$data['projectid'] = $projectid;
 		$file_id = $content->file_id;
 		$data['attachments'] = $this->contents_model->get_content_attachments($id, $file_id);
+		$data['file_name'] = $data['attachments']->file_name;
 		$data['id_content'] = $content->id;
 		$data['content'] = $content;
 		$data['title'] = $content->subject;

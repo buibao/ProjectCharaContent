@@ -39,7 +39,7 @@
                                                         <div class="media-left">
                                                             <a href="<?php echo $link_fanpage ?>">
                                                                 <?php if (!$fanpage_id) { ?>
-                                                                    <img src="<?php echo APP_BASE_URL . '/assets/images/user-placeholder.jpg' ?>" class="staff-profile-image-small no-radius" style="width:75px; height:75px">
+                                                                    <img src="<?php echo APP_BASE_URL . '/assets/images/user-placeholder.jpg' ?>" class="staff-profile-image-small" style="width:75px; height:75px">
                                                                 <?php } else {
                                                                 echo '<img class="staff-profile-image-small" src="https://graph.facebook.com/v3.2/' . $fanpage_id . '/picture?type=large" style="width:65px; height:65px"/>';
                                                             }
@@ -87,9 +87,9 @@
                                                             <img data-toggle="tooltip" data-placement="top" data-original-title="Like" class="icon1" src="<?php echo APP_BASE_URL . '/uploads/icon_facebook/like.jpg' ?>" style="height:38px;width:38px; background-color:white" />
                                                             <img data-toggle="tooltip" data-placement="top" data-original-title="Love" class="icon1" src="<?php echo APP_BASE_URL . '/uploads/icon_facebook/love.jpg' ?>" style="height:40px;width:40px; position:relative; left:-10px; background-color:white" />
                                                             <img data-toggle="tooltip" data-placement="top" data-original-title="Haha" class="icon1" src="<?php echo APP_BASE_URL . '/uploads/icon_facebook/wow.jpg' ?>" style="height:37px;width:37px; position:relative; left:-20px; background-color:white" />
-                                                            <span style="position: relative; left:-20px; font-size:15px; vertical-align: middle;">123</span>
+                                                            <span style="position: relative; left:-20px; font-size:13px; vertical-align: middle;">123</span>
                                                         </div>
-                                                        <div class="col-md-6" style="margin-top:10px; font-size:15px;">
+                                                        <div class="col-md-6" style="margin-top:10px; font-size:13px;">
                                                             <span>123 Comments</span> &nbsp &nbsp <span> 2323 Shares</span>
                                                         </div>
                                                     </div>
@@ -100,9 +100,16 @@
                                             </div>
                                             <div class="panel-footer user-comment">
                                                 <div class="pull-left comment-image">
-                                                    <a href="#">
-                                                        <img src="<?php echo APP_BASE_URL . '/assets/images/user-placeholder.jpg' ?>" class="staff-profile-image-small no-radius">
-                                                    </a></div>
+                                                <a href="<?php echo $link_fanpage ?>">
+                                                                <?php if (!$fanpage_id) { ?>
+                                                                    <img src="<?php echo APP_BASE_URL . '/assets/images/user-placeholder.jpg' ?>" class="staff-profile-image-small no-radius">
+                                                                <?php } else {
+                                                                echo '<img class="staff-profile-image-small no-radius" src="https://graph.facebook.com/v3.2/' . $fanpage_id . '/picture?type=large" style="margin-right:5px;"/>';
+                                                            }
+                                                            ?>
+                                                </a>
+                                            
+                                                </div>
                                                 <div class="media-body comment-input">
                                                     <input type="text" class="form-control input-sm" placeholder="Comment this post.." data-postid="1">
                                                 </div>
@@ -206,6 +213,68 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="panel_s">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h4 class="bold no-margin" style="color:#1E48AB;">CONTENT OVERVIEW</h4>
+                                    </div>
+                                    <br/>
+                                    <hr/>
+                                </div>
+                                <div class="col-md-12">
+                                        <div class="row" >
+                                            <div class="col-md-4 border-right">
+                                            <h4 class="bold">36</h4>
+                                            <span class="bold text-primary">Like</span>
+                                            
+                                        </div>
+                                        <div class="col-md-4  border-right">
+                                        <h4 class="bold">31</h4>
+                                        <span class="bold text-info">Haha</span>
+                                        </div>
+                                        <div class="col-md-4 border-right">
+                                        <h4 class="bold">5</h4>
+                                        <span class="bold text-success">Wow</span>
+                                        </div>
+                                        </div>
+
+                                        
+                                        <div class="row" >
+                                            <hr/>
+                                            <div class="col-md-4  border-right">
+                                            <h4 class="bold">36</h4>
+                                            <span class="bold text-primary">Like</span>
+                                        </div>
+                                        <div class="col-md-4  border-right">
+                                        <h4 class="bold">31</h4>
+                                        <span class="bold text-info">Haha</span>
+                                        
+                                        </div>
+                                        <div class="col-md-4  border-right">
+                                        <h4 class="bold">5</h4>
+                                        <span class="bold text-success">Wow</span>
+                                        
+                                        </div>
+                                        </div>
+                                        <hr/>
+                                        <div class="row" >
+                                            <div class="col-md-4  border-right">
+                                            <h4 class="bold">36</h4>
+                                            <span class="bold text-primary">Like</span>
+                                        </div>
+                                        <div class="col-md-4">
+                                        <h4 class="bold">31</h4>
+                                        <span class="bold text-info">Haha</span>
+                                        
+                                        </div>
+                                        <br/>
+                                    </div>
+                                    
+                        </div>
+                            </div>
+                            
+                        
                     </div>
 
                 </div>

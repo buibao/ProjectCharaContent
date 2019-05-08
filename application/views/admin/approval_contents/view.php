@@ -88,9 +88,9 @@
                                                             <img data-toggle="tooltip" data-placement="top" data-original-title="Like" class="icon1" src="<?php echo APP_BASE_URL . '/uploads/icon_facebook/like.jpg' ?>" style="height:38px;width:38px; background-color:white" />
                                                             <img data-toggle="tooltip" data-placement="top" data-original-title="Love" class="icon1" src="<?php echo APP_BASE_URL . '/uploads/icon_facebook/love.jpg' ?>" style="height:40px;width:40px; position:relative; left:-10px; background-color:white" />
                                                             <img data-toggle="tooltip" data-placement="top" data-original-title="Haha" class="icon1" src="<?php echo APP_BASE_URL . '/uploads/icon_facebook/wow.jpg' ?>" style="height:37px;width:37px; position:relative; left:-20px; background-color:white" />
-                                                            <span style="position: relative; left:-20px; font-size:15px; vertical-align: middle;">0</span>
+                                                            <span style="position: relative; left:-20px; font-size:13px; vertical-align: middle;">0</span>
                                                         </div>
-                                                        <div class="col-md-6" style="margin-top:10px; font-size:15px;">
+                                                        <div class="col-md-6" style="margin-top:10px; font-size:13px;">
                                                             <span>0 Comments</span> &nbsp &nbsp <span> 0 Shares</span>
                                                         </div>
                                                     </div>
@@ -101,9 +101,14 @@
                                             </div>
                                             <div class="panel-footer user-comment">
                                                 <div class="pull-left comment-image">
-                                                    <a href="#">
-                                                        <img src="<?php echo APP_BASE_URL . '/assets/images/user-placeholder.jpg' ?>" class="staff-profile-image-small no-radius">
-                                                    </a></div>
+                                                <a href="<?php echo $link_fanpage ?>">
+                                                                <?php if (!$fanpage_id) { ?>
+                                                                    <img src="<?php echo APP_BASE_URL . '/assets/images/user-placeholder.jpg' ?>" class="staff-profile-image-small no-radius">
+                                                                <?php } else {
+                                                                echo '<img class="staff-profile-image-small no-radius" src="https://graph.facebook.com/v3.2/' . $fanpage_id . '/picture?type=large" style="margin-right:5px;"/>';
+                                                            }
+                                                            ?>
+                                                </a></div>
                                                 <div class="media-body comment-input">
                                                     <input type="text" class="form-control input-sm" placeholder="Comment this post.." data-postid="1">
                                                 </div>

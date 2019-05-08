@@ -1,12 +1,14 @@
 <?php
 
 defined('BASEPATH') or exit('No direct script access allowed');
-class Contents_model extends CRM_Model {
-	public function __construct() {
+class Contents_model extends CRM_Model
+{
+	public function __construct()
+	{
 		parent::__construct();
-
 	}
-	public function getDatabase() {
+	public function getDatabase()
+	{
 		$this->db->select('*');
 		$ketqua = $this->db->get('tblcontents');
 		//chuyen $ketqua thanh mang
@@ -30,12 +32,14 @@ class Contents_model extends CRM_Model {
 	//         $content = $this->db->get('tblcontents')->row();
 	//         return $content;
 	// }
-	public function getAllContent($id) {
+	public function getAllContent($id)
+	{
 		$this->db->where('id', $id);
 
 		return $this->db->get('tblcontents')->row();
 	}
-	public function get_task_json($task_id = '') {
+	public function get_task_json($task_id = '')
+	{
 		$this->db->select("*");
 		$this->db->from('tblstafftasks');
 		$this->db->where('id', $task_id);
@@ -45,7 +49,8 @@ class Contents_model extends CRM_Model {
 		$resp = $query->result();
 		return json_encode($resp);
 	}
-	public function get($id = '', $where = [], $for_editor = false) {
+	public function get($id = '', $where = [], $for_editor = false)
+	{
 
 		if (is_numeric($id)) {
 			// $this->db->where('tblcontents.id', $id);
@@ -81,7 +86,8 @@ class Contents_model extends CRM_Model {
 
 		return $contents;
 	}
-	public function get_contents_years() {
+	public function get_contents_years()
+	{
 		return $this->db->query('SELECT DISTINCT(YEAR(start_date)) as year FROM tblcontents')->result_array();
 	}
 
@@ -90,7 +96,8 @@ class Contents_model extends CRM_Model {
 	 * @return object
 	 * Retrieve contract attachments from database
 	 */
-	public function get_content_attachments($id, $attachment_id) {
+	public function get_content_attachments($id, $attachment_id)
+	{
 		if (is_numeric($attachment_id)) {
 			$this->db->where('id', $attachment_id);
 
@@ -108,7 +115,8 @@ class Contents_model extends CRM_Model {
 	 * @return  integer Insert ID
 	 * Add new content
 	 */
-	public function add($data) {
+	public function add($data)
+	{
 		if (isset($data['status']) && ($data['status'] == 1 || $data['status'] === 'on')) {
 			$status = 1;
 		} else {
@@ -119,44 +127,49 @@ class Contents_model extends CRM_Model {
 		$username = $this->db->username;
 		$password = $this->db->password;
 		$database = $this->db->database;
-$conn = mysqli_connect($hostname,$username,$password,$database);
-$conn->set_charset('utf8mb4');
-$comment = isset($data['description']) ? trim($data['description']) : "";
-$subject = isset($data['subject']) ? $data['subject'] : "";
-$task_title = isset($data['task_title']) ? $data['task_title'] : "";
-$hash = app_generate_hash();
-$datestart = isset($data['datestart']) ? $data['datestart'] : "";
-$dateend = isset($data['dateend']) ? $data['dateend'] : "";
-$projectId = isset($data['project_id']) ? $data['project_id'] : "";
-$query = "INSERT INTO tblcontents(subject,task_title,description,status,assignto,hash,datestart,dateend,project_id) VALUES (?,?,?,?,?,?,?,?,?)";
-$assignto = $GLOBALS['current_user']->staffid;
-$sql_stmt = $conn->prepare($query);
-// d = number -- s = string
-$param_type = "sssssssss";
-$param_value_array = array(
-	$subject,
-	$task_title,
-    $comment,
-    $status,
-    $assignto,
-    $hash,
-    $datestart,
-    $dateend,
-    $projectId
-);
-$param_value_reference[] = & $param_type;
-for ($i = 0; $i < count($param_value_array); $i ++) {
-    $param_value_reference[] = & $param_value_array[$i];
-}
-call_user_func_array(array(
-    $sql_stmt,
-    'bind_param'
-), $param_value_reference);
+		$conn = mysqli_connect($hostname, $username, $password, $database);
+		$conn->set_charset('utf8mb4');
+		$comment = isset($data['description']) ? trim($data['description']) : "";
+		$subject = isset($data['subject']) ? $data['subject'] : "";
+		$task_title = isset($data['task_title']) ? $data['task_title'] : "";
+		$hash = app_generate_hash();
+		$datestart = isset($data['datestart']) ? $data['datestart'] : "";
+		$dateend = isset($data['dateend']) ? $data['dateend'] : "";
+		$projectId = isset($data['project_id']) ? $data['project_id'] : "";
+		
+		$query = "INSERT INTO tblcontents(subject,task_title,description,status,assignto,hash,datestart,dateend,project_id) VALUES (?,?,?,?,?,?,?,?,?)";
+		
+		$assignto = $GLOBALS['current_user']->staffid;
+		$sql_stmt = $conn->prepare($query);
+		// d = number -- s = string
+		$param_type = "sssssssss";
+		$param_value_array = array(
+			$subject,
+			$task_title,
+			$comment,
+			$status,
+			$assignto,
+			$hash,
+			$datestart,
+			$dateend,
+			$projectId
+		);
+		$param_value_reference[] = &$param_type;
+		for ($i = 0; $i < count($param_value_array); $i++) {
+			$param_value_reference[] = &$param_value_array[$i];
+		}
+		call_user_func_array(array(
+			$sql_stmt,
+			'bind_param'
+		), $param_value_reference);
 
-$sql_stmt->execute();
-logActivity('New Content Added [' . $subject . ']');
-return 1;
-
+		$sql_stmt->execute();
+		logActivity('New Content Added [' . $subject . ']');
+		$last = $this->db->order_by('id',"desc")
+		->limit(1)
+		->get('tblcontents')
+		->row();
+		return $last;
 	}
 
 	/**
@@ -165,8 +178,9 @@ return 1;
 	 * @return boolean
 	 * Update content
 	 */
-	public function update($data, $id) {
-	if (isset($data['status']) && ($data['status'] == 1 || $data['status'] === 'on')) {
+	public function update($data, $id)
+	{
+		if (isset($data['status']) && ($data['status'] == 1 || $data['status'] === 'on')) {
 			$status = 1;
 		} else {
 			$status = 2;
@@ -176,50 +190,51 @@ return 1;
 		$username = $this->db->username;
 		$password = $this->db->password;
 		$database = $this->db->database;
-$conn = mysqli_connect($hostname,$username,$password,$database);
-$conn->set_charset('utf8mb4');
-$comment = isset($data['description']) ? trim($data['description']) : "";
-$subject = isset($data['subject']) ? $data['subject'] : "";
-$task_title = isset($data['task_title']) ? $data['task_title'] : "";
-$hash = app_generate_hash();
-$datestart = isset($data['datestart']) ? $data['datestart'] : "";
-$dateend = isset($data['dateend']) ? $data['dateend'] : "";
-$projectId = isset($data['project_id']) ? $data['project_id'] : "";
-$query = "UPDATE tblcontents SET subject = ?,task_title = ?, datestart=?,dateend=?,status=?,description=?,assignto=?,hash=?, project_id =? WHERE id = ". $id;
-$assignto = $GLOBALS['current_user']->staffid;
-$sql_stmt = $conn->prepare($query);
-// d = number -- s = string
-$param_type = "sssssssss";
-$param_value_array = array(
-	$subject,
-	$task_title,
-	$datestart,
-    $dateend,
-    $status,
-    $comment,
-    $assignto,
-    $hash,
-    $projectId
-);
-$param_value_reference[] = & $param_type;
-for ($i = 0; $i < count($param_value_array); $i ++) {
-    $param_value_reference[] = & $param_value_array[$i];
-}
-call_user_func_array(array(
-    $sql_stmt,
-    'bind_param'
-), $param_value_reference);
+		$conn = mysqli_connect($hostname, $username, $password, $database);
+		$conn->set_charset('utf8mb4');
+		$comment = isset($data['description']) ? trim($data['description']) : "";
+		$subject = isset($data['subject']) ? $data['subject'] : "";
+		$task_title = isset($data['task_title']) ? $data['task_title'] : "";
+		$hash = app_generate_hash();
+		$datestart = isset($data['datestart']) ? $data['datestart'] : "";
+		$dateend = isset($data['dateend']) ? $data['dateend'] : "";
+		$projectId = isset($data['project_id']) ? $data['project_id'] : "";
+		$query = "UPDATE tblcontents SET subject = ?,task_title = ?, datestart=?,dateend=?,status=?,description=?,assignto=?,hash=?, project_id =? WHERE id = " . $id;
+		$assignto = $GLOBALS['current_user']->staffid;
+		$sql_stmt = $conn->prepare($query);
+		// d = number -- s = string
+		$param_type = "sssssssss";
+		$param_value_array = array(
+			$subject,
+			$task_title,
+			$datestart,
+			$dateend,
+			$status,
+			$comment,
+			$assignto,
+			$hash,
+			$projectId
+		);
+		$param_value_reference[] = &$param_type;
+		for ($i = 0; $i < count($param_value_array); $i++) {
+			$param_value_reference[] = &$param_value_array[$i];
+		}
+		call_user_func_array(array(
+			$sql_stmt,
+			'bind_param'
+		), $param_value_reference);
 
-$sql_stmt->execute();
-logActivity('Contetn Updated [' . $subject . ']');
-return 1;
+		$sql_stmt->execute();
+		logActivity('Content Updated [' . $subject . ']');
+		return true;
 	}
 	/**
 	 * @param  integer ID
 	 * @return boolean
 	 * Delete content
 	 */
-	public function delete($id) {
+	public function delete($id)
+	{
 		do_action('before_contract_deleted', $id);
 
 		$this->db->where('id', $id);
@@ -227,13 +242,15 @@ return 1;
 
 		return true;
 	}
-	function search($keyword) {
+	function search($keyword)
+	{
 		$this->db->like('subject', $keyword);
 		$query = $this->db->get('tblcontents');
 		$query = $query->result_array();
 		return $query;
 	}
-	public function get_content_statuses() {
+	public function get_content_statuses()
+	{
 		$statuses = [
 			[
 				'id' => 1,
@@ -275,7 +292,8 @@ return 1;
 		return do_action('before_get_credit_notes_statuses', $statuses);
 	}
 
-	public function update_status($id) {
+	public function update_status($id)
+	{
 
 		$this->db->where('id', $id);
 		$this->db->update('tblcontents', ['status' => 5]);
@@ -283,44 +301,33 @@ return 1;
 	}
 
 	public function remove_content_attachment($id)
-    {
-        $comment_removed = false;
-        $deleted         = false;
-        // Get the attachment
-        $this->db->where('id', $id);
-        $attachment = $this->db->get('tblfiles')->row();
-        if ($attachment) {
-            if (empty($attachment->external)) {
-                $relPath  = APP_BASE_URL.'uploads/content/' . $attachment->rel_id . '/';
-                $fullPath = $relPath . $attachment->file_name;
-                unlink($fullPath);
-                $fname     = pathinfo($fullPath, PATHINFO_FILENAME);
-                $fext      = pathinfo($fullPath, PATHINFO_EXTENSION);
-                $thumbPath = $relPath . $fname . '_thumb.' . $fext;
-                if (file_exists($thumbPath)) {
-                    unlink($thumbPath);
-                }
-            }
-            $this->db->where('id', $attachment->id);
-            $this->db->delete('tblfiles');
-            if ($this->db->affected_rows() > 0) {
-                $deleted = true;
-                logActivity('Content Image Deleted [ContentID: ' . $attachment->rel_id . ']');
-            }
-            if (is_dir(APP_BASE_URL.'uploads/content/' . $attachment->rel_id)) {
-                // Check if no attachments left, so we can delete the folder also
-                $other_attachments = list_files(APP_BASE_URL.'uploads/content/' . $attachment->rel_id);
-                if (count($other_attachments) == 0) {
-                    // okey only index.html so we can delete the folder also
-                    delete_dir(APP_BASE_URL.'uploads/content/' . $attachment->rel_id);
-                }
-            }
-        }
-        if ($deleted) {
-            $this->db->set('file_id', 0);
-           	$this->db->where('id', $attachment->rel_id);
-           	$this->db->update('tblcontents');
-        }
-        return ['success' => $deleted, 'comment_removed' => $comment_removed];
-    }
+	{
+		$comment_removed = false;
+		$deleted         = false;
+		// Get the attachment
+		$this->db->where('id', $id);
+		$attachment = $this->db->get('tblfiles')->row();
+		if ($attachment) {
+			$this->db->where('id', $attachment->id);
+			$this->db->delete('tblfiles');
+			if ($this->db->affected_rows() > 0) {
+				$deleted = true;
+				logActivity('Content Image Deleted [ContentID: ' . $attachment->rel_id . ']');
+			}
+			if (is_dir(APP_BASE_URL . 'uploads/content/' . $attachment->rel_id)) {
+				// Check if no attachments left, so we can delete the folder also
+				$other_attachments = list_files(APP_BASE_URL . 'uploads/content/' . $attachment->rel_id);
+				if (count($other_attachments) == 0) {
+					// okey only index.html so we can delete the folder also
+					delete_dir(APP_BASE_URL . 'uploads/content/' . $attachment->rel_id);
+				}
+			}
+		}
+		if ($deleted) {
+			$this->db->set('file_id', 0);
+			$this->db->where('id', $attachment->rel_id);
+			$this->db->update('tblcontents');
+		}
+		return ['success' => $deleted];
+	}
 }

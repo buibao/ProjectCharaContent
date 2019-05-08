@@ -30,11 +30,11 @@ class Contents extends Admin_controller {
 					access_denied('contents');
 				}
 				$id = $this->contents_model->add($this->input->post());
-				if ($id > 0) {
-					$uploadedFiles = handle_content_attachments_array($id);
+				if ($id->id) {
+					$uploadedFiles = handle_content_attachments_array($id->id);
                     if ($uploadedFiles && is_array($uploadedFiles)) {
                         foreach ($uploadedFiles as $file) {
-                            $this->misc_model->add_attachment_to_database($id, 'content', [$file]);
+                            $this->misc_model->add_attachment_to_database($id->id, 'content', [$file]);
                         }
 					}
 					set_alert('success', _l('added_successfully', _l('content')));
@@ -210,19 +210,6 @@ class Contents extends Admin_controller {
 			}
 
 		}
-		$content = $this->contents_model->get($id);
-
-		//fix show name task title and assignto
-		$staffTask = $this->db->get('tblstafftasks')->result_array();
-		$data['staffTask'] = $staffTask;
-		$staffInfo = $this->db->get('tblstaff')->result_array();
-		$data['staffInfo'] = $staffInfo;
-		$projectid = $this->db->get('tblprojects')->result_array();
-		$data['projectid'] = $projectid;
-
-		$data['content'] = $content;
-		$data['title'] = $content->subject;
-
 		$hostname = $this->db->hostname;
 		$username = $this->db->username;
 		$password = $this->db->password;
@@ -230,7 +217,7 @@ class Contents extends Admin_controller {
 		$conn = mysqli_connect($hostname,$username,$password,$database);
 		$conn->set_charset('utf8mb4');
 		$record_set = array();
-		$sql = "SELECT * FROM tblcontents WHERE id = " . $id;
+		$sql = "SELECT description FROM tblcontents WHERE id = " . $id;
 		$result = $conn->query($sql);
 		if ($result->num_rows > 0) {
     	while($row = $result->fetch_assoc()) {
@@ -238,12 +225,38 @@ class Contents extends Admin_controller {
           }
         }
         $data['jsonData'] =  json_encode($record_set);
+		$content = $this->contents_model->get($id);
+		//fix show name task title and assignto
+		$staffTask = $this->db->get('tblstafftasks')->result_array();
+		$data['staffTask'] = $staffTask;
+		$staffInfo = $this->db->get('tblstaff')->result_array();
+		$data['staffInfo'] = $staffInfo;
+		$projectid = $this->db->get('tblprojects')->result_array();
+		$data['projectid'] = $projectid;
+		$file_id = $content->file_id;
+		$data['attachments'] = $this->contents_model->get_content_attachments($id, $file_id);
+		$data['file_name'] = $data['attachments']->file_name;
+		$data['id_content'] = $content->id;
+		$data['content'] = $content;
+		$data['title'] = $content->subject;
+
+		$task = $this->tasks_model->get($content->task_title);
+		if ($task->rel_type == "project") {
+				$project = $this->projects_model->get($task->rel_id);
+				$data['fanpage_id'] = $project->fanpage_id;
+				$data['link_fanpage'] = $project->link_page;
+				$data['fanpage_name'] = $project->fanpage_name;
+			}
 		$this->load->view('admin/contents/view', $data);
 	}
-	public function remove_content_attachment($id)
+	public function remove_content_attachment()
     {
-        if ($this->input->is_ajax_request()) {
-            echo json_encode($this->contents_model->remove_content_attachment($id));
-        }
+			$id = $_POST['id'];
+			$success = $this->contents_model->remove_content_attachment($id);
+			echo json_encode([
+								'success' => $success,
+								
+							]);
+        
     }
 }

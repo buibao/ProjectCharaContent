@@ -66,9 +66,8 @@ class Post_contents extends Admin_controller
 
 	public function view($id)
 	{
-
+		
 		$content = $this->contents_model->get($id);
-
 		//fix show name task title and assignto
 		$staffTask = $this->db->get('tblstafftasks')->result_array();
 		$data['staffTask'] = $staffTask;
@@ -82,7 +81,22 @@ class Post_contents extends Admin_controller
 		$data['id_content'] = $content->id;
 		$data['content'] = $content;
 		$data['title'] = $content->subject;
-
+		
+		$hostname = $this->db->hostname;
+		$username = $this->db->username;
+		$password = $this->db->password;
+		$database = $this->db->database;
+		$conn = mysqli_connect($hostname,$username,$password,$database);
+		$conn->set_charset('utf8mb4');
+		$record_set = array();
+		$sql = "SELECT description FROM tblcontents WHERE id = " . $id;
+		$result = $conn->query($sql);
+		if ($result->num_rows > 0) {
+    	while($row = $result->fetch_assoc()) {
+        array_push($record_set, $row);
+          }
+        }
+        $data['jsonData'] =  json_encode($record_set);
 		$task = $this->tasks_model->get($content->task_title);
 		if ($task->rel_type == "project") {
 				$project = $this->projects_model->get($task->rel_id);

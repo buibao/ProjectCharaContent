@@ -1,248 +1,374 @@
 <?php init_head(); ?>
+<link href='<?php echo base_url('assets/plugins/editor/vendor/emoji-picker/lib/css/emoji.css'); ?>' rel='stylesheet' />
+<link href='<?php echo base_url('assets/plugins/editor/style2.css'); ?>' rel="stylesheet">
+
 <div id="wrapper">
-   <div class="content">
-      <div class="row">
-         <div class="col-md-8">
-            <!-- breadcrumb -->
-            <nav aria-label="breadcrumb">
-               <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="<?php echo admin_url('contents'); ?>"><?php echo _l('contents'); ?> </a></li>
-                  <li class="breadcrumb-item active" aria-current="page"><?php echo $title; ?></li>
-               </ol>
-            </nav>
-            <div class="panel_s">
-               <div class="panel-body tc-content">
-                  <h4 class="bold no-margin"><?php echo _l('contentoverview') ?></h4>
-                  <br/>
-                  <div class="bold">
-                  <?php echo _l('content_infor'); ?>
-                  <br/>
-                  <br/>
-                  </div>
-                  <table class="table no-margin">
-                     <tbody>
-                        <tr>
-                           <td class="bold"><?php echo _l('subject'); ?></td>
-                           <td><?php echo $content->subject; ?></td>
-                        </tr>
-                        <tr>
-                           <td class="bold"><?php echo _l('task_title'); ?></td>
-                           <td><?php
-                                 foreach ($staffTask as $value) {
-                                    if ($content->task_title == $value['id']) {
-                                       echo $value['name'];
-                                    }
-                                 }
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- breadcrumb -->
+                <div class="panel_s project-top-panel panel-full">
+                    <div class="panel-body _buttons">
 
-                                 ?></td>
-
-                        </tr>
-                        <tr>
-                           <td class="bold"><?php echo _l('content_start_date'); ?></td>
-                           <td><?php echo $content->datestart; ?></td>
-                        </tr>
-                        <tr>
-                           <td class="bold"><?php echo _l('content_end_date'); ?></td>
-                           <td><?php echo $content->dateend; ?></td>
-                        </tr>
-                        <!--  <tr>
-                              <td class="bold"><?php echo _l('content_status'); ?></td>
-                              <td><?php echo $content->status; ?></td>
-                           </tr> -->
-                        <tr>
-                           <td class="bold"><?php echo _l('assign_to'); ?></td>
-                           <td><?php
-                                 foreach ($staffInfo as $value) {
-                                    if ($content->assignto == $value['staffid']) {
-                                       echo $value['firstname'] . " " . $value['lastname'];
-                                    }
-                                 }
-
-                                 ?></td>
-                        </tr>
-                        <tr>
-                           <td class="bold">
-                              <?php echo _l('Project_id'); ?>
-                           </td>
-                           <td>
-                              <?php
-                              foreach ($projectid as $value) {
-                                 if ($content->project_id == $value['id']) {
-                                    echo $value['name'];
-                                 }
-                              }
-
-                              ?>
-                           </td>
-                           <!-- <td><?php echo $content->assignto; ?></td> -->
-                        </tr>
-                     </tbody>
-                  </table>
-                  <hr/>
-                  <div class="bold">
-                  <?php echo _l('content'); ?>
-                  </div>
-                  <br>
-                  <?php echo $content->description; ?>
-                  <br/>
-                  <br/>
-                  <div id="attchment" class="row task_attachments_wrapper">
-                     <div class="col-md-12" id="attachments">
                         <div class="row">
-                           <?php
-                           $i = 1;
-                           // Store all url related data here
-                           $comments_attachments = array();
-                           $attachments_data = array();
-                           $show_more_link_task_attachments = do_action('show_more_link_task_attachments', 2);
-                           foreach ($attachments as $attachment) { ?>
-                              <?php ob_start(); ?>
-                              <div data-num="<?php echo $i; ?>" data-commentid="<?php echo $attachment['comment_file_id']; ?>" data-comment-attachment="<?php echo $attachment['task_comment_id']; ?>" data-task-attachment-id="<?php echo $attachment['id']; ?>" class="task-attachment-col col-md-6<?php if ($i > $show_more_link_task_attachments) {
-                                                                                                                                                                                                                                                                                                         echo ' hide task-attachment-col-more';
-                                                                                                                                                                                                                                                                                                      } ?>">
-                                 <ul class="list-unstyled task-attachment-wrapper" data-toggle="tooltip" data-title="<?php echo $attachment['file_name']; ?>">
-                                    <li class="mbot10 task-attachment<?php if (strtotime($attachment['dateadded']) >= strtotime('-16 hours')) {
-                                                                        echo ' highlight-bg';
-                                                                     } ?>">
-                                       <div class="mbot10 pull-right task-attachment-user">
-                                          <?php if ($attachment['staffid'] == get_staff_user_id() || is_admin()) { ?>
+                            <div class="col-md-7 project-heading">
+                                <div id="project_view_name" class="pull-left">
 
-                                          <?php }
-                                       $externalPreview = false;
-                                       $is_image = false;
-                                       $path = APP_BASE_URL . '/uploads/content/' . $id_content . '/' . $attachment['file_name'];
-                                       $href_url = APP_BASE_URL . '/uploads/content/' . $id_content . '/' . $attachment['file_name'];
-                                       $isHtml5Video = is_html5_video($path);
-                                       if (empty($attachment['external'])) {
-                                          $is_image = is_image($path);
-                                          $img_url = site_url('download/preview_image?path=' . protected_file_url_by_path($path, true) . '&type=' . $attachment['filetype']);
-                                       } else if ((!empty($attachment['thumbnail_link']) || !empty($attachment['external']))
-                                          && !empty($attachment['thumbnail_link'])
-                                       ) {
-                                          $is_image = true;
-                                          $img_url = optimize_dropbox_thumbnail($attachment['thumbnail_link']);
-                                          $externalPreview = $img_url;
-                                          $href_url = $attachment['external_link'];
-                                       } else if (!empty($attachment['external']) && empty($attachment['thumbnail_link'])) {
-                                          $href_url = $attachment['external_link'];
-                                       }
-                                       if (!empty($attachment['external']) && $attachment['external'] == 'dropbox' && $is_image) { ?>
-                                             <a href="<?php echo $href_url; ?>" target="_blank" class="" data-toggle="tooltip" data-title="<?php echo _l('open_in_dropbox'); ?>"><i class="fa fa-dropbox" aria-hidden="true"></i></a>
-                                          <?php }
-                                       if ($attachment['staffid'] != 0) {
-                                          echo '<a href="' . admin_url('profile/' . $attachment['staffid']) . '" target="_blank">' . get_staff_full_name($attachment['staffid']) . '</a> - ';
-                                       } else if ($attachment['contact_id'] != 0) {
-                                          echo '<a href="' . admin_url('clients/client/' . get_user_id_by_contact_id($attachment['contact_id']) . '?contactid=' . $attachment['contact_id']) . '" target="_blank">' . get_contact_full_name($attachment['contact_id']) . '</a> - ';
-                                       }
-                                       echo '<span class="text-has-action" data-toggle="tooltip" data-title="' . _dt($attachment['dateadded']) . '">' . time_ago($attachment['dateadded']) . '</span>';
-                                       ?>
-                                       </div>
-                                       <div class="clearfix"></div>
+                                    <div class="dropdown bootstrap-select fit-width">
+                                        <h4><?php echo $content->subject; ?></h4>
+                                    </div>
 
-                                       <div class="<?php if ($is_image) {
-                                                      echo 'preview-image';
-                                                   } else if (!$isHtml5Video) {
-                                                      echo 'task-attachment-no-preview';
-                                                   } ?>">
-
-                                          <?php
-                                          // Not link on video previews because on click on the video is opening new tab
-                                          if (!$isHtml5Video) { ?>
-                                             <a href="<?php echo (!$externalPreview ? $href_url : $externalPreview); ?>" target="_blank" <?php if ($is_image) { ?> data-lightbox="task-attachment" <?php } ?> class="<?php if ($isHtml5Video) {
-                                                                                                                                                                                                                        echo 'video-preview';
-                                                                                                                                                                                                                     } ?>">
-                                             <?php } ?>
-                                             <?php if ($is_image) { ?>
-                                                <img src="<?php echo APP_BASE_URL . '/uploads/content/' . $id_content . '/' . $attachment['file_name'];; ?>" class="img img-responsive">
-                                             <?php } else if ($isHtml5Video) { ?>
-                                                <video width="100%" height="100%" src="<?php echo site_url('download/preview_video?path=' . protected_file_url_by_path($path) . '&type=' . $attachment['filetype']); ?>" controls>
-                                                   Your browser does not support the video tag.
-                                                </video>
-                                             <?php } else { ?>
-                                                <i class="<?php echo get_mime_class($attachment['filetype']); ?>"></i>
-                                                <?php echo $attachment['file_name']; ?>
-                                             <?php } ?>
-                                             <?php if (!$isHtml5Video) { ?>
-                                             </a>
-                                          <?php } ?>
-                                       </div>
-
-                                       <div class="clearfix"></div>
-                                    </li>
-                                 </ul>
-                              </div>
-                              <?php
-                              $attachments_data[$attachment['id']] = ob_get_contents();
-                              if ($attachment['task_comment_id'] != 0) {
-                                 $comments_attachments[$attachment['task_comment_id']][$attachment['id']] = $attachments_data[$attachment['id']];
-                              }
-                              ob_end_clean();
-                              echo $attachments_data[$attachment['id']];
-                              ?>
-                              <?php
-                              $i++;
-                           } ?>
+                                </div>
+                                <?php $status = get_content_status_by_id($content->status); ?>
+                                <div class="label pull-left mleft15 mtop5 p8 project-status-label-2" style="background:#03a9f4"><?php echo  $status['name'] ?></div>
+                            </div>
+                           
                         </div>
-                     </div>
-                     <div class="clearfix"></div>
-                     <?php if (($i - 1) > $show_more_link_task_attachments) { ?>
-                        <div class="col-md-12" id="show-more-less-task-attachments-col">
-                           <a href="#" class="task-attachments-more" onclick="slideToggle('.task_attachments_wrapper .task-attachment-col-more', task_attachments_toggle); return false;"><?php echo _l('show_more'); ?></a>
-                           <a href="#" class="task-attachments-less hide" onclick="slideToggle('.task_attachments_wrapper .task-attachment-col-more', task_attachments_toggle); return false;"><?php echo _l('show_less'); ?></a>
-                        </div>
-                     <?php } ?>
-                  </div>
-                  <?php if ($content->status == 1) { ?>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="panel_s">
+                        <div class="panel-body" style="background-color: none;">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div id="newsfeed_data">
+                                        <div class="col-md-12">
+                                            <div class="panel_s newsfeed_post" data-main-postid="1">
+                                                <div class="panel-body post-content">
+                                                    <div class="media">
+                                                        <div class="media-left">
+                                                            <a href="<?php echo $link_fanpage ?>">
+                                                                <?php if (!$fanpage_id) { ?>
+                                                                    <img src="<?php echo APP_BASE_URL . '/assets/images/user-placeholder.jpg' ?>" class="staff-profile-image-small no-radius" style="width:75px; height:75px">
+                                                                <?php } else {
+                                                                echo '<img class="staff-profile-image-small" src="https://graph.facebook.com/v3.2/' . $fanpage_id . '/picture?type=large" style="width:65px; height:65px"/>';
+                                                            }
+                                                            ?>
+                                                            </a>
+                                                        </div>
+                                                        <div class="media-body" style="font-size:20px;">
+                                                            <p class="media-heading no-mbot">
+                                                                <a href="<?php echo $link_fanpage ?>"><?php echo $fanpage_name ?></a>
+                                                                <?php if ($content->status == 5) { ?>
+                                                                </p><small class="post-time-ago" style="font-size:15px;">7 days ago</small>
+                                                                <div class="dropdown pull-right btn-post-options-wrapper">
+                                                                </div>
+                                                                <small class="text-muted" style="font-size:15px;">Published: 2019-04-25 21:28:48</small>&nbsp
+                                                                <img data-toggle="tooltip" data-placement="top" data-original-title="Pulbic" src="<?php echo APP_BASE_URL . '/assets/images/public.png' ?>" class="staff-profile-image-small no-radius" style="width:15px; height:15px">
+                                                            <?php } else { ?>
+                                                                <div>
+                                                                    <small class="text-muted" style="font-size:15px;">Waiting for post</small>
+                                                                </div>
+                                                            <?php } ?>
+                                                        </div>
+                                                    </div>
+                                                    <div class="post-content mtop20" style="font-size:15px;">
+                                                    <div id="description"></div>
+                                                        <div class="clearfix mbot10">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="newsfeed_data" style="position:relative; top:-27px;">
+                                        <div class="col-md-12">
+                                            <?php $urlImage = APP_BASE_URL . '/uploads/content/' . $content->id . '/' . $file_name; ?>
+                                            <img src="<?php echo $urlImage ?>" class="img img-responsive" style="width:700px;" />
+                                        </div>
 
-                     <hr class="hr-panel-heading" />
-                     <div class="clearfix">
-                        <div class="btn-bottom-toolbar text-right">
-                           <div class=" ft 1">
-                              <?php echo form_open(); ?>
-                              <button class="btn-tr btn btn-default" id="sendtocustomer">
-                                 <?php echo _l('draft'); ?>
-                              </button>
-                              <?php echo form_hidden('action', 'approval1'); ?>
-                              <?php echo form_close(); ?>
-                           </div>
-                           <div class="ft q">
-                              <?php echo form_open(); ?>
-                              <button type="submit" class="btn btn-info"><?php echo _l('submit_content'); ?></button>
-                              </button>
-                              <?php echo form_hidden('action', 'approval2'); ?>
-                              <?php echo form_close(); ?>
-                           </div>
+                                    </div>
+                                    <div id="newsfeed_data">
+                                        <div class="col-md-12" style="position: relative; top:-27px;">
+                                            <div class="post_likes_wrapper" data-likes-postid="1">
+                                                <div class="panel-footer user-post-like">
+                                                    <div class="row">
+                                                        <div class="col-md-6" style="vertical-align: middle;">
+                                                            <img data-toggle="tooltip" data-placement="top" data-original-title="Like" class="icon1" src="<?php echo APP_BASE_URL . '/uploads/icon_facebook/like.jpg' ?>" style="height:38px;width:38px; background-color:white" />
+                                                            <img data-toggle="tooltip" data-placement="top" data-original-title="Love" class="icon1" src="<?php echo APP_BASE_URL . '/uploads/icon_facebook/love.jpg' ?>" style="height:40px;width:40px; position:relative; left:-10px; background-color:white" />
+                                                            <img data-toggle="tooltip" data-placement="top" data-original-title="Haha" class="icon1" src="<?php echo APP_BASE_URL . '/uploads/icon_facebook/wow.jpg' ?>" style="height:37px;width:37px; position:relative; left:-20px; background-color:white" />
+                                                            <span style="position: relative; left:-20px; font-size:15px; vertical-align: middle;">0</span>
+                                                        </div>
+                                                        <div class="col-md-6" style="margin-top:10px; font-size:15px;">
+                                                            <span>0 Comments</span> &nbsp &nbsp <span> 0 Shares</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="post_comments_wrapper" data-comments-postid="1">
+                                            </div>
+                                            <div class="panel-footer user-comment">
+                                                <div class="pull-left comment-image">
+                                                    <a href="#">
+                                                        <img src="<?php echo APP_BASE_URL . '/assets/images/user-placeholder.jpg' ?>" class="staff-profile-image-small no-radius">
+                                                    </a></div>
+                                                <div class="media-body comment-input">
+                                                    <input type="text" class="form-control input-sm" placeholder="Comment this post.." data-postid="1">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <?php if ($content->status == 1) { ?>
+                                    <hr class="hr-panel-heading" />
+                                    <div class="clearfix">
+                                        <div class="btn-bottom-toolbar text-right">
+                                            <div class=" ft 1">
+                                                <?php echo form_open(); ?>
+                                                <button class="btn-tr btn btn-default" id="sendtocustomer">
+                                                    <?php echo _l('draft'); ?>
+                                                </button>
+                                                <?php echo form_hidden('action', 'approval1'); ?>
+                                                <?php echo form_close(); ?>
+                                            </div>
+                                            <div class="ft q">
+                                                <?php echo form_open(); ?>
+                                                <button type="submit" class="btn btn-info"><?php echo _l('submit_content'); ?></button>
+                                                </button>
+                                                <?php echo form_hidden('action', 'approval2'); ?>
+                                                <?php echo form_close(); ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php } else { ?>
+                                    <hr class="hr-panel-heading" />
+                                    <div class="clearfix">
+                                        <div class="btn-bottom-toolbar text-right">
+                                            <div class=" ft 1">
+                                                <?php echo form_open(); ?>
+                                                <button class="btn-tr btn btn-default " id="sendtocustomer">
+                                                    <?php echo _l('back_to_list'); ?>
+                                                </button>
+                                                <?php echo form_hidden('action', 'approval0'); ?>
+                                                <?php echo form_close(); ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php } ?>
+
+
+                            </div>
                         </div>
-                     </div>
-                  <?php } else { ?>
-                     <hr class="hr-panel-heading" />
-                     <div class="clearfix">
-                        <div class="btn-bottom-toolbar text-right">
-                           <div class=" ft 1">
-                              <?php echo form_open(); ?>
-                              <button class="btn-tr btn btn-default " id="sendtocustomer">
-                                 <?php echo _l('back_to_list'); ?>
-                              </button>
-                              <?php echo form_hidden('action', 'approval0'); ?>
-                              <?php echo form_close(); ?>
-                           </div>
+                    </div>
+                </div>
+                    <div class="col-md-6">
+                        <div class="panel_s">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h4 class="bold no-margin" style="color:#1E48AB;"><?php echo _l('contentoverview') ?></h4>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <table class="table">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="bold" style="width:150px; color:#1E48AB;"><?php echo _l('subject'); ?></td>
+                                                    <td><?php echo $content->subject; ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="bold" style="color:#1E48AB;"><?php echo _l('task_title'); ?></td>
+                                                    <td><?php
+                                                        foreach ($staffTask as $value) {
+                                                            if ($content->task_title == $value['id']) {
+                                                                echo $value['name'];
+                                                            }
+                                                        } ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="bold" style="color:#1E48AB;"><?php echo _l('content_start_date'); ?></td>
+                                                    <td><?php echo $content->datestart; ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="bold" style="color:#1E48AB;"><?php echo _l('content_end_date'); ?></td>
+                                                    <td><?php echo $content->dateend; ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="bold" style="color:#1E48AB;"><?php echo _l('assign_to'); ?></td>
+                                                    <td><?php
+                                                        foreach ($staffInfo as $value) {
+                                                            if ($content->assignto == $value['staffid']) {
+                                                                echo $value['firstname'] . " " . $value['lastname'];
+                                                            }
+                                                        }
+                                                        ?>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="bold" style="color:#1E48AB;">
+                                                        <?php echo _l('project_id'); ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php
+                                                        foreach ($projectid as $value) {
+                                                            if ($content->project_id == $value['id']) {
+                                                                echo $value['name'];
+                                                            }
+                                                        }
+                                                        ?>
+                                                    </td>
+                                                    <!-- <td><?php echo $content->assignto; ?></td> -->
+                                                </tr>
+                                                <tr>
+                                                    <td class="bold" style="color:#1E48AB;">
+                                                        <?php echo _l('project_link_page'); ?>
+                                                    </td>
+                                                    <td><a href="<?php echo $link_fanpage; ?>">
+                                                            <?php
+                                                            echo $link_fanpage;
+                                                            ?>
+                                                    </td>
+                                                    <!-- <td><?php echo $content->assignto; ?></td> -->
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                     </div>
-                  <?php } ?>
-               </div>
+                    </div>
+
+                </div>
             </div>
-         </div>
-      </div>
-   </div>
+        </div>
+
+    </div>
+</div>
+</div>
+
 </div>
 <?php init_tail(); ?>
+<script src='<?php echo base_url('assets/plugins/editor/vendor/emoji-picker/lib/js/config.js'); ?>'></script>
+<script src='<?php echo base_url('assets/plugins/editor/vendor/emoji-picker/lib/js/util.js'); ?>'></script>
+<script src='<?php echo base_url('assets/plugins/editor/vendor/emoji-picker/lib/js/jquery.emojiarea.js'); ?>'></script>
+<script src='<?php echo base_url('assets/plugins/editor/vendor/emoji-picker/lib/js/emoji-picker.js'); ?>'></script>
+<script>
+   $(document).ready(function() {
+      listComment();
+   });
+
+   function listComment() {
+      $.post("",
+         function(data) {
+            var datarecieve = '<?php echo $jsonData ?>';
+            console.log(JSON.stringify(datarecieve));
+            // console.log(datarecieve);
+            datarecieve = datarecieve.replace(/\n/g, "<br\>")
+               // .replace(/\'/g, "\\'")
+               // .replace(/\"/g, '\\"')
+               // .replace(/\&/g, "\\&")
+               .replace(/\r/g, "\\r")
+               .replace(/\t/g, "\\t")
+               .replace(/\f/g, "\\f");
+
+            // .replace(/\n/g, "\\n")
+            //  .replace(/\r/g, "\\r")
+            //  .replace(/\t/g, "\\t")
+            //  .replace(/\f/g, "\\f");
+
+            // remove non-printable and other non-valid JSON chars
+            //datarecieve = datarecieve.replace(/[\u0000-\u001F]+/g,""); 
+
+            var data = JSON.parse(datarecieve);
+            console.log(data);
+            var comments = "";
+
+            var results = new Array();
+
+            // var list = $("<ul class='outer-comment'>");
+            // var item = $("<li>").html(comments);
+
+            for (var i = 0;
+               (i < data.length); i++) {
+
+               comments = data[i]['description'];
+
+            }
+
+            $("#description").html(comments);
+         });
+   }
+</script>
+<script type="text/javascript">
+   $("#submitButton").click(function() {
+      var str = $("#content-form").serialize();
+      $.ajax({
+         url: '<?php echo base_url('assets/plugins/editor/comment-add.php'); ?>',
+         data: str,
+         type: 'post',
+         success: function(response) {
+            $("#comment-message").css('display', 'inline-block');
+            $("#name").val("");
+            $("#description").val("");
+            $("#commentId").val("");
+            // listComment(); 
+         }
+      });
+   });
+
+
+   $(function() {
+      // Initializes and creates emoji set from sprite sheet
+      window.emojiPicker = new EmojiPicker({
+         emojiable_selector: '[data-emojiable=true]',
+         assetsPath: '<?php echo base_url('assets/plugins/editor/vendor/emoji-picker/lib/img/'); ?>',
+         popupButtonClasses: 'icon-smile'
+      });
+      // '<?php 
+            ?>'
+
+      window.emojiPicker.discover();
+   });
+</script>
 <style>
-   .ft {
-      float: right;
+    .ft {
+        float: right;
+    }
+
+    .q {
+        margin-right: 10px;
+    }
+</style>
+<style>
+    .icon1 {
+
+        padding: 1px;
+        border: 2px solid white;
+        border-radius: 50%;
+        -webkit-border-radius: 500px;
+        -moz-border-radius: 500px;
+    }
+</style>
+<style>
+   textarea {
+      overflow: auto;
    }
 
-   .q {
-      margin-right: 10px;
+   body.content {
+      padding-left: 0;
+      padding-top: 0;
+   }
+
+   .emoji-menu {
+      position: absolute;
+      right: 0;
+      margin-top: -32%;
+      margin-right: 2%;
+      z-index: 999;
+      width: 225px;
+      overflow: hidden;
+      border: 1px #dfdfdf solid;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px;
+      overflow: hidden;
+      -webkit-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
+      -moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
+      box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
    }
 </style>
 </body>

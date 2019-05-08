@@ -1,4 +1,33 @@
 .content {
+    margin-top: 63px;
     padding: 10px 25px 25px 25px;
     min-width: 320px;
+}
+#menu {
+	margin-top: 4%;
+    width: 210px;
+    bottom: 0;
+    float: left;
+    left: 0;
+    position: absolute;
+    top: 63px;
+    -webkit-transition: all .5s ease 0s;
+    transition: all .5s ease 0s;
+    position: fixed;
+    top: 0;
+}
+#setup-menu-wrapper {
+    background-color: #626f80;
+    position: absolute;
+    top: 63px;
+    width: 210px!important;
+    bottom: 0;
+    left: 0;
+    overflow: auto;
+    display: none;
+    z-index: 9;
+    min-height: 100%;
+     position: fixed;
+    top: 0;
+    margin-top: 4%;
 }

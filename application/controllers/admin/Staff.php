@@ -36,7 +36,7 @@ class Staff extends Admin_controller
             // Don't do XSS clean here.
             $data['email_signature'] = $this->input->post('email_signature', false);
             $data['password']        = $this->input->post('password', false);
-
+            $data['datemodified']        = date('Y-m-d H:i:s');
             if ($id == '') {
                 if (!has_permission('staff', '', 'create')) {
                     access_denied('staff');

@@ -3702,7 +3702,7 @@ $lang['approvedcontent']               = 'Approved';
 $lang['notapprovecontent']               = 'Not Approved';
 $lang['sendtocustomer']               = 'Send to Customer';
 $lang['rewrite']               = 'Rewrite';
-$lang['contentoverview']               = 'CONTENT OVERVIEW';
+$lang['contentoverview']               = 'Content Overview';
 $lang['draft']               = 'Draft';
 $lang['waiting_for_leader']               = 'Waiting For Leader';
 $lang['waiting_for_customer']               = 'Waiting For Customer';
@@ -3714,17 +3714,17 @@ $lang['sent_to_leader']               = 'Sent to leader';
 $lang['submit_content']               = 'Submited content';
 $lang['project_link_web']               = 'Website';
 $lang['project_link_page']               = 'Facebook';
-$lang['error_link_page_id']               = 'Link Fan Page doesnt exist or Not permission access ';
+$lang['error_link_page_id']               = 'Please Check User Access Token Again';
 $lang['project_type']                = 'Type Project';
 $lang['content_posted']              = 'Posted';
 $lang['waiting_for_post']            = 'Waiting For Posting';
 $lang['post_content']                = 'Post Content';
 $lang['post_contents']               = 'Post Content';
 $lang['posted_successfully']         = '%s Posted Successfully.';
-$lang['error_page_id']               = 'Please Add FanPage Link For Project';
+$lang['error_page_id']               = 'Please Add Link Page';
 $lang['photo_content']               = 'Photo';
 $lang['content_infor']               = 'Content Information';
-$lang['content_interaction']               = 'CONTENT INTERACTION';
+$lang['content_interaction']               = 'Content Interaction';
 $lang['project_id']               = 'Project';
 $lang['post_config']    = 'Config Access Token';
 $lang['get_token']    = 'Add Token';
@@ -3733,6 +3733,10 @@ $lang['summary_heading']    = 'Summary';
 $lang['total_content']    = 'Total';
 $lang['waiting_for_posting']    = 'Waiting For Posting';
 $lang['posted']    = 'Posted';
+$lang['check_content_infor_again']    = 'Please Check Content Infor Again';
+$lang['add_new_token']    = 'The Token Has Expired';
+$lang['get_token_to_update_infor']    = 'Please Add New Token To Update Infor';
+
 
 
 

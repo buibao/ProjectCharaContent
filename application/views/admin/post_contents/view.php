@@ -87,10 +87,10 @@
                                                             <img data-toggle="tooltip" data-placement="top" data-original-title="Like" class="icon1" src="<?php echo APP_BASE_URL . '/uploads/icon_facebook/like.jpg' ?>" style="height:38px;width:38px; background-color:white" />
                                                             <img data-toggle="tooltip" data-placement="top" data-original-title="Love" class="icon1" src="<?php echo APP_BASE_URL . '/uploads/icon_facebook/love.jpg' ?>" style="height:40px;width:40px; position:relative; left:-10px; background-color:white" />
                                                             <img data-toggle="tooltip" data-placement="top" data-original-title="Haha" class="icon1" src="<?php echo APP_BASE_URL . '/uploads/icon_facebook/wow.jpg' ?>" style="height:37px;width:37px; position:relative; left:-20px; background-color:white" />
-                                                            <span style="position: relative; left:-20px; font-size:13px; vertical-align: middle;">123</span>
+                                                            <span style="position: relative; left:-20px; font-size:13px; vertical-align: middle;"><?php echo $total_reaction?></span>
                                                         </div>
                                                         <div class="col-md-6" style="margin-top:10px; font-size:13px;">
-                                                            <span>123 Comments</span> &nbsp &nbsp <span> 2323 Shares</span>
+                                                            <span><?php echo $comments?> Comments</span> &nbsp &nbsp <span> <?php echo $shares?> Shares</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -217,55 +217,62 @@
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <h4 class="bold no-margin" style="color:#1E48AB;">CONTENT OVERVIEW</h4>
+                                        <h4 class="bold no-margin">EFFECT OF THE ARTICLE</h4>
                                     </div>
                                     <br/>
                                     <hr/>
                                 </div>
+                                <div class="row">
                                 <div class="col-md-12">
+                                        <h4 class="bold no-margin"><?php echo $total?> Likes, Comments & Share</h4>
+                                        <hr/>
+                                        </div>
+                                </div>
+                                <div class="col-md-12">
+                                       
+                                        
                                         <div class="row" >
                                             <div class="col-md-4 border-right">
-                                            <h4 class="bold">36</h4>
-                                            <span class="bold text-primary">Like</span>
+                                            <h4 class="bold"><?php echo $like?></h4>
+                                            <span class="bold text-primary">Like <img data-toggle="tooltip" data-placement="top" data-original-title="Like" src="<?php echo APP_BASE_URL . '/uploads/icon_facebook/likeg.gif' ?>" style="width:40px; height:40px"> </span>
                                             
                                         </div>
                                         <div class="col-md-4  border-right">
-                                        <h4 class="bold">31</h4>
-                                        <span class="bold text-info">Haha</span>
+                                        <h4 class="bold"><?php echo $love?></h4>
+                                        <span class="bold text-info">Love<img data-toggle="tooltip" data-placement="top" data-original-title="Love" src="<?php echo APP_BASE_URL . '/uploads/icon_facebook/loveg.gif' ?>" style="width:40px; height:40px"> </span>
                                         </div>
-                                        <div class="col-md-4 border-right">
-                                        <h4 class="bold">5</h4>
-                                        <span class="bold text-success">Wow</span>
+                                        <div class="col-md-4">
+                                        <h4 class="bold"><?php echo $haha?></h4>
+                                        <span class="bold text-success">Haha<img data-toggle="tooltip" data-placement="top" data-original-title="Haha" src="<?php echo APP_BASE_URL . '/uploads/icon_facebook/hahag.gif' ?>" style="width:40px; height:40px">  </span>
                                         </div>
                                         </div>
 
-                                        
                                         <div class="row" >
                                             <hr/>
                                             <div class="col-md-4  border-right">
-                                            <h4 class="bold">36</h4>
-                                            <span class="bold text-primary">Like</span>
+                                            <h4 class="bold"><?php echo $wow?></h4>
+                                            <span class="bold text-primary">Wow<img data-toggle="tooltip" data-placement="top" data-original-title="Wow" src="<?php echo APP_BASE_URL . '/uploads/icon_facebook/wowg.gif' ?>" style="width:40px; height:40px"> </span>
                                         </div>
                                         <div class="col-md-4  border-right">
-                                        <h4 class="bold">31</h4>
-                                        <span class="bold text-info">Haha</span>
+                                        <h4 class="bold"><?php echo $sad?></h4>
+                                        <span class="bold text-info">Sad<img data-toggle="tooltip" data-placement="top" data-original-title="Cry" src="<?php echo APP_BASE_URL . '/uploads/icon_facebook/cryg.gif' ?>" style="width:40px; height:40px"></span>
                                         
                                         </div>
-                                        <div class="col-md-4  border-right">
-                                        <h4 class="bold">5</h4>
-                                        <span class="bold text-success">Wow</span>
+                                        <div class="col-md-4">
+                                        <h4 class="bold"><?php echo $angry?></h4>
+                                        <span class="bold text-success">  Angry <img data-toggle="tooltip" data-placement="top" data-original-title="Angry" src="<?php echo APP_BASE_URL . '/uploads/icon_facebook/angryg.gif' ?>" style="width:40px; height:40px"></span>
                                         
                                         </div>
                                         </div>
                                         <hr/>
                                         <div class="row" >
                                             <div class="col-md-4  border-right">
-                                            <h4 class="bold">36</h4>
-                                            <span class="bold text-primary">Like</span>
+                                            <h4 class="bold"><?php echo $comments?></h4>
+                                            <span class="bold text-primary"> Comments </span>
                                         </div>
                                         <div class="col-md-4">
-                                        <h4 class="bold">31</h4>
-                                        <span class="bold text-info">Haha</span>
+                                        <h4 class="bold"><?php echo $shares?></h4>
+                                        <span class="bold text-info">Shares</span>
                                         
                                         </div>
                                         <br/>

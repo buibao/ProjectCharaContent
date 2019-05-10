@@ -66,13 +66,12 @@ class Post_contents extends Admin_controller
 
 	public function view($id)
 	{
-
 		$content = $this->contents_model->get($id);
 		$post_id = $content->post_id;
 		$tokenGet = $this->AccessToken_model->getCurrentToken();
 		$user_access_token = $tokenGet->token;
 	
-		if($user_access_token && $post_id){
+		if($post_id){
 		//Get access token page
 		$arr = ["LIKE", "LOVE", "HAHA", "SAD", "ANGRY", "WOW",];
 		$arr2 = ["comments", "shares",];
@@ -81,7 +80,8 @@ class Post_contents extends Admin_controller
 		$dataReaction = array();
 		$dataCommentShare = array();
 		$check = false;
-		
+		$total = 0;
+
 		//GET REACTIONS
 		for ($i = 0; $i < 6; $i++) {
 			$url = "https://graph.facebook.com/" . $post_id . '?fields=reactions.type(' . $arr[$i] . ').limit(0).summary(total_count)&access_token=' . $user_access_token;
@@ -98,6 +98,7 @@ class Post_contents extends Admin_controller
 				break;
 				}
 			array_push($dataReaction, $checkAccessToken["reactions"]["summary"]["total_count"]);
+			$total += $dataReaction[$i];
 			$check = true;
 		}
 		//GET COMMENTS & SHARES
@@ -126,11 +127,6 @@ class Post_contents extends Admin_controller
 			}
 			
 		}
-
-		$total = 0;
-		for ($i = 0; $i < 6; $i++) {
-			$total += $dataReaction[$i];
-		}
 		$data['like'] = $dataReaction[0];
 		$data['love'] = $dataReaction[1];
 		$data['haha'] = $dataReaction[2];
@@ -141,7 +137,7 @@ class Post_contents extends Admin_controller
 		$data['comments'] = $dataCommentShare[0];
 		$data['shares'] = $dataCommentShare[1];
 		$data['total'] = $total + $data['comments'] + $data['shares'];
-		if($check){
+		if(!$check){
 			set_alert('success', _l('get_token_to_update_infor', _l('content')));
 		}
 		}

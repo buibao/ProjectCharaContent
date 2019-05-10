@@ -35,6 +35,14 @@ class API extends Admin_controller
     	
     }
 }
+// $header = array('cty' => "stringee-api;v=1");
+//   $payload = array(
+//       "jti" => $apiKeySid . "-" . $now,
+//       "iss" => $apiKeySid,
+//       "exp" => $exp,
+//      "icc_api" => true,
+//       "userId" => $username
+//   );
 
     public function Contacts(){
         $model = array();
@@ -49,7 +57,7 @@ class API extends Admin_controller
     ]
 ]);
 
- $strings2 = 'https://acd-api.vht.com.vn/rest/cdrs?page=1&limit=50&sort_type=DESC'; 
+ $strings2 = 'https://api.stringee.com/v1/call/log'; 
   $homepage2 = file_get_contents($strings2, false, $context);
   $results2 = json_decode($homepage2);
   $dt = $results2->items;      

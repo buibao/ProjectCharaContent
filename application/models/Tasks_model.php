@@ -74,12 +74,22 @@ class Tasks_model extends CRM_Model {
 		$task = $this->db->get('tblstafftasks')->row();
 		if ($task) {
 			$task->comments = $this->get_task_comments($id);
+
 			$task->assignees = $this->get_task_assignees($id);
 			$task->assignees_ids = [];
 
 			foreach ($task->assignees as $follower) {
 				array_push($task->assignees_ids, $follower['assigneeid']);
 			}
+
+			// <!-- Start Leader Approve -->
+			$task->assigneesapprove = $this->get_task_assigneesapprove($id);
+			$task->assigneesapprove_ids = [];
+
+			foreach ($task->assigneesapprove as $follower) {
+				array_push($task->assigneesapprove_ids, $follower['assigneeapproveid']);
+			}
+			// <!-- End Leader Approve -->
 
 			$task->followers = $this->get_task_followers($id);
 			$task->followers_ids = [];
@@ -1247,7 +1257,16 @@ class Tasks_model extends CRM_Model {
 
 		return $this->db->get()->result_array();
 	}
+	// <!-- Start Leader Approve -->
+		public function get_task_assigneesapprove($id) {
+		$this->db->select('id,tblstafftaskassigneesapprove.staffid as assigneeapproveid,assigned_from,firstname,lastname,CONCAT(firstname, " ", lastname) as full_name,is_assigned_from_contact');
+		$this->db->from('tblstafftaskassigneesapprove');
+		$this->db->join('tblstaff', 'tblstaff.staffid = tblstafftaskassigneesapprove.staffid');
+		$this->db->where('taskid', $id);
 
+		return $this->db->get()->result_array();
+	} 
+	// <!-- End Leader Approve -->
 	/**
 	 * Get task comment
 	 * @param  mixed $id task id

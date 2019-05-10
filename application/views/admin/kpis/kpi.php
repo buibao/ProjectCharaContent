@@ -39,32 +39,32 @@
                                     <hr class="hr-panel-heading" />
                                     <div class="row mbot15">
                                         <div class="col-md-12">
-                                                 <h4 class="no-margin"><?php echo 'KPI Reports'; ?></h4> 
+                                                 <h4 class="no-margin"><?php echo _l('kpi_reports'); ?></h4> 
                                         </div>
 
                                          <div class="col-md-2 col-xs-6 border-right">
                                             <h3 class="bold"><?php echo $GLOBALS['LeaderFullname']; ?></h3>
-                                            <span   ><?php echo 'Name'; ?></span>
+                                            <span   ><?php echo _l('name'); ?></span>
                                         </div>
                                         <div class="col-md-2 col-xs-6 border-right">
                                             <h3 class="bold"><?php echo  $GLOBALS['totalMembers']; ?></h3>
-                                            <span class="text-success"><?php echo 'Total Members'; ?></span>
+                                            <span class="text-success"><?php echo _l('total_members'); ?></span>
                                         </div>
                                         <div class="col-md-2 col-xs-6 border-right">
                                             <h3 class="bold"><?php echo       $GLOBALS['LeaderContents']; ?></h3>
-                                            <span class="text-success"><?php echo 'Personal Contents'; ?></span>
+                                            <span class="text-success"><?php echo _l('personal_contents'); ?></span>
                                         </div>
                                         <div class="col-md-2 col-xs-6 border-right">
                                             <h3 class="bold"><?php echo  $GLOBALS['memberTeamContent']; ?></h3>
-                                            <span class="text-success"><?php echo 'Team Contents'; ?></span>
+                                            <span class="text-success"><?php echo _l('team_contents'); ?></span>
                                         </div>
                                         <div class="col-md-2 col-xs-6 border-right">
                                             <h3 class="bold"><?php echo  $GLOBALS['LeaderKPI']; ?></h3>
-                                            <span class="text-success"><?php echo 'Personal KPI'; ?></span>
+                                            <span class="text-success"><?php echo _l('personal_kpi'); ?></span>
                                         </div>
                                         <div class="col-md-2 col-xs-6 ">
                                             <h3 class="bold"><?php echo   $GLOBALS['LeaderTeamKPI']; ?></h3>
-                                            <span class="text-success"><?php echo ('Team KPI'); ?></span>
+                                            <span class="text-success"><?php echo _l('team_kpi'); ?></span>
                                         </div>
                                         </div>
                                        
@@ -85,14 +85,14 @@
             <div class="clearfix"></div>
             <?php
             $table_data = array(
-              'Leader',
-                         
-                           'Name',
-                          'Total Member',
-                         'Personal Contents',
-                          'Team Contents',
-                         'Personal KPI',
-                         'Team KPI',
+             _l('leader'),
+              _l('name'),
+               _l('total_members'),
+                _l('personal_contents'),
+                 _l('team_contents'),
+                  _l('personal_kpi'),
+                   _l('team_kpi'),
+                   
                          // 'Due Date'
               );
            

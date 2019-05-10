@@ -3733,6 +3733,38 @@ $lang['summary_heading']    = 'Summary';
 $lang['total_content']    = 'Total';
 $lang['waiting_for_posting']    = 'Waiting For Posting';
 $lang['posted']    = 'Posted';
+$lang['intern']    = 'Internship';
+$lang['staff_type']    = 'Staff Type';
+$lang['als_contents']    = 'Contents';
+$lang['als_post_contents']    = 'Post Contents';
+$lang['call_center']    = 'CallCenter';
+$lang['call_contact']    = 'Contacts';
+$lang['call_config']    = 'Configure';
+$lang['call_log']    = 'History';
+$lang['als_fields']    = 'Fields';
+$lang['contract_status'] ='Status';
+$lang['contract_status_waiting'] ='Waiting Approve';
+$lang['contract_status_approved'] ='Approved';
+$lang['contract_status_draff'] ='Draff';
+
+ $lang['call_statistics'] ='Call Statistics';
+$lang['time_start'] ='Time Started';
+$lang['time_started'] ='Time Started';
+$lang['time_end'] ='Time Ended';
+$lang['direction'] ='Direction';
+$lang['from_number'] ='From Number';
+$lang['to_number'] ='To Number';
+$lang['time_duration'] ='Time Duration (s)';
+$lang['recording'] ='Recording';
+$lang['call_status'] ='Status';
+$lang['incoming_call'] ='CallAway';
+$lang['away_call'] ='IncomingCall';
+
+
+
+
+
+
 
 
 

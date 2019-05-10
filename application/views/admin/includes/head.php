@@ -59,61 +59,122 @@
       var number= '';
   
           <?php 
-    $id  = $GLOBALS['current_user']->staffid;
-    $GLOBALS['$userVHT'] =  $this->Callcenter_model->getSingleVHT($id); 
-    $vht_username = $GLOBALS['$userVHT']->Ext;
-    $vht_password = $GLOBALS['$userVHT']->Pass;
-    $vht_token = $GLOBALS['$userVHT']->Token;
 
-   $fields = [
-  'username' => $vht_username,
-  'password' => $vht_password
-];
-$headers = [
-  'AppPlatform: Web',
-  'AppName: vcall',
-  'AppVersion: 1.0'
-];
+
+//    $fields = [
+//   'username' => $vht_username,
+//   'password' => $vht_password
+// ];
+// $headers = [
+//   'AppPlatform: Web',
+//   'AppName: vcall',
+//   'AppVersion: 1.0'
+// ];
 
     
-    $url = 'https://acd-api.vht.com.vn/rest/softphones/login';
+//     $url = 'https://acd-api.vht.com.vn/rest/softphones/login';
     
-    $data_string = json_encode($credentials);  
+//     $data_string = json_encode($credentials);  
                                                                                          
-    $ch = curl_init($url);                                                                      
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");      
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);                                                                  
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
-    curl_setopt($ch, CURLOPT_HTTPHEADER,$headers);                                                                                                             
+//     $ch = curl_init($url);                                                                      
+//     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");      
+//     curl_setopt($ch, CURLOPT_POST, 1);
+//     curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);                                                                  
+//     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
+//     curl_setopt($ch, CURLOPT_HTTPHEADER,$headers);                                                                                                             
                                                                                                             
-    $data = curl_exec($ch);
-    $dataBody = json_decode($data);
-    $token = $dataBody->token;
+//     $data = curl_exec($ch);
+//     $dataBody = json_decode($data);
+//     $token = $dataBody->token;
     
-  if(!$token){
-            $token =  $vht_token ;
-    }else{
+//   if(!$token){
+//             $token =  $vht_token ;
+//     }else{
       
    
   
-    $datas['Token']= $token ;
+//     $datas['Token']= $token ;
   
 
-    $checkUser = $this->Callcenter_model->getSingle($GLOBALS['current_user']->staffid);
-    if($checkUser == false){
-        $this->Callcenter_model->insertVHT($datas);
+//     $checkUser = $this->Callcenter_model->getSingle($GLOBALS['current_user']->staffid);
+//     if($checkUser == false){
+//         $this->Callcenter_model->insertVHT($datas);
        
-    }else{
-        $this->Callcenter_model->updateVHTModel($datas,$GLOBALS['current_user']->staffid);
+//     }else{
+//         $this->Callcenter_model->updateVHTModel($datas,$GLOBALS['current_user']->staffid);
        
-    }
-    }
-    $GLOBALS['token'] = $token;
+//     }
+//     }
+
+include 'plugins/php/FirebaseJWT/JWT.php';
+
+use \Firebase\JWT\JWT;
+
+/*
+HEADER:
+  {
+    "typ": "JWT",
+    "alg": "HS256",
+    "cty": "stringee-api;v=1"
+  }
+
+PAYLOAD:
+  {
+    "jti": "SK...-1497503680",//JWT ID
+    "iss": "SK...",//API Key SID
+    "exp": 1497507280,//Expiration Time
+    "userId": "huydn-123456"
+  }
+*/
+     $id  = $GLOBALS['current_user']->staffid;
+     $GLOBALS['$userVHT'] =  $this->Callcenter_model->getSingleVHT($id); 
+     //Number phone
+     $vht_username = $GLOBALS['$userVHT']->Ext;
+     // Agent
+     $vht_password = $GLOBALS['$userVHT']->Pass;
+     $vht_token = $GLOBALS['$userVHT']->Token;
+     // Key SID
+     $vht_APIKey = $GLOBALS['$userVHT']->APIKey;
+     // Key Secret
+     $vht_APISecret = $GLOBALS['$userVHT']->APISecret;
+
+$apiKeySid =  $vht_APIKey;
+$apiKeySecret = $vht_APISecret;
+
+$now = time();
+$exp = $now + 3600;
+
+$username = $vht_password;
+
+if(!$username){
+  $jwt = '';
+}else {
+  $header = array('cty' => "stringee-api;v=1");
+  $payload = array(
+      "jti" => $apiKeySid . "-" . $now,
+      "iss" => $apiKeySid,
+      "exp" => $exp,
+     "icc_api" => true,
+      "userId" => $username,
+      "rest_api" => true
+
+  );
+
+  $jwt = JWT::encode($payload, $apiKeySecret, 'HS256', null, $header);
+}
+$res = array(
+  'access_token' => $jwt
+  );
+header('Access-Control-Allow-Origin: *');
+ 
+   // $GLOBALS['token'] =json_encode($res['access_token']);
+    $GLOBALS['token'] =$res['access_token'];
     ?>
 
-    var access_token ='<?php echo $GLOBALS['token']; ?>';
-    var fromNumber = <?php echo "'".$GLOBALS['$userVHT']->Ext."'"; ?>;
+  var access_token ='<?php echo $GLOBALS['token']; ?>';
+    // var fromNumber = <?php //echo "'".$GLOBALS['$userVHT']->Ext."'"; ?>;   
+   
+    var fromNumber =  '<?php echo $GLOBALS['$userVHT']->Ext; ?>';
 
 </script>
 <script type="text/javascript" src="<?php echo base_url('assets/plugins/callcenter/jquery-3.2.1.min.js'); ?>"></script>
@@ -125,7 +186,6 @@ $headers = [
 <script type="text/javascript">
 console.log('<?php echo $GLOBALS['token']; ?>' );
 
-   
         // var phoneRedirectURL = "<?php //echo base_url('/admin/callcenter/getClient/'); ?>";
         var phoneRedirectURL = "<?php echo base_url('/admin/callcenter/getClient/'); ?>";
         var stringURL = "<?php echo base_url('assets/plugins/callcenter/socket.io-2.0.3.js'); ?>";

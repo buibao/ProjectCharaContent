@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 # Version 1.0.0
 #
@@ -3454,7 +3454,7 @@ $lang['date_published']                                         = 'Date Publishe
 $lang['view']                                                   = 'View';
 $lang['customer_is_subscribed_to_subscription_info']            = 'The customer is subscribed to this subscription';
 $lang['save_last_order_for_tables'] = 'Save last order for tables';
-$lang['date_created']                                           = 'Date Created';
+
 
 # Version 2.0.1
 $lang['company_logo_dark']                                      = 'Company Logo Dark';
@@ -3476,50 +3476,75 @@ $lang['test_sms_message'] = 'Test Message';
 $lang['send_test_sms'] = 'Send Test SMS';
 $lang['gdpr_short'] = 'GDPR';
 $lang['allow_non_admin_staff_to_delete_ticket_attachments'] = 'Allow non-admin staff members to delete ticket attachments';
-$lang['contract_status'] = 'Trạng thái';
-$lang['contract_status_approved'] = 'Đã duyệt';
-$lang['contract_status_waiting'] = 'Đợi duyệt';
-$lang['contract_status_draff'] = 'Nháp';
-$lang['kb_trend'] = 'Xu hướng';
-$lang['kb_google_trend'] = 'Google';
-$lang['kb_you_trend'] = 'Youtube';
-$lang['project_type'] = 'Loại dự án';
-$lang['project_link_page'] = 'Link Fanpage';
-$lang['project_link_web'] = 'Link Website';
 
-// content
-$lang['new_content'] = 'Bài viết mới';
-$lang['content']                 = 'Bài Viết';
-$lang['content_title'] = 'Tiêu Đề Bài Viết';
-$lang['task_title'] = 'Tên công việc';
-$lang['content_status'] = 'Trạng thái';
-$lang['content_summary_heading']             = 'Tổng quan bài viết';
-$lang['content_start_date']      = 'Ngày bắt đầu';
-$lang['content_end_date']        = 'Ngày kết thúc';
-$lang['assign_to']= 'Phân công';
-$lang['subject']= 'Chủ đề';
-$lang['content_description']= 'Mô tả bài viết';
+// Add 
+$lang['customer_fields'] = 'Lĩnh vực';
+$lang['client_facebook'] = 'Facebook';
+$lang['approval_content'] ='Duyệt bài viết';
+$lang['contents'] ='Quản lý bài viết';
+$lang['subject'] ='Tiêu đề';
+$lang['task_title']='Yêu cầu';
+$lang['content_start_date']='Ngày bắt đầu';
+$lang['content_end_date']='Ngày kết thúc';
+$lang['content_status']='Trạng thái';
+$lang['project_id']='Dự án';
+$lang['assign_to']='Người viết';
+$lang['new_content']='Tạo bài viết';
+$lang['content_summary_heading']='Tổng quan bài viết';
+$lang['total_content']='Tổng số bài viết';
+$lang['draft'] ='Nháp';
+$lang['waiting_for_leader'] ='Nhóm trưởng đang duyệt';
+$lang['waiting_for_customer'] ='Khách hàng đang duyệt';
+$lang['approvedcontent'] ='Đã phê duyệt';
+$lang['waiting_for_post'] ='Đang post fabcebook';
+$lang['waiting_for_posting'] ='Đang post fabcebook';
+$lang['content_posted'] ='Đã post facebook';
+$lang['content_title'] ='Tiêu đề';
+$lang['content_description'] ='Nội dung';
+$lang['content'] ='Bài viết';
+$lang['submitdraft'] ='Tạo nháp';
+$lang['clients_contents'] ='Bài viết';
+$lang['post_content'] ='Post bài viết';
+$lang['posted'] ='Đã post facebook';
+$lang['summary_heading'] ='Tổng quan post bài viết';
+$lang['kpi_reports'] ='Tổng quan KPI bài viết';
+$lang['name'] ='Tên';
+$lang['total_members'] ='Tổng số thành viên';
+$lang['personal_contents'] ='Tổng bài viết cá nhân';
+$lang['team_contents'] ='Tổng bài viết nhóm';
+$lang['personal_kpi'] ='KPI bài viết cá nhân';
+$lang['team_kpi'] ='KPI bài viết nhóm';
+$lang['leader'] ='Nhóm trưởng';
+$lang['count'] ='Số bài yêu cầu';
+$lang['call_center'] ='Tổng đài';
+$lang['call_contact'] ='Danh sách liên hệ';
+$lang['call_config'] ='Cấu hình tổng đài';
+$lang['call_log'] ='Lịch sử cuộc gọi';
+$lang['staff_type'] ='Loại nhân viên';
+$lang['intern'] ='Thực tập';
+$lang['photo_content'] ='Ảnh bài viết';
+$lang['als_contents'] ='Bài viết';
+$lang['als_post_contents'] ='Đăng bài viết';
+$lang['als_fields'] ='Lĩnh vực';
+$lang['contract_status'] ='Trạng thái';
+$lang['contract_status_waiting'] ='Chờ duyệt';
+$lang['contract_status_approved'] ='Đã duyệt';
+$lang['contract_status_draff'] ='Nháp';
+$lang['date_created']  = 'Ngày tạo';
+$lang['call_statistics'] ='Thống kê cuộc gọi';
 
-$lang['contents'] = 'Quản Lý Bài viết';
-$lang['approval_content'] = 'Xác nhận bài viết';
-$lang['submitdraft'] = 'Bảng Nháp';
-$lang['clients_nav_contents'] = 'Bài Viết';
-$lang['clients_contents']               = 'Bài viết';
-$lang['approvecontent']               = 'Phê duyệt';
-$lang['approvedcontent']               = 'Đã Phê duyệt';
-$lang['notapprovecontent']               = 'Chưa Phê duyệt';
-$lang['sendtocustomer']               = 'Gửi đến khách hàng';
-$lang['rewrite']               = 'Viết lại';
-$lang['contentoverview']               = 'Tổng Quang';
-$lang['draft']               = 'Bảng Nháp';
-$lang['waiting_for_leader']               = 'Đợi Leader';
-$lang['waiting_for_customer']               = 'Đợi Customer';
-$lang['back_to_list']               = 'Quay lại';
-$lang['not_approve_and_resubmited_to_writer']               = 'Chưa phê duyệt và đã gửi lại người viết';
-$lang['approve_and_send_to_customer']               = ' Đã Phê duyệt và gửi đến khách hàng';
-$lang['saved_draft']               = 'Đã lưu nháp';
-$lang['sent_to_leader']               = 'Đã gửi đến leader';
-$lang['submit_content']               = 'Nội bài viết';
-$lang['total_content']               = 'Tổng cộng';
+$lang['time_start'] ='Thời gian bắt đầu';
+$lang['time_end'] ='Thời gian kết thúc';
+$lang['time_started'] ='Gọi lúc';
+$lang['direction'] ='Hướng gọi';
+$lang['from_number'] ='Từ số';
+$lang['to_number'] ='Đến số';
+$lang['time_duration'] ='Thời gian đàm thoại (s)';
+$lang['recording'] ='Ghi âm';
+$lang['call_status'] ='Trạng thái';
+$lang['incoming_call'] ='Cuộc gọi đến';
+$lang['away_call'] ='Cuộc gọi đi';
 
-$lang['callcenter']               = 'Tổng đài';
+
+// $lang['custom_field'] = 'Lĩnh vực';
+// $lang['fields'] = 'Lĩnh vực';

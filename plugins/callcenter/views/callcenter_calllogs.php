@@ -23,7 +23,7 @@ tr:nth-child(even) {
     <div id="main-newsletter" class="content">
         <div class="row">
             <div class="col-md-12">
-<h4>Tổng số cuộc gọi: <?php echo $results->total; ?> </h5>
+<h4><?php echo _l('call_statistics').": " . $results->total; ?> </h5>
 	<nav aria-label="Page navigation example">
   <ul class="pagination justify-content-center">
     <li class="page-item">
@@ -62,8 +62,7 @@ echo "<li class='page-item'><a class='page-link' style='
 <div style="float: left; width: 80% ; ">
 <?php echo form_open("admin/callcenter/searchCall",['class'=>'form-horizontal']);?>
 
-
-	<label>Time Started</label>
+	<label><?php echo _l('time_start');?></label>
 <div class="input-group date" style="width: 16%" ><input type="text" id="startdate" name="startdate"  class="form-control datepicker" value='<?php 
 if( strlen($_SESSION['keyStartTime']) < 5 ){
 echo "ALL";
@@ -74,7 +73,7 @@ echo date('Y/m/d',$_SESSION['keyStartTime']); ?>' aria-invalid="false">
 </div>
 </div>
 <br>
-	<label>Time Ended</label>
+	<label><?php echo _l('time_end');?></label>
 <div class="input-group date" style="width: 16%" ><input type="text" id="enddate" name="enddate" class="form-control datepicker" value='<?php 
 if( strlen($_SESSION['keyEndTime']) < 5 ){
 	echo "ALL";
@@ -127,14 +126,15 @@ echo form_error('Status','<div class="text-danger',
 <div style="float: right;width: 80%;margin-top: -18.5%">
 <table>
 	<tr>
+
 		<td>ID</td>
-		<td>Direction</td>
-		<td>From Number</td>
-		<td>To Number</td>
-		<td>Time Duration(s)</td>
-		<td>Recording</td>
-		<td>Status</td>
-		<td>Time Started</td>
+		<td><?php echo _l('direction');?></td>
+		<td><?php echo _l('from_number');?></td>
+		<td><?php echo _l('to_number');?></td>
+		<td><?php echo _l('time_duration');?></td>
+		<td><?php echo _l('recording');?></td>
+		<td><?php echo _l('call_status');?></td>
+		<td><?php echo _l('time_started');?></td>
 
 	</tr>
 	<?php 
@@ -142,9 +142,19 @@ for ($i=0; $i < 50 ; $i++) {
 	if($dt[$i]->cdr_id != ""){
 		$directions = "";
 if ($dt[$i]->direction == 1) {
-	$directions = "IncomingCall";
+    if(load_admin_language() == "english"){
+        $directions = "IncomingCall";
+    }else{
+        $directions = "Gọi đến";
+    }
+	
 }else if($dt[$i]->direction == 3){
-	$directions = "CallAway";
+	if(load_admin_language() == "vietnamese"){
+        $directions = "Gọi đi";
+    }else{
+        $directions = "CallAway";
+    }
+    
 }
 echo "<tr>
 <td>" . $dt[$i]->cdr_id. "</td>

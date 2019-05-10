@@ -28,7 +28,7 @@ class Clients extends Admin_controller
         $data['contract_types'] = $this->contracts_model->get_contract_types();
         $data['groups']         = $this->clients_model->get_groups();
         // FIX SOURCE FIELD DONE
-        $data['lv_fields']         = $this->clients_model->get_fields();
+        $data['fields']         = $this->clients_model->get_fields();
         $data['title']          = _l('clients');
 
         $this->load->model('proposals_model');

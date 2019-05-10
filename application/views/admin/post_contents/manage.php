@@ -15,9 +15,9 @@
             <div class="_buttons">
             <?php echo form_open(); ?>
             <div class="col-md-1 ">
-            <button id="popoverId" class="btn btn-primary">Add Token</button>
+            <button id="popoverId" class="btn btn-primary" style="height:35px;">Add Token</button>
             </div>
-            <div class="col-md-10 ">
+            <div class="col-md-10 " style="margin-left:30px;">
             <?php echo render_input('tokenAccess','',$value); ?>
             </div>
 
@@ -73,7 +73,7 @@
     $(function() {
 
       var ContentsServerParams = {};
-
+        
       initDataTable('.table-post_contents', admin_url + 'post_contents/table', undefined, undefined, ContentsServerParams, <?php echo do_action('post_contents_table_default_order', json_encode(array(5, 'asc'))); ?>);
     });
   </script>

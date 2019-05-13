@@ -51,21 +51,97 @@ class API extends Admin_controller
     $ids  = $user->staffid;
      $User = $this->Callcenter_model->getSingle($ids);
    $auth =  base64_encode($User->APIKey .":". $User->APISecret);
+   $token =$User->Token;
     $context = stream_context_create([
     "http" => [
-        "header" => "Authorization: Basic $auth"
+        'method'=>"GET",
+        "header" => "X-STRINGEE-AUTH: $token"
     ]
 ]);
 
  $strings2 = 'https://api.stringee.com/v1/call/log'; 
   $homepage2 = file_get_contents($strings2, false, $context);
   $results2 = json_decode($homepage2);
-  $dt = $results2->items;      
+  $dt = $results2->data->calls;      
 
         $contacts = $this->API_model->getContacts();
         $model['contacts'] = $contacts;
         $model['historys'] =  $dt;
         echo json_encode($model);
+    }
+
+        public function Contact(){
+        $model = array();
+        
+         $user  = $GLOBALS['current_user'];
+    $ids  = $user->staffid;
+     $User = $this->Callcenter_model->getSingle($ids);
+   $auth =  base64_encode($User->APIKey .":". $User->APISecret);
+   $token =$User->Token;
+    $context = stream_context_create([
+    "http" => [
+      'method'=>"GET",
+        "header" => "X-STRINGEE-AUTH: $token"
+    ]
+]);
+
+ $strings2 = 'https://api.stringee.com/v1/call/log'; 
+  $homepage2 = file_get_contents($strings2, false, $context);
+  $results2 = json_decode($homepage2);
+  $dt = $results2->data->calls;    
+  $stringCreateDate = "";
+  $stringTotal = 0;
+
+$arrayName =  array(
+        '0' => array(
+            'created_datetime' => '2019-05-07',
+            'total' => '22',
+        ),
+        '1' => array(
+            'created_datetime' => '2019-05-9',
+            'total' => '1',
+        ),
+        '2' => array(
+            'created_datetime' => '2019-05-10',
+            'total' => '2',
+        ),
+        '3' => array(
+            'created_datetime' => '2019-05-11',
+            'total' => '3',
+        ),
+        '4' => array(
+            'created_datetime' => '2019-05-12',
+            'total' => '2',
+        ),
+        
+    );
+$results2->data->callByDay = $arrayName;
+
+
+        //$contacts = $this->API_model->getContacts();
+      //  $model['contacts'] = $contacts;
+        $model['historys'] =  $dt;
+        echo json_encode($results2);
+    }
+    public function downloadCall(){
+        $user  = $GLOBALS['current_user'];
+    $ids  = $user->staffid;
+     $User = $this->Callcenter_model->getSingle($ids);
+   $auth =  base64_encode($User->APIKey .":". $User->APISecret);
+   $token =$User->Token;
+       $context = stream_context_create([
+    "http" => [
+      'Content-Type'=> 'audio/mpeg',
+        'method'=>"GET",
+        "header" => "X-STRINGEE-AUTH: $token"
+    ]
+]);
+
+ $strings2 = 'https://api.stringee.com/v1/call/recording/call-vn-1-2H2YSVI9R3-1557334338904'; 
+  $homepage2 = file_get_contents($strings2, false, $context);
+
+ // $results2 = json_decode($homepage2);
+    echo json_encode($homepage2);
     }
     
 }

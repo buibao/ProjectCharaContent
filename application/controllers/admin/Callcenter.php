@@ -150,14 +150,16 @@ echo $tringg;
      $User = $this->Callcenter_model->getSingle($ids);
        $auth = base64_encode($User->APIKey .":". $User->APISecret);
 
-    //   $auth = base64_encode("c095eddb30c14184c57a8c2d2d1ad4f4:943abdbe302aef5ce0af91e4462a2c50");
+     $token ='eyJjdHkiOiJzdHJpbmdlZS1hcGk7dj0xIiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiJTS21zc2RhbnBuZUlXalRLWFRTV0NPVkRtNklXczJtUjZFLTE1NTc1ODYzNTUiLCJpc3MiOiJTS21zc2RhbnBuZUlXalRLWFRTV0NPVkRtNklXczJtUjZFIiwiZXhwIjoxNTU3NTg5OTU1LCJpY2NfYXBpIjp0cnVlLCJ1c2VySWQiOiJhZ2VudF8xIiwicmVzdF9hcGkiOnRydWV9.YVYuk0BaMVNtWfiKQl_U8s8MoiMq7gXGFIesag13Axg';
     $context = stream_context_create([
-    "http" => [
-        "header" => "Authorization: Basic $auth"
+     "http" => [
+        'method'=>"GET",
+        "header" => "X-STRINGEE-AUTH: $token"
     ]
 ]);
 
- $strings = 'https://acd-api.vht.com.vn/rest/cdrs?page='.$id."&limit=50&sort_type=DESC";
+ //$strings = 'https://acd-api.vht.com.vn/rest/cdrs?page='.$id."&limit=50&sort_type=DESC";
+ $strings = 'https://api.stringee.com/v1/call/log';
 
     if(strlen($_SESSION['keyState']) > 2 || strlen($_SESSION['keyFromNumber']) > 2 || strlen($_SESSION['keyToNumber']) > 2 || strlen($_SESSION['keyStartTime']) > 5 ||  strlen($_SESSION['keyEndTime']) > 5  ){
    
@@ -175,7 +177,7 @@ echo $tringg;
     }
    
 }else{
-    $strings = "https://acd-api.vht.com.vn/rest/cdrs?page=".$id."&limit=50&sort_type=DESC";
+    $strings = $strings;
 }
 
 
@@ -183,7 +185,7 @@ echo $tringg;
     $homepage = file_get_contents($strings, false, $context);
     $results = json_decode($homepage);
     $pages = CEIL($results->total / 50);
-    $dt = $results->items;      
+    $dt = $results->data->calls;      
 
  $this->load->view('callcenter_calllogs',array( 'dt' => $dt, 'results'=>$results,'pages' => $pages,'idPage'=>$id));
   

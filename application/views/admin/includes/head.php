@@ -96,14 +96,7 @@
 //     $datas['Token']= $token ;
   
 
-//     $checkUser = $this->Callcenter_model->getSingle($GLOBALS['current_user']->staffid);
-//     if($checkUser == false){
-//         $this->Callcenter_model->insertVHT($datas);
-       
-//     }else{
-//         $this->Callcenter_model->updateVHTModel($datas,$GLOBALS['current_user']->staffid);
-       
-//     }
+
 //     }
 
 include 'plugins/php/FirebaseJWT/JWT.php';
@@ -166,7 +159,17 @@ $res = array(
   'access_token' => $jwt
   );
 header('Access-Control-Allow-Origin: *');
- 
+
+     $checkUser = $this->Callcenter_model->getSingle($GLOBALS['current_user']->staffid);
+    if($checkUser == false){
+        $data['Token'] = $res['access_token'];
+        $this->Callcenter_model->insertVHT($data);
+       
+    }else{
+        $data['Token'] = $res['access_token'];
+        $this->Callcenter_model->updateVHTModel($data,$GLOBALS['current_user']->staffid);
+       
+    }
    // $GLOBALS['token'] =json_encode($res['access_token']);
     $GLOBALS['token'] =$res['access_token'];
     ?>

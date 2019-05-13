@@ -182,6 +182,26 @@
                         <?php echo render_input('count', 'count', $value); ?>
                      </div>
 
+                      <div class="col-md-6" id="count">
+                     
+                      <select class="form-control"  id="locality-dropdown" name="approveId">
+                     </select>
+
+                  
+                     
+                           
+                     </div>
+
+                       <!--  <div class="col-md-6" id="count">
+                          <?php $value //= (isset($task) ? $task->leader_id : ''); ?>
+                     <?php
+                         $selected// = $value;
+                     ?>
+                         <?php
+                           //echo render_select('leader_id',$tasksCustom,array('staffid',array('firstname','lastname')),'Leader',$selected); 
+                           ?> 
+                     </div> -->
+
 
                      <div class="col-md-6">
                         <div class="form-group">
@@ -385,7 +405,9 @@
          data = {};
 
       var _milestone_selected_data;
+     
       _milestone_selected_data = undefined;
+   
 
       $(function() {
 
@@ -451,7 +473,27 @@
                      }
                      init_project_details(_rel_type.val(), project.allow_to_view_tasks);
                   }, 'json');
+
+
+                     var dropdown = $('#locality-dropdown');
+
+                     dropdown.empty();
+
+                     dropdown.append('<option selected="true" disabled>Choose State/Province</option>');
+                     dropdown.prop('selectedIndex', 0);
+
+                  const url = 'https://api.myjson.com/bins/7xq2x';
+
+// Populate dropdown with list of provinces
+               $.getJSON(admin_url + 'tasks/getStaff_Project/' + $(this).val(), function (data) {
+               $.each(data, function (key, entry) {
+                dropdown.append($('<option></option>').attr('value', entry.staff_id).text(entry.email));
+                })
+               });
+                 
+
                }
+
             }
          });
 

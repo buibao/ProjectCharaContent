@@ -181,7 +181,11 @@
                         <?php $value = (isset($task) ? $task->count : ''); ?>
                         <?php echo render_input('count', 'count', $value); ?>
                      </div>
+                      <div class="col-md-6">
+                     <select class="form-control"  id="locality" name="approveId">
+                     </select>
 
+                      </div>
 
                      <div class="col-md-6">
                         <div class="form-group">
@@ -451,7 +455,31 @@
                      }
                      init_project_details(_rel_type.val(), project.allow_to_view_tasks);
                   }, 'json');
+                    var dropdown = $('#locality');
+
+                     // dropdown.empty();
+
+                     // dropdown.append('<option selected="true" disabled>Choose State/Province</option>');
+                     // dropdown.prop('selectedIndex', 0);
+
+             
+               $.getJSON(admin_url + 'tasks/getStaff_Project/' + $(this).val(), function (data) {
+                  console.log(data);
+                   $(data).each(function () {
+                var option = $("<option />");
+ 
+                //Set Customer Name in Text part.
+                option.html(this.email);
+ 
+                //Set Customer CustomerId in Value part.
+                option.val(this.staff_id);
+ 
+                //Add the Option element to DropDownList.
+                dropdown.append(option);
+            });
+               });
                }
+
             }
          });
 

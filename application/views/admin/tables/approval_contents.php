@@ -20,7 +20,7 @@ $join = [
 
 ];
 
-$where = [];
+$where = ['OR task_id = ' .$id];
 $filter = [];
 $statusIds = [];
 

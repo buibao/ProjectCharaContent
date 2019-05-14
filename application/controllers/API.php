@@ -53,11 +53,11 @@ class API extends Admin_controller
    $auth =  base64_encode($User->APIKey .":". $User->APISecret);
     $context = stream_context_create([
     "http" => [
-        "header" => "Authorization: Basic $auth"
+        "header" => "Authorization: Basic YzA5NWVkZGIzMGMxNDE4NGM1N2E4YzJkMmQxYWQ0ZjQ6OTQzYWJkYmUzMDJhZWY1Y2UwYWY5MWU0NDYyYTJjNTA="
     ]
 ]);
 
- $strings2 = 'https://api.stringee.com/v1/call/log'; 
+ $strings2 = 'https://acd-api.vht.com.vn/rest/cdrs?page=1&limit=50&sort_type=DESC'; 
   $homepage2 = file_get_contents($strings2, false, $context);
   $results2 = json_decode($homepage2);
   $dt = $results2->items;      
@@ -66,6 +66,61 @@ class API extends Admin_controller
         $model['contacts'] = $contacts;
         $model['historys'] =  $dt;
         echo json_encode($model);
+    }
+      public function Contact(){
+        $model = array();
+        
+         $user  = $GLOBALS['current_user'];
+    $ids  = $user->staffid;
+     $User = $this->Callcenter_model->getSingle($ids);
+   $auth =  base64_encode($User->APIKey .":". $User->APISecret);
+    $context = stream_context_create([
+    "http" => [
+        "header" => "Authorization: Basic YzA5NWVkZGIzMGMxNDE4NGM1N2E4YzJkMmQxYWQ0ZjQ6OTQzYWJkYmUzMDJhZWY1Y2UwYWY5MWU0NDYyYTJjNTA="
+    ]
+]);
+
+ $strings2 = 'https://acd-api.vht.com.vn/rest/cdrs?page=1&limit=50&sort_type=DESC'; 
+  $homepage2 = file_get_contents($strings2, false, $context);
+  $results2 = json_decode($homepage2);
+  $dt = $results2->items;
+  //date('D m/d/Y H:i:s', $dt[$i]->time_started)
+   // $timeCheck = "";
+   // $arrayName = array('' => , );
+    //  foreach ($dt as $value ) {
+      //   $data['cdr_id']= '252621249';
+      // $this->Callcenter_model->insertlog($data);
+  //  }
+
+  $arrayName =  array(
+        '0' => array(
+            'created_datetime' => '2019-05-07',
+            'total' => '22',
+        ),
+        '1' => array(
+            'created_datetime' => '2019-05-9',
+            'total' => '1',
+        ),
+        '2' => array(
+            'created_datetime' => '2019-05-10',
+            'total' => '2',
+        ),
+        '3' => array(
+            'created_datetime' => '2019-05-11',
+            'total' => '3',
+        ),
+        '4' => array(
+            'created_datetime' => '2019-05-12',
+            'total' => '2',
+        ),
+        
+    );
+$results2->data->callByDay = $arrayName;
+$results2->data->total = $results2->limit;
+
+       
+      
+        echo json_encode($results2);
     }
     
 }

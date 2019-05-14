@@ -6,7 +6,7 @@ class Contents extends Admin_controller {
 	public function __construct() {
 		parent::__construct();
 		$this->load->model('contents_model');
-
+		$this->load->model('tasks_model');
 	}
 
 	/* List all contents */
@@ -29,6 +29,8 @@ class Contents extends Admin_controller {
 				if (!has_permission('contents', '', 'create')) {
 					access_denied('contents');
 				}
+
+
 				$id = $this->contents_model->add($this->input->post());
 				if ($id->id) {
 					$uploadedFiles = handle_content_attachments_array($id->id);
@@ -156,9 +158,10 @@ class Contents extends Admin_controller {
 		$idstaff = $this->db->get('tblstaff')->result_array();
 		$idtask = $this->db->get('tblstafftasks')->result_array();
 		$project = $this->db->get('tblprojects')->result_array();
+		$id  = $GLOBALS['current_user']->staffid;
 
 		$this->app->get_table_data('contents', [
-			'clientid' => $clientid, 'ids' => $idtask, 'staff' => $idstaff,
+			'clientid' => $clientid, 'ids' => $idtask, 'staff' => $idstaff,'id'=>$id
 		]);
 		// END FIX
 

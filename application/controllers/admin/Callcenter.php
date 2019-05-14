@@ -148,12 +148,12 @@ echo $tringg;
       $user  = $GLOBALS['current_user'];
     $ids  = $user->staffid;
      $User = $this->Callcenter_model->getSingle($ids);
-       $auth = base64_encode($User->APIKey .":". $User->APISecret);
+     //  $auth = base64_encode($User->APIKey .":". $User->APISecret);
 
-    //   $auth = base64_encode("c095eddb30c14184c57a8c2d2d1ad4f4:943abdbe302aef5ce0af91e4462a2c50");
+       $auth = base64_encode("c095eddb30c14184c57a8c2d2d1ad4f4:943abdbe302aef5ce0af91e4462a2c50");
     $context = stream_context_create([
     "http" => [
-        "header" => "Authorization: Basic $auth"
+        "header" => "Authorization: Basic " . $auth
     ]
 ]);
 
@@ -204,7 +204,7 @@ echo $tringg;
 
     $context = stream_context_create([
     "http" => [
-        "header" => "Authorization: Basic $auth"
+        "header" => "Authorization: Basic YzA5NWVkZGIzMGMxNDE4NGM1N2E4YzJkMmQxYWQ0ZjQ6OTQzYWJkYmUzMDJhZWY1Y2UwYWY5MWU0NDYyYTJjNTA="
     ]
 ]);
 $_SESSION['keyState']  =   $data['Status'];

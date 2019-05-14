@@ -61,6 +61,12 @@ class Callcenter_model extends CRM_Model {
                 return $query->row();
             return false;
     }
+     public function insertlog($data)
+    {
+        $this->db->insert('tblcalllog', $data);
+        return 1;
+        
+    }
 
 // FIX CODE
 

@@ -21,8 +21,9 @@ class Approval_contents extends Admin_controller {
 		$idstaff = $this->db->get('tblstaff')->result_array();
 		$idtask = $this->db->get('tblstafftasks')->result_array();
 		$project = $this->db->get('tblprojects')->result_array();
+		$id  = $GLOBALS['current_user']->staffid;
 		$this->app->get_table_data('approval_contents', [
-			'clientid' => $clientid, 'ids' => $idtask, 'staff' => $idstaff, 'project_id' => $project,
+			'clientid' => $clientid, 'ids' => $idtask, 'staff' => $idstaff, 'project_id' => $project,'id'=>$id
 		]);
 
 	}

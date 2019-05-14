@@ -19,8 +19,8 @@ $sTable = 'tblcontents';
 $join = [
 
 ];
-
-$where = [];
+//$queSql = '|| task_id = ' . $id . '|| assignto =' .$id;
+$where = ['OR task_id = ' .$id,'OR assignto = ' .$id];
 $filter = [];
 
 $statusIds = [];

@@ -6,6 +6,8 @@ class Contents_model extends CRM_Model
 	public function __construct()
 	{
 		parent::__construct();
+	    $this->load->model('tasks_model');
+	    $this->load->model('projects_model');
 	}
 	public function getDatabase()
 	{
@@ -136,13 +138,18 @@ class Contents_model extends CRM_Model
 		$datestart = isset($data['datestart']) ? $data['datestart'] : "";
 		$dateend = isset($data['dateend']) ? $data['dateend'] : "";
 		$projectId = isset($data['project_id']) ? $data['project_id'] : "";
-		
-		$query = "INSERT INTO tblcontents(subject,task_title,description,status,assignto,hash,datestart,dateend,project_id) VALUES (?,?,?,?,?,?,?,?,?)";
+		$dataTask = $this->tasks_model->get($task_title);
+		$dataProject= $this->projects_model->get($projectId);
+		$task_id = $dataTask->approveId;
+		$clientId  = $dataProject->clientid;
+
+				 
+		$query = "INSERT INTO tblcontents(subject,task_title,description,status,assignto,hash,datestart,dateend,project_id,task_id,clientId) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 		
 		$assignto = $GLOBALS['current_user']->staffid;
 		$sql_stmt = $conn->prepare($query);
 		// d = number -- s = string
-		$param_type = "sssssssss";
+		$param_type = "sssssssssss";
 		$param_value_array = array(
 			$subject,
 			$task_title,
@@ -152,7 +159,9 @@ class Contents_model extends CRM_Model
 			$hash,
 			$datestart,
 			$dateend,
-			$projectId
+			$projectId,
+			$task_id,
+			$clientId
 		);
 		$param_value_reference[] = &$param_type;
 		for ($i = 0; $i < count($param_value_array); $i++) {

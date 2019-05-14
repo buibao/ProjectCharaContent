@@ -275,6 +275,13 @@ class Tasks extends Admin_controller
     }
 
     /* Add new task or update existing */
+      public function getStaff_Project($id){
+ 
+         $member= $this->projects_model->get_project_members($id);
+         
+         echo json_encode($member);
+           
+    }
     public function task($id = '')
     {
         if (!has_permission('tasks', '', 'edit') && !has_permission('tasks', '', 'create')) {

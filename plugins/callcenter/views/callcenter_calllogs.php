@@ -87,7 +87,7 @@
                                 <span class="text-danger">CALLS </span> 
                                 <span >&nbsp; - &nbsp;</span> 
                                 <span class="totalMinutes font-size-40 text-danger mr-10"></span>
-                                <span class="text-danger">MINUTES </span>
+                                <span class="text-danger">(Giờ:Phút:Giây)</span>
                             </label>
                         </div>
                         <!-- Example C3 Simple Line -->
@@ -320,7 +320,7 @@
                                                     }
                                                 });
                                             }
-
+                                         
                                             function loadTableCallReports(pageNumber) {
                                                 var inputFromNumber = $('#inputFromNumber');
                                                 var inputToNumber = $('#inputToNumber');
@@ -372,7 +372,7 @@
 
                                                         // ADD DATA TO CHART
                                                         $('.countSearch,.totalCalls').html(totalCount);
-                                                        $('.totalMinutes').html(12);
+                                                        $('.totalMinutes').html(response.data.callSum);
 
                                                         var callByDay = response.data.callByDay;
                                                         console.log(response);

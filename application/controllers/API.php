@@ -84,38 +84,47 @@ class API extends Admin_controller
   $homepage2 = file_get_contents($strings2, false, $context);
   $results2 = json_decode($homepage2);
   $dt = $results2->items;
-  //date('D m/d/Y H:i:s', $dt[$i]->time_started)
-   // $timeCheck = "";
-   // $arrayName = array('' => , );
-    //  foreach ($dt as $value ) {
-      //   $data['cdr_id']= '252621249';
-      // $this->Callcenter_model->insertlog($data);
-  //  }
+ 
+ 
+    //   foreach ($dt as $value ) {
+    //    $data['cdr_id']= $value->cdr_id;
+    //    $data['call_id']= $value->call_id;
+    //    $data['cause']= $value->cause;
+    //    $data['q850_cause']= $value->q850_cause;
+    //    $data['from_extension']= $value->from_extension;
+    //    $data['to_extension']= $value->to_extension;
+    //    $data['from_number']= $value->from_number;
+    //    $data['to_number']= $value->to_number;
+    //    $data['duration']= $value->duration;
+    //    $data['direction']= $value->direction;
 
-  $arrayName =  array(
-        '0' => array(
-            'created_datetime' => '2019-05-07',
-            'total' => '22',
-        ),
-        '1' => array(
-            'created_datetime' => '2019-05-9',
-            'total' => '1',
-        ),
-        '2' => array(
-            'created_datetime' => '2019-05-10',
-            'total' => '2',
-        ),
-        '3' => array(
-            'created_datetime' => '2019-05-11',
-            'total' => '3',
-        ),
-        '4' => array(
-            'created_datetime' => '2019-05-12',
-            'total' => '2',
-        ),
-        
-    );
-$results2->data->callByDay = $arrayName;
+
+    //   //   $date1=date("Y-m-d",strtotime());
+    //   // $date2=date("Y-m-d",strtotime();
+    //   // $date3=date("Y-m-d",strtotime();
+
+
+    //    $data['time_start']=date('Y-m-d',  $value->time_started); 
+    //    $data['time_connect']=  date('Y-m-d', $value->time_connected);
+    //    $data['time_end']=  date('Y-m-d', $value->time_ended);
+
+    //    $data['time_started']= date('D m/d/Y H:i:s', $value->time_started);
+    //    $data['time_connected']= date('D m/d/Y H:i:s', $value->time_connected);
+    //    $data['time_ended']= date('D m/d/Y H:i:s', $value->time_ended);
+
+    //    $data['recording_path']= $value->recording_path;
+    //    $data['recording_url']= $value->recording_url;
+    //    $data['record_file_size']= $value->record_file_size;
+
+    //    $this->Callcenter_model->insertlog($data);
+      
+    // }
+
+
+$callChart = $this->Callcenter_model->callByDay();
+$callSum = $this->Callcenter_model->callSum();
+$results2->data->callByDay = $callChart;
+$results2->data->callSum = gmdate("H:i:s", $callSum->total);
 $results2->data->total = $results2->limit;
 
        

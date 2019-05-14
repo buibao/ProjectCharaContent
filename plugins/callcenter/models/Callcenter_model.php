@@ -13,6 +13,16 @@ class Callcenter_model extends CRM_Model {
         $query = $this->db->query($sql);
         return $query->result_array();
     }
+    public function callByDay() {
+        $sql = "SELECT  time_start AS created_datetime,SUM(CAST(`duration`/60 AS DECIMAL(18,2))) AS total FROM tblcalllog WHERE duration > 0 GROUP BY time_start";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    } 
+    public function callSum() {
+        $sql = "SELECT SUM(duration) AS total FROM tblcalllog";
+        $query = $this->db->query($sql);
+        return $query->row();
+    }
     // FIX CODE
     public function insertVHT($data)
     {

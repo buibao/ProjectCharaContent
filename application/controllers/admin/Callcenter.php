@@ -183,7 +183,40 @@ echo $tringg;
     $homepage = file_get_contents($strings, false, $context);
     $results = json_decode($homepage);
     $pages = CEIL($results->total / 50);
-    $dt = $results->items;      
+    $dt = $results->items;    
+       foreach ($dt as $value ) {
+       $data['cdr_id']= $value->cdr_id;
+       $data['call_id']= $value->call_id;
+       $data['cause']= $value->cause;
+       $data['q850_cause']= $value->q850_cause;
+       $data['from_extension']= $value->from_extension;
+       $data['to_extension']= $value->to_extension;
+       $data['from_number']= $value->from_number;
+       $data['to_number']= $value->to_number;
+       $data['duration']= $value->duration;
+       $data['direction']= $value->direction;
+
+
+      //   $date1=date("Y-m-d",strtotime());
+      // $date2=date("Y-m-d",strtotime();
+      // $date3=date("Y-m-d",strtotime();
+
+
+       $data['time_start']=date('Y-m-d',  $value->time_started); 
+       $data['time_connect']=  date('Y-m-d', $value->time_connected);
+       $data['time_end']=  date('Y-m-d', $value->time_ended);
+
+       $data['time_started']= date('D m/d/Y H:i:s', $value->time_started);
+       $data['time_connected']= date('D m/d/Y H:i:s', $value->time_connected);
+       $data['time_ended']= date('D m/d/Y H:i:s', $value->time_ended);
+
+       $data['recording_path']= $value->recording_path;
+       $data['recording_url']= $value->recording_url;
+       $data['record_file_size']= $value->record_file_size;
+
+       $this->Callcenter_model->insertlog($data);
+      
+    }  
 
  $this->load->view('callcenter_calllogs',array( 'dt' => $dt, 'results'=>$results,'pages' => $pages,'idPage'=>$id));
   

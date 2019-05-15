@@ -56,7 +56,7 @@ class Callcenter extends Admin_controller {
 
         $this->load->view('callcenter_index',array('type' => $type, 'content' => $content));
     }
- public function all_contacts()
+    public function all_contacts()
     {
         if ($this->input->is_ajax_request()) {
             $this->app->get_table_data('call_all_contacts');
@@ -69,6 +69,20 @@ class Callcenter extends Admin_controller {
 
         $data['title'] = _l('customer_contacts');
         $this->load->view('all_contacts', $data);
+    }
+      public function call_log()
+    {
+        if ($this->input->is_ajax_request()) {
+            $this->app->get_table_data('call_log');
+        }
+
+        if (is_gdpr() && get_option('gdpr_enable_consent_for_contacts') == '1') {
+            $this->load->model('gdpr_model');
+            $data['consent_purposes'] = $this->gdpr_model->get_consent_purposes();
+        }
+
+        $data['title'] = 'Call Log';
+        $this->load->view('call_log', $data);
     }
      public function table()
     {

@@ -1,14 +1,11 @@
 <?php init_head(); ?>
-       
-<div id="wrapper" >
-    <div id="main-newsletter" class="content">
-        <div class="row">
-            <div class="col-md-12">
-<div class="page" id="pageStringeeCall">
-    <!-- Page Content -->
-    <div class="page-content container-fluid">
-        <div class="row">
-            <div class="col-lg-12">
+<div id="wrapper">
+  <div class="content">
+    <div class="row">
+      <div class="col-md-12">
+       <div class="panel_s">
+          <div class="panel-body">
+       <div class="col-lg-12">
                 <!-- Example Panel With Heading -->
                 <div class="panel panel-bordered overlayAjax">
                     <div class="panel-heading">
@@ -80,121 +77,91 @@
                         <div id="exampleC3TimeSeries"></div>
                         <!-- End Example C3 Simple Line -->
 
-                        <div class="table-responsive" style="overflow: auto">
-                            <table class="table table-striped table-bordered table-hover" id="tableCalls">
-                                <thead class="bg-blue-grey-200">
-                                    <tr>
-                                       
-        <td>ID</td>
-        <td><?php echo _l('direction');?></td>
-        <td><?php echo _l('from_number');?></td>
-        <td><?php echo _l('to_number');?></td>
-        <td><?php echo _l('time_duration');?></td>
-        <td><?php echo _l('recording');?></td>
-       <!--  <td><?php //echo _l('call_status');?></td> -->
-       <!--  <td><?php //echo _l('time_started');?></td> -->
-         <td><?php echo _l('time_connected');?></td>
-         <td><?php echo _l('time_ended');?></td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="row">
+                   
+                      <!--   <div class="row">
                             <div class="col-lg-12 text-right wrapPagination">
                                 <ul id='paginationCall'></ul>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <!-- End Example Panel With Heading -->
             </div>
-
-        </div>
-
     </div>
-    <!-- End Page Content -->
-</div>
+    </div>
+        <div class="panel_s">
+          <div class="panel-body">
+            <?php if(isset($consent_purposes)) { ?>
+            <div class="row mbot15">
+              <div class="col-md-3 contacts-filter-column">
+               <div class="select-placeholder">
+                <select name="custom_view" title="<?php echo _l('gdpr_consent'); ?>" id="custom_view" class="selectpicker" data-width="100%">
+                 <option value=""></option>
+                 <?php foreach($consent_purposes as $purpose) { ?>
+                <option value="consent_<?php echo $purpose['id']; ?>">
+                  <?php echo $purpose['name']; ?>
+                </option>
+                <?php } ?>
+              </select>
+            </div>
+          </div>
+        </div>
+        <?php } ?>
+        <div class="clearfix"></div>
+        <?php
+       $table_data = array();
+
+       
+       $table_data =  array(
+       //   <td>ID</td>
+       //  <td><?php echo _l('direction');
+       //  <td><?php echo _l('from_number');
+       //  <td><?php echo _l('to_number');
+       //  <td><?php echo _l('time_duration');
+       //  <td><?php echo _l('recording');
+          'ID',
+        _l('direction'),
+       _l('from_number'),
+        _l('to_number'),
+        _l('time_duration'),
+       _l('recording'),
+        _l('time_connected'),
+        _l('time_ended'),
+
+      );
+
+      //  $custom_fields = get_custom_fields('contacts',array('show_on_table'=>1));
+
+      //  foreach($custom_fields as $field){
+  
+      //         array_push($table_data,$field['name']);
+      // }
+      render_datatable($table_data,'call_logs');
+      ?>
+    </div>
+   
+  </div>
 </div>
 </div>
 </div>
 </div>
 <?php init_tail(); ?>
-        <!-- Fonts -->
-        <link rel="stylesheet" href="https://developer.stringee.com/static/global/fonts/font-awesome/font-awesome.css">
-        <link rel="stylesheet" href="https://developer.stringee.com/static/global/fonts/web-icons/web-icons.min.css">
-        <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,300italic'>
-        <!-- Stylesheets -->
-     <!--    <link rel="stylesheet" href="https://developer.stringee.com/static/global/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://developer.stringee.com/static/global/css/bootstrap-extend.min.css">
-        <link rel="stylesheet" href="https://developer.stringee.com/static/assets/css/site.min.css"> -->
-        <link rel="stylesheet" href="https://developer.stringee.com/static/global/vendor/asscrollable/asScrollable.css">
-        <!-- StylesheetsCustom -->
+ 
+      <!-- Core -->
         <link rel="stylesheet" href="https://developer.stringee.com/static/assets/css/site-custom.css">
-        <link rel="stylesheet" href="https://developer.stringee.com/static/assets/css/my-library.css">
-
-        <script src="https://developer.stringee.com/static/global/vendor/jquery/jquery.js"></script>
-        <script src="https://developer.stringee.com/static/global/vendor/breakpoints/breakpoints.js"></script>
-        <script src="https://developer.stringee.com/static/assets/js/jquery.twbsPagination.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.4/dist/loadingoverlay.min.js"></script>
-        <script>
-            Breakpoints();
-        </script>
-        <!-- Facebook Pixel Code -->
-        <script>
-          !function(f,b,e,v,n,t,s)
-          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-          n.queue=[];t=b.createElement(e);t.async=!0;
-          t.src=v;s=b.getElementsByTagName(e)[0];
-          s.parentNode.insertBefore(t,s)}(window, document,'script',
-          'https://connect.facebook.net/en_US/fbevents.js');
-          fbq('init', '218739138681816');
-          fbq('track', 'PageView');
-        </script>
-        <noscript><img height="1" width="1" style="display:none"
-                   src="https://www.facebook.com/tr?id=218739138681816&ev=PageView&noscript=1"
-                   /></noscript>
-    <!-- End Facebook Pixel Code -->
   
-        <!-- Core  -->
-        <script src="https://developer.stringee.com/static/global/vendor/babel-external-helpers/babel-external-helpers.js"></script>
-        <script src="https://developer.stringee.com/static/global/vendor/tether/tether.js"></script>
+        <script src="https://developer.stringee.com/static/assets/js/jquery.twbsPagination.min.js"></script>
+      
         <script src="https://developer.stringee.com/static/global/vendor/bootstrap/bootstrap.js"></script>
         <script src="https://developer.stringee.com/static/global/vendor/animsition/animsition.js"></script>
-        <script src="https://developer.stringee.com/static/global/vendor/mousewheel/jquery.mousewheel.js"></script>
-        <script src="https://developer.stringee.com/static/global/vendor/asscrollbar/jquery-asScrollbar.js"></script>
-        <script src="https://developer.stringee.com/static/global/vendor/asscrollable/jquery-asScrollable.js"></script>
-        <script src="https://developer.stringee.com/static/global/vendor/ashoverscroll/jquery-asHoverScroll.js"></script>
-        
-        
 
-    
-        
-        <script src="https://developer.stringee.com/static/global/js/State.js"></script>
-        <script src="https://developer.stringee.com/static/global/js/Component.js"></script>
-        <script src="https://developer.stringee.com/static/global/js/Plugin.js"></script>
-        <script src="https://developer.stringee.com/static/global/js/Base.js"></script>
-        <script src="https://developer.stringee.com/static/global/js/Config.js"></script>
-        <script src="https://developer.stringee.com/static/assets/js/Section/Menubar.js"></script>
-        <script src="https://developer.stringee.com/static/assets/js/Section/GridMenu.js"></script>
-        <script src="https://developer.stringee.com/static/assets/js/Section/Sidebar.js"></script>
-        <script src="https://developer.stringee.com/static/assets/js/Section/PageAside.js"></script>
-        <!--<script src="https://developer.stringee.com/static/assets/js/Plugin/menu.js"></script>-->
         <script src="https://developer.stringee.com/static/assets/js/Site.js"></script>
         <!-- Page -->
-        <script src="https://developer.stringee.com/static/global/js/Plugin/asscrollable.js"></script>
+    
         <script src="https://developer.stringee.com/static/assets/js/site-custom.js"></script>
-        <script src="https://developer.stringee.com/static/assets/js/Plugin/menu.js"></script>
-        
-       
-        
-  
-  
+   
 <!-- Include Required Prerequisites -->
-<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<!-- <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script> -->
 <!-- Include Date Range Picker -->
 <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
 <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
@@ -203,56 +170,36 @@
 <script src="https://developer.stringee.com/static/global/vendor/select2/select2.full.min.js"></script>
 <script src="https://developer.stringee.com/static/global/vendor/d3/d3.min.js"></script>
 <script src="https://developer.stringee.com/static/global/vendor/c3/c3.min.js"></script>
+<?php $this->load->view('admin/clients/client_js'); ?>
+<script>
+ $(function(){
+  var optionsHeading = [];
+  var allContactsServerParams = {
+   "custom_view": "[name='custom_view']",
+ }
+ <?php if(is_gdpr() && get_option('gdpr_enable_consent_for_contacts') == '1'){ ?>
+  optionsHeading.push($('#th-consent').index());
+  <?php } ?>
+  _table_api = initDataTable('.table-call_logs', window.location.href, optionsHeading, optionsHeading, allContactsServerParams, [0,'asc']);
+  if(_table_api) {
+   <?php if(is_gdpr() && get_option('gdpr_enable_consent_for_contacts') == '1'){ ?>
+    _table_api.on('draw', function () {
+      var tableData = $('.table-call_logs').find('tbody tr');
+      $.each(tableData, function() {
+        $(this).find('td:eq(2)').addClass('bg-light-gray');
+      });
+    });
+    $('select[name="custom_view"]').on('change', function(){
+      _table_api.ajax.reload()
+      .columns.adjust()
+      .responsive.recalc();
+    });
+    <?php } ?>
+  }
+});
+</script>
 <script>
 
-    
-// //                                      var accountSid = 'AC5ee47206d649ad660e8423f8bb07ede5';
-//                                         var accountId = '1595';
-//                                         if (1 == 3 
-//                                                 || 1 == 2) {
-// //                                          accountSid = $('#selectAccount option:selected').val();
-//                                             accountId = $('#selectAccount option:selected').val();
-//                                         }
-//                                         changeAccount();
-//                                         function changeAccount() {
-//                                             console.log('selectProjectId', $('#selectAccount option:selected').val());
-//                                             if (1 == 3                                          || 1 == 2) {
-// //                                              accountSid = $('#selectAccount option:selected').val();
-//                                                 accountId = $('#selectAccount option:selected').val();
-//                                             }
-//                                             $.ajax({
-//                                                 type: 'post',
-//                                                 url: '/report/projectbyaccount',
-//                                                 data: {
-//                                                     no: 'no',
-// //                                                  account_sid: accountSid,
-//                                                     account_id: accountId
-//                                                 },
-//                                                 dataType: 'json',
-//                                                 success: function (response) {
-//                                                     console.log(response);
-//                                                     if (response.status == 500) {
-//                                                         console.log('Session expired');
-//                                                         window.location.href = "/account/logout";
-//                                                     }
-                                                    
-//                                                     var data = '<option value="">SELECT PROJECT</option>';
-//                                                     if (response.length > 0) {
-
-//                                                         response.map((p, k) => {
-//                                                             return data += '<option value="' + p.id + '">' + p.name + '</option>';
-//                                                         });
-
-//                                                     }
-//                                                     $('#selectProjectId').html(data);
-
-//                                                 },
-//                                                 error: function (xhr, desc, err) {
-//                                                     console.log(xhr);
-//                                                     console.log("Details: " + desc + "\nError:" + err);
-//                                                 }
-//                                             })
-//                                         }
 
                                         $(document).ready(function () {
 
@@ -400,50 +347,50 @@
 
                                             function loopDataCall(dataResponse) {
 
-                                                var data = '';
-                                                var type = '';
-                                                var answer_time;
+                                                // var data = '';
+                                                // var type = '';
+                                                // var answer_time;
 
-                                                $.each(dataResponse, function (key, value) {
+                                                // $.each(dataResponse, function (key, value) {
                                                    
-                                                     if (dataResponse[key].direction == 3 ) {
-                                                        type = "<img src='https://developer.stringee.com/static/assets/images/icon-in2ex.png' class='icon-call' />";
-                                                    } else {
-                                                         type = "<img src='https://developer.stringee.com/static/assets/images/icon-ex2in.png' class='icon-call' />";
-                                                    }
+                                                //      if (dataResponse[key].direction == 3 ) {
+                                                //         type = "<img src='https://developer.stringee.com/static/assets/images/icon-in2ex.png' class='icon-call' />";
+                                                //     } else {
+                                                //          type = "<img src='https://developer.stringee.com/static/assets/images/icon-ex2in.png' class='icon-call' />";
+                                                //     }
 
-                                                    // if (dataResponse[key].answer_time === 0) {
-                                                    //     answer_time = '';
-                                                    // } else {
-                                                    //     answer_time = dataResponse[key].answer_time_datetime;
-                                                    // }
-                                                    // var btn_download = "<span style='color:#adadad'>No</span>";
-                                                    // if (Boolean(dataResponse[key].recorded)) {
-                                                    //     btn_download = "<td> <a href='"+dataResponse[key].recording_url+"' target='_blank' >Mở file</a></td>";
-                                                    // }
-                                                   // var timestamp = new Date(dataResponse[key].time_started*1000);
-                                                   //  timestamp = moment(timestamp).format("dddd MMMM-DD-YYYY HH:mm:ss");
+                                                //     // if (dataResponse[key].answer_time === 0) {
+                                                //     //     answer_time = '';
+                                                //     // } else {
+                                                //     //     answer_time = dataResponse[key].answer_time_datetime;
+                                                //     // }
+                                                //     // var btn_download = "<span style='color:#adadad'>No</span>";
+                                                //     // if (Boolean(dataResponse[key].recorded)) {
+                                                //     //     btn_download = "<td> <a href='"+dataResponse[key].recording_url+"' target='_blank' >Mở file</a></td>";
+                                                //     // }
+                                                //    // var timestamp = new Date(dataResponse[key].time_started*1000);
+                                                //    //  timestamp = moment(timestamp).format("dddd MMMM-DD-YYYY HH:mm:ss");
 
-                                                   //   var timestamp1 = new Date(dataResponse[key].time_connected*1000);
-                                                   //  timestamp1 = moment(timestamp1).format("dddd MMMM-DD-YYYY HH:mm:ss");
+                                                //    //   var timestamp1 = new Date(dataResponse[key].time_connected*1000);
+                                                //    //  timestamp1 = moment(timestamp1).format("dddd MMMM-DD-YYYY HH:mm:ss");
 
-                                                   //   var timestamp2 = new Date(dataResponse[key].time_ended*1000);
-                                                   //  timestamp2 = moment(timestamp2).format("dddd MMMM-DD-YYYY HH:mm:ss");
-                                                    data += "<tr>" +
-                                                            "<td>" + dataResponse[key].cdr_id + "</td>" +
-                                                           "<td>" + type + "</td>" +
+                                                //    //   var timestamp2 = new Date(dataResponse[key].time_ended*1000);
+                                                //    //  timestamp2 = moment(timestamp2).format("dddd MMMM-DD-YYYY HH:mm:ss");
+                                                //     data += "<tr>" +
+                                                //             "<td>" + dataResponse[key].cdr_id + "</td>" +
+                                                //            "<td>" + type + "</td>" +
                                                             
-                                                            "<td class='fromNumber'>" + dataResponse[key].from_number + "</td>" +
-                                                            "<td class='toNumber'>" + dataResponse[key].to_number + "</td>" +
-                                                            "<td>" + dataResponse[key].duration + "</td>" +
-                                                            "<td><a href='"+dataResponse[key].recording_url+"' target='_blank' >Mở file</a></td>" +
-                                                            // "<td>"+timestamp+"</td>" +
-                                                            "<td>"+dataResponse[key].time_connected+"</td>" +
-                                                            "<td>"+dataResponse[key].time_ended+"</td>" 
+                                                //             "<td class='fromNumber'>" + dataResponse[key].from_number + "</td>" +
+                                                //             "<td class='toNumber'>" + dataResponse[key].to_number + "</td>" +
+                                                //             "<td>" + dataResponse[key].duration + "</td>" +
+                                                //             "<td><a href='"+dataResponse[key].recording_url+"' target='_blank' >Mở file</a></td>" +
+                                                //             // "<td>"+timestamp+"</td>" +
+                                                //             "<td>"+dataResponse[key].time_connected+"</td>" +
+                                                //             "<td>"+dataResponse[key].time_ended+"</td>" 
 
                                                           
-                                                });
-                                                return data;
+                                                // });
+                                                // return data;
                                             }
 
                                             function loopDataPagination(totalPage) {
@@ -530,69 +477,6 @@
     }
 </script>
 
-  
-  <!-- <script>
-    function getInfo(){
-            $.ajax({
-                url: '/account/getinfo',
-                type: 'post',
-                data: 
-                {
-                    email : 'buibao947@gmail.com',
-                    account_sid : 'AC5ee47206d649ad660e8423f8bb07ede5'
-                },
-                dataType: 'json',
-                success: function (response) {
-                    console.log(response);
-                    if (response.status == 200) {
-                        var trial_account = response.data.trial_account;
-                        var date_left = response.data.date_left;
-    
-                        if(trial_account == -1){
-                            var htmlTrialAccount = "<img class='close_expired' src='https://developer.stringee.com/static/assets/images/icon/error.svg' width='20' />"+
-                                                    "Your trial period has expired. You can upgrade or contact&nbsp;<a href='https://stringee.com/contact-sales' target='_blank'>sales@stringee.com</a>&nbsp;for more information.";                    
-                            $('.alertTrial').addClass('p_expired');
-                            $('.alertTrial').append(htmlTrialAccount);      
-                        }
-                        
-                        if(trial_account == 1 && date_left >0){
-                            
-                            $('#text_free').html("<div class='info_free'>During your trial you can buy 1 number for free. <a href='javascript:void(0)' id='btnGetFreeNumber' >Get your free number</a></div>")
-                            
-                            var text_day = 'days';
-                            if(date_left == 1){
-                                text_day = 'day';
-                            }
-                            var htmlDayLeft = "<a class='nav-link font-weight-400' target='_blank' href='javascript:void(0)' aria-expanded='false'" +
-                                                    "data-animation='scale-up' role='button'>"+
-                                                    "<span class='text-danger'>"+date_left+"</span> "+text_day+" left in trial"+
-                                                "</a>";
-                            $('.item-left-trial').append(htmlDayLeft);
-                        }
-                        
-                        if(trial_account !== 0){
-                            var htmlBtnUpgrade = "<li class='nav-item dropdown font-weight-400' id='btnUpgrade'>"+
-                                                        "<a class='nav-link text-warning' href='/payment' aria-expanded='false'"+
-                                                           "data-animation='scale-up' role='button'>"+
-                                                            "<i class='icon mr-5'><img src='https://developer.stringee.com/static/assets/images/icon/diamond.svg' width='20' /></i>"+
-                                                            "UPGRADE"+
-                                                        "</a>"+
-                                                 "</li>";
-                            $('.btn-upgrade').append(htmlBtnUpgrade);
-                        }
-                        
-                        
-                    }
-                },
-                error: function (xhr, desc, err) {
-                    console.log(xhr);
-                    console.log("Details: " + desc + "\nError:" + err);
-                }});
-        }
-        getInfo();
-  </script>
-  
- -->
   <script>
   (function(document, window, $) {
     'use strict';
@@ -612,6 +496,5 @@
     gtag('config', 'UA-111461280-1');
     gtag('config', 'AW-810064151');
   </script>
-  
-  
-
+</body>
+</html>

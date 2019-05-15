@@ -26,11 +26,7 @@
          <?php } ?>
        
          <?php if(isset($client)){ ?>
-         <li role="presentation">
-            <a href="#customer_admins" aria-controls="customer_admins" role="tab" data-toggle="tab">
-            <?php echo _l( 'customer_admins' ); ?>
-            </a>
-         </li>
+        
          <?php do_action('after_customer_admins_tab',$client); ?>
          <?php } ?>
       </ul>
@@ -159,43 +155,7 @@
                </div>
             </div>
          </div>
-         <?php if(isset($client)){ ?>
-         <div role="tabpanel" class="tab-pane" id="customer_admins">
-            <?php if (has_permission('customers', '', 'create') || has_permission('customers', '', 'edit')) { ?>
-            <a href="#" data-toggle="modal" data-target="#customer_admins_assign" class="btn btn-info mbot30"><?php echo _l('assign_admin'); ?></a>
-            <?php } ?>
-            <table class="table dt-table">
-               <thead>
-                  <tr>
-                     <th><?php echo _l('staff_member'); ?></th>
-                     <th><?php echo _l('customer_admin_date_assigned'); ?></th>
-                     <?php if(has_permission('customers','','create') || has_permission('customers','','edit')){ ?>
-                     <th><?php echo _l('options'); ?></th>
-                     <?php } ?>
-                  </tr>
-               </thead>
-               <tbody>
-                  <?php foreach($customer_admins as $c_admin){ ?>
-                  <tr>
-                     <td><a href="<?php echo admin_url('profile/'.$c_admin['staff_id']); ?>">
-                        <?php echo staff_profile_image($c_admin['staff_id'], array(
-                           'staff-profile-image-small',
-                           'mright5'
-                           ));
-                           echo get_staff_full_name($c_admin['staff_id']); ?></a>
-                     </td>
-                     <td data-order="<?php echo $c_admin['date_assigned']; ?>"><?php echo _dt($c_admin['date_assigned']); ?></td>
-                     <?php if(has_permission('customers','','create') || has_permission('customers','','edit')){ ?>
-                     <td>
-                        <a href="<?php echo admin_url('clients/delete_customer_admin/'.$client->userid.'/'.$c_admin['staff_id']); ?>" class="btn btn-danger _delete btn-icon"><i class="fa fa-remove"></i></a>
-                     </td>
-                     <?php } ?>
-                  </tr>
-                  <?php } ?>
-               </tbody>
-            </table>
-         </div>
-         <?php } ?>
+        
       
       </div>
    </div>

@@ -1,7 +1,5 @@
 <?php
-
 defined('BASEPATH') or exit('No direct script access allowed');
-
 class Post_contents extends Admin_controller
 {
 	public function __construct()
@@ -13,35 +11,28 @@ class Post_contents extends Admin_controller
 		$this->load->model('contents_model');
 		$this->load->model('AccessToken_model');
 	}
-
 	/* List all contents */
 	public function index()
 	{
 		$data['title'] = _l('post_contents');
 		$this->load->view('admin/post_contents/manage', $data);
 	}
-
 	public function table($clientid = '')
 	{
 		if (!has_permission('post_contents', '', '') && !has_permission('post_contents', '', '')) {
 			ajax_access_denied();
 		}
-
 		$idstaff = $this->db->get('tblstaff')->result_array();
 		$idtask = $this->db->get('tblstafftasks')->result_array();
 		$project = $this->db->get('tblprojects')->result_array();
-
 		$this->app->get_table_data('post_contents', [
 			'clientid' => $clientid, 'ids' => $idtask, 'staff' => $idstaff,
 		]);
 	}
 	public function update_token()
 	{
-
 		if (!empty($_POST['token'])) {
-
 			$curToken = $this->AccessToken_model->getCurrentToken();
-
 			if ($_POST['token'] == $curToken->token) {
 				set_alert('success', 'Please Check New Token Again ', _l('content'));
 			} else {
@@ -62,84 +53,80 @@ class Post_contents extends Admin_controller
 			set_alert('success', _l('posted_successfully', _l('content')));
 		}
 	}
-
-
 	public function view($id)
 	{
 		$content = $this->contents_model->get($id);
 		$post_id = $content->post_id;
 		$tokenGet = $this->AccessToken_model->getCurrentToken();
 		$user_access_token = $tokenGet->token;
-	
-		if($post_id){
-		//Get access token page
-		$arr = ["LIKE", "LOVE", "HAHA", "SAD", "ANGRY", "WOW",];
-		$arr2 = ["comments", "shares",];
-		$data       = array();
-		$method     = "GET";
-		$dataReaction = array();
-		$dataCommentShare = array();
-		$check = false;
-		$total = 0;
 
-		//GET REACTIONS
-		for ($i = 0; $i < 6; $i++) {
-			$url = "https://graph.facebook.com/" . $post_id . '?fields=reactions.type(' . $arr[$i] . ').limit(0).summary(total_count)&access_token=' . $user_access_token;
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, $url);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
-			$query = http_build_query($data);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
-			$result = curl_exec($ch);
-			$checkAccessToken  = json_decode($result, true);
-			if(empty($checkAccessToken)){
-				break;
+		if ($post_id) {
+			//Get access token page
+			$arr = ["LIKE", "LOVE", "HAHA", "SAD", "ANGRY", "WOW",];
+			$arr2 = ["comments", "shares",];
+			$data       = array();
+			$method     = "GET";
+			$dataReaction = array();
+			$dataCommentShare = array();
+			$check = false;
+			$total = 0;
+			//GET REACTIONS
+			for ($i = 0; $i < 6; $i++) {
+				$url = "https://graph.facebook.com/" . $post_id . '?fields=reactions.type(' . $arr[$i] . ').limit(0).summary(total_count)&access_token=' . $user_access_token;
+				$ch = curl_init();
+				curl_setopt($ch, CURLOPT_URL, $url);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+				curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+				$query = http_build_query($data);
+				curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
+				$result = curl_exec($ch);
+				$checkAccessToken  = json_decode($result, true);
+				if (empty($checkAccessToken)) {
+					break;
 				}
-			array_push($dataReaction, $checkAccessToken["reactions"]["summary"]["total_count"]);
-			$total += $dataReaction[$i];
-			$check = true;
-		}
-		//GET COMMENTS & SHARES
-		for ($y = 0; $y < 2; $y++) {
-			if ($y == 0) {
-				$url = "https://graph.facebook.com/" . $post_id . '?fields=' . $arr2[$y] . '.summary(total_count)&access_token=' . $user_access_token;
-			} else {
-				$url = "https://graph.facebook.com/" . $post_id . '?fields=' . $arr2[$y] . '&access_token=' . $user_access_token;
+				array_push($dataReaction, $checkAccessToken["reactions"]["summary"]["total_count"]);
+				$total += $dataReaction[$i];
+				$check = true;
 			}
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, $url);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
-			$query = http_build_query($data);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
-			$result = curl_exec($ch);
-			$checkAccessToken  = json_decode($result, true);
-			if(empty($checkAccessToken)){
-				break;
+			//GET COMMENTS & SHARES
+			for ($y = 0; $y < 2; $y++) {
+				if ($y == 0) {
+					$url = "https://graph.facebook.com/" . $post_id . '?fields=' . $arr2[$y] . '.summary(total_count)&access_token=' . $user_access_token;
+				} else {
+					$url = "https://graph.facebook.com/" . $post_id . '?fields=' . $arr2[$y] . '&access_token=' . $user_access_token;
+				}
+				$ch = curl_init();
+				curl_setopt($ch, CURLOPT_URL, $url);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+				curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+				$query = http_build_query($data);
+				curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
+				$result = curl_exec($ch);
+				$checkAccessToken  = json_decode($result, true);
+				if (empty($checkAccessToken)) {
+					break;
+				}
+				if ($y == 0) {
+					array_push($dataCommentShare, $checkAccessToken["comments"]["summary"]["total_count"]);
+				} else {
+					array_push($dataCommentShare, $checkAccessToken["shares"]["count"]);
+				}
 			}
-			if ($y == 0) {
-				array_push($dataCommentShare, $checkAccessToken["comments"]["summary"]["total_count"]);
-			} else {
-				array_push($dataCommentShare, $checkAccessToken["shares"]["count"]);
+			$data['like'] = $dataReaction[0];
+			$data['love'] = $dataReaction[1];
+			$data['haha'] = $dataReaction[2];
+			$data['sad'] = $dataReaction[3];
+			$data['angry'] = $dataReaction[4];
+			$data['wow'] = $dataReaction[5];
+			$data['total_reaction'] = $total;
+			$data['comments'] = $dataCommentShare[0];
+			$data['shares'] = $dataCommentShare[1];
+			$data['total'] = $total + $data['comments'] + $data['shares'];
+			if (!$check) {
+				set_alert('success', _l('get_token_to_update_infor', _l('content')));
 			}
-			
-		}
-		$data['like'] = $dataReaction[0];
-		$data['love'] = $dataReaction[1];
-		$data['haha'] = $dataReaction[2];
-		$data['sad'] = $dataReaction[3];
-		$data['angry'] = $dataReaction[4];
-		$data['wow'] = $dataReaction[5];
-		$data['total_reaction'] = $total;
-		$data['comments'] = $dataCommentShare[0];
-		$data['shares'] = $dataCommentShare[1];
-		$data['total'] = $total + $data['comments'] + $data['shares'];
-		if(!$check){
-			set_alert('success', _l('get_token_to_update_infor', _l('content')));
-		}
 		}
 		$staffTask = $this->db->get('tblstafftasks')->result_array();
 		$data['staffTask'] = $staffTask;
@@ -168,6 +155,7 @@ class Post_contents extends Admin_controller
 			}
 		}
 		$data['jsonData'] =  json_encode($record_set);
+
 		$task = $this->tasks_model->get($content->task_title);
 		if ($task->rel_type == "project") {
 			$project = $this->projects_model->get($task->rel_id);
@@ -175,14 +163,39 @@ class Post_contents extends Admin_controller
 			$data['link_fanpage'] = $project->link_page;
 			$data['fanpage_name'] = $project->fanpage_name;
 		}
+		//GET PUBLISHED TIME
+		if(empty($content->publish_time)){
+		$url = "https://graph.facebook.com/" . $post_id . '?access_token=' . $user_access_token;
+		$ch = curl_init();
+		$method = "GET";
+		$data1 = array();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+		$query = http_build_query($data1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
+		$result = curl_exec($ch);
+		$checkAccessToken  = json_decode($result, true);
+		$data['publish_time'] =  date_format(date_create($checkAccessToken['created_time']),"d-m-Y H:i:s");
+		$dataUpdate = array(
+			'publish_time' => $data['publish_time']
+		);
+		$this->db->where('id', $id);
+		$this->db->update('tblcontents', $dataUpdate);
+		}
+		else{
+		$data['publish_time'] = $content->publish_time;
+		}
+
+		$data['graph_link_page'] = "https://graph.facebook.com/v3.2/" . $project->fanpage_id;
 		$this->load->view('admin/post_contents/view', $data);
 	}
-
+	
 	public function post_content()
 	{
 		$success = false;
 		$message = '';
-
 		if (!empty($_POST['id_page'])) {
 			$id = $_POST['id'];
 			$id_page = $_POST['id_page'];
@@ -205,7 +218,6 @@ class Post_contents extends Admin_controller
 			$result = curl_exec($ch);
 			//Check Access Token
 			$checkAccessToken  = json_decode($result, true);
-
 			if ($checkAccessToken['access_token']) {
 				//POST content
 				$tab                = json_decode($result, true);

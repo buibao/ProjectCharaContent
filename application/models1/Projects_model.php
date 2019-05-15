@@ -8,7 +8,7 @@ class Projects_model extends CRM_Model
     public function __construct()
     {
         parent::__construct();
-
+        $this->load->model('project_types_model');
         $project_settings = [
             'available_features',
             'view_tasks',
@@ -80,7 +80,7 @@ class Projects_model extends CRM_Model
 
         return $statuses;
     }
-
+    
     public function get_distinct_tasks_timesheets_staff($project_id)
     {
         return $this->db->query('SELECT DISTINCT staff_id FROM tbltaskstimers LEFT JOIN tblstafftasks ON tblstafftasks.id = tbltaskstimers.task_id WHERE rel_type="project" AND rel_id=' . $project_id)->result_array();
@@ -2618,4 +2618,30 @@ class Projects_model extends CRM_Model
             'last_activity' => date('Y-m-d H:i:s'),
         ]);
     }
+
+    //Project Type
+     public function get_project_types($id = '')
+    {
+        return $this->project_types_model->get($id);
+    }
+
+    public function get_name_project_types($project_id){
+    
+    $query = $this->db->select('tblprojecttype.name')
+     ->from('tblprojects')
+     ->where('tblprojects.id', $project_id)
+     ->join('tblprojecttype', 'tblprojects.project_type = tblprojecttype.id')
+     ->get();
+
+     return $query -> result_array();
+    }
+    /**
+     * Add new  type
+     * @param mixed $data All $_POST data
+     */
+    public function add_project_type($data)
+    {
+        return $this->project_types_model->add($data);
+    }
+
 }

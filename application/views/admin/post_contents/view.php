@@ -41,7 +41,7 @@
                                                                 <?php if (!$fanpage_id) { ?>
                                                                     <img src="<?php echo APP_BASE_URL . '/assets/images/user-placeholder.jpg' ?>" class="staff-profile-image-small" style="width:75px; height:75px">
                                                                 <?php } else {
-                                                                echo '<img class="staff-profile-image-small" src="https://graph.facebook.com/v3.2/' . $fanpage_id . '/picture?type=large" style="width:65px; height:65px"/>';
+                                                                echo '<img class="staff-profile-image-small" src=" '. $graph_link_page . '/picture?type=large" style="width:65px; height:65px"/>';
                                                             }
                                                             ?>
                                                             </a>
@@ -49,15 +49,15 @@
                                                         <div class="media-body" style="font-size:20px;">
                                                             <p class="media-heading no-mbot">
                                                                 <a href="<?php echo $link_fanpage ?>"><?php echo $fanpage_name ?></a>
-                                                                <?php if ($content->status == 5) { ?>
-                                                                </p><small class="post-time-ago" style="font-size:15px;">7 days ago</small>
+                                                                <?php if ($content->status == 4) { ?>
+                                                                
                                                                 <div class="dropdown pull-right btn-post-options-wrapper">
                                                                 </div>
-                                                                <small class="text-muted" style="font-size:15px;">Published: 2019-04-25 21:28:48</small>&nbsp
+                                                                <small class="text-muted" style="font-size:15px;"><?php echo $publish_time?></small>&nbsp
                                                                 <img data-toggle="tooltip" data-placement="top" data-original-title="Pulbic" src="<?php echo APP_BASE_URL . '/assets/images/public.png' ?>" class="staff-profile-image-small no-radius" style="width:15px; height:15px">
                                                             <?php } else { ?>
                                                                 <div>
-                                                                    <small class="text-muted" style="font-size:15px;">Waiting for post</small>
+                                                                    <small class="text-muted" style="font-size:15px;"><?php echo _l('waiting_for_posting'); ?></small>
                                                                 </div>
                                                             <?php } ?>
                                                         </div>
@@ -104,7 +104,7 @@
                                                                 <?php if (!$fanpage_id) { ?>
                                                                     <img src="<?php echo APP_BASE_URL . '/assets/images/user-placeholder.jpg' ?>" class="staff-profile-image-small no-radius">
                                                                 <?php } else {
-                                                                echo '<img class="staff-profile-image-small no-radius" src="https://graph.facebook.com/v3.2/' . $fanpage_id . '/picture?type=large" style="margin-right:5px;"/>';
+                                                                echo '<img class="staff-profile-image-small no-radius" src="'.$graph_link_page . '/picture?type=large" style="margin-right:5px;"/>';
                                                             }
                                                             ?>
                                                 </a>
@@ -299,16 +299,12 @@
    var data = {};
    data.id = "<?php echo $id_content; ?>";
    data.id_page = "<?php echo $fanpage_id; ?>";
-   data.description = "<?php echo $content->description; ?>";
-   data.urlPhoto = "<?php echo $file_name_str ?>";
+   data.urlPhoto = "<?php echo $urlImage ?>";
+   data.description = $("#description").text();
    $("#post_content").click(function() {
       $.post(admin_url + 'post_contents/post_content', data).done(function(response) {
          response = JSON.parse(response);
-         if (response.success == true) {
-            alert_float('success', response.message);
-         } else {
-            alert_float('danger', response.message);
-         }
+         
       });
    });
 </script>
@@ -320,22 +316,18 @@
 <script src='<?php echo base_url('assets/plugins/editor/vendor/emoji-picker/lib/js/emoji-picker.js'); ?>'></script>
 <style>
    .icon1 {
-
       padding: 1px;
       border: 2px solid white;
       border-radius: 50%;
       -webkit-border-radius: 500px;
       -moz-border-radius: 500px;
    }
-
-
 </style>
 
 <script>
    $(document).ready(function() {
       listComment();
    });
-
    function listComment() {
       $.post("",
          function(data) {
@@ -349,31 +341,22 @@
                .replace(/\r/g, "\\r")
                .replace(/\t/g, "\\t")
                .replace(/\f/g, "\\f");
-
             // .replace(/\n/g, "\\n")
             //  .replace(/\r/g, "\\r")
             //  .replace(/\t/g, "\\t")
             //  .replace(/\f/g, "\\f");
-
             // remove non-printable and other non-valid JSON chars
             //datarecieve = datarecieve.replace(/[\u0000-\u001F]+/g,""); 
-
             var data = JSON.parse(datarecieve);
             console.log(data);
             var comments = "";
-
             var results = new Array();
-
             // var list = $("<ul class='outer-comment'>");
             // var item = $("<li>").html(comments);
-
             for (var i = 0;
                (i < data.length); i++) {
-
                comments = data[i]['description'];
-
             }
-
             $("#description").html(comments);
          });
    }
@@ -394,8 +377,6 @@
          }
       });
    });
-
-
    $(function() {
       // Initializes and creates emoji set from sprite sheet
       window.emojiPicker = new EmojiPicker({
@@ -405,8 +386,43 @@
       });
       // '<?php 
             ?>'
-
       window.emojiPicker.discover();
    });
 </script>
+<script type="text/javascript">
+
+   var data = {};
+
+   data.id = "<?php echo $id_content; ?>";
+
+   data.id_page = "<?php echo $fanpage_id; ?>";
+
+   var datarecieve1 = '<?php echo $jsonData ?>';
+
+                datarecieve1 = datarecieve1.replace(/\n/g, "\\n")  
+
+               .replace(/\r/g, "\\r")
+
+               .replace(/\t/g, "\\t")
+
+               .replace(/\f/g, "\\f");   
+               
+            var data1 = JSON.parse(datarecieve1);
+
+   data.description = data1[0]['description'];
+
+   data.urlPhoto = "<?php echo $urlImage ?>";
+
+   $("#post_content").click(function() {
+
+      $.post(admin_url + 'post_contents/post_content', data).done(function(response) {
+
+         response = JSON.parse(response);
+      });
+
+   });
+
+</script>
+
+
 </html>

@@ -21,6 +21,7 @@
                         </div>
                     </div>
                     <div class="panel-body">
+                        <!-- <?php //echo form_open("admin/callcenter/searchCall");?> -->
                         <form class="form-inline" id="formSearchCallReport">
                                                       <div class="form-group">
                                <!--  <select class="form-control" id="selectProjectId">
@@ -47,22 +48,11 @@
                                     <option value="0">Voice call</option>
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <!--<label class="form-control-label" for="inputUserID">UserID</label>-->
-                                <input type="text" class="form-control"  id="inputUserID" name="" placeholder="USER ID" autocomplete="off" style="width: 100px;">
-                            </div>
-
-
-                        </form>
-
-
-
-                        <div class="form-inline">
-                            <div class="form-group">
-                                <div class="input-group">
+                                <div class="form-group">
+                               
                                     <!--<label class="form-control-label" for="inputFromNumber">From</label>-->
                                     <input type="text" class="form-control" id="inputFromNumber" name="inputFromNumber" placeholder="From: ex 84988889998" autocomplete="off">
-                                </div>
+                               
                             </div>
                             <div class="form-group">
                                 <!--<label class="form-control-label" for="inputToNumber">To</label>-->
@@ -80,7 +70,11 @@
                             <div class="form-group">
                                 <button type="button" class="btn btn-success" id="btnSearchCall">Search</button>
                             </div>
-                        </div>
+                        </form>
+
+
+
+                       <!--  <?php //echo form_close();?> -->
                         <div class='form-inline'>   
                             <label class="form-control-label" for="inputInlineUsername">
                                 <span class="countSearch">0</span> 
@@ -357,10 +351,10 @@
                                                         //     console.log('Session expired');
                                                         //     window.location.href = "/account/logout";
                                                         // }
-                                                        var phoneCalls = response.items;
-                                                        var page = response.currentPage;
-                                                        var totalPage = response.totalPages;
-                                                        var totalCount = response.data.total;
+                                                        var phoneCalls = response.data.total;
+                                                        var page = 1;
+                                                        var totalPage = 3;
+                                                        var totalCount = response.data.totalCount;
                                                         $("#tableCalls tbody").empty();
                                                         var dataInsertTable = loopDataCall(phoneCalls);
                                                         $("#tableCalls tbody").append(dataInsertTable);
@@ -435,14 +429,14 @@
                                                     // if (Boolean(dataResponse[key].recorded)) {
                                                     //     btn_download = "<td> <a href='"+dataResponse[key].recording_url+"' target='_blank' >Mở file</a></td>";
                                                     // }
-                                                   var timestamp = new Date(dataResponse[key].time_started*1000);
-                                                    timestamp = moment(timestamp).format("dddd MMMM-DD-YYYY HH:mm:ss");
+                                                   // var timestamp = new Date(dataResponse[key].time_started*1000);
+                                                   //  timestamp = moment(timestamp).format("dddd MMMM-DD-YYYY HH:mm:ss");
 
-                                                     var timestamp1 = new Date(dataResponse[key].time_connected*1000);
-                                                    timestamp1 = moment(timestamp1).format("dddd MMMM-DD-YYYY HH:mm:ss");
+                                                   //   var timestamp1 = new Date(dataResponse[key].time_connected*1000);
+                                                   //  timestamp1 = moment(timestamp1).format("dddd MMMM-DD-YYYY HH:mm:ss");
 
-                                                     var timestamp2 = new Date(dataResponse[key].time_ended*1000);
-                                                    timestamp2 = moment(timestamp2).format("dddd MMMM-DD-YYYY HH:mm:ss");
+                                                   //   var timestamp2 = new Date(dataResponse[key].time_ended*1000);
+                                                   //  timestamp2 = moment(timestamp2).format("dddd MMMM-DD-YYYY HH:mm:ss");
                                                     data += "<tr>" +
                                                             "<td>" + dataResponse[key].cdr_id + "</td>" +
                                                            "<td>" + type + "</td>" +
@@ -452,8 +446,8 @@
                                                             "<td>" + dataResponse[key].duration + "</td>" +
                                                             "<td><a href='"+dataResponse[key].recording_url+"' target='_blank' >Mở file</a></td>" +
                                                             // "<td>"+timestamp+"</td>" +
-                                                            "<td>"+timestamp1+"</td>" +
-                                                            "<td>"+timestamp2+"</td>" 
+                                                            "<td>"+dataResponse[key].time_connected+"</td>" +
+                                                            "<td>"+dataResponse[key].time_ended+"</td>" 
 
                                                           
                                                 });

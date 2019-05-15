@@ -22,7 +22,13 @@ class Callcenter_model extends CRM_Model {
         $sql = "SELECT SUM(duration) AS total FROM tblcalllog";
         $query = $this->db->query($sql);
         return $query->row();
+    } 
+    public function calls() {
+        $sql = "SELECT *  FROM tblcalllog ";
+        $query = $this->db->query($sql);
+        return $query->result_array();
     }
+
     // FIX CODE
     public function insertVHT($data)
     {

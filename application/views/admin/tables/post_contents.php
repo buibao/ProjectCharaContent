@@ -13,7 +13,7 @@ $sIndexColumn = 'id';
 $sTable = 'tblcontents';
 $join = [
 ];
-$where = [];
+$where = ['OR task_id = ' .$id];
 $filter = [];
 $statusIds = [];
 foreach ($this->ci->contents_model->get_content_statuses() as $status) {

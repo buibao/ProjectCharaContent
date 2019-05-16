@@ -25,8 +25,9 @@ class Post_contents extends Admin_controller
 		$idstaff = $this->db->get('tblstaff')->result_array();
 		$idtask = $this->db->get('tblstafftasks')->result_array();
 		$project = $this->db->get('tblprojects')->result_array();
+		$id  = $GLOBALS['current_user']->staffid;
 		$this->app->get_table_data('post_contents', [
-			'clientid' => $clientid, 'ids' => $idtask, 'staff' => $idstaff,
+			'clientid' => $clientid, 'ids' => $idtask, 'staff' => $idstaff,'id'=>$id
 		]);
 	}
 	public function update_token()
@@ -82,12 +83,13 @@ class Post_contents extends Admin_controller
 				curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
 				$result = curl_exec($ch);
 				$checkAccessToken  = json_decode($result, true);
-				if (empty($checkAccessToken)) {
+				if (empty($checkAccessToken["reactions"])) {
+					$check = true;
 					break;
 				}
 				array_push($dataReaction, $checkAccessToken["reactions"]["summary"]["total_count"]);
 				$total += $dataReaction[$i];
-				$check = true;
+				
 			}
 			//GET COMMENTS & SHARES
 			for ($y = 0; $y < 2; $y++) {
@@ -105,7 +107,7 @@ class Post_contents extends Admin_controller
 				curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
 				$result = curl_exec($ch);
 				$checkAccessToken  = json_decode($result, true);
-				if (empty($checkAccessToken)) {
+				if (empty($checkAccessToken["comments"])) {
 					break;
 				}
 				if ($y == 0) {
@@ -124,7 +126,7 @@ class Post_contents extends Admin_controller
 			$data['comments'] = $dataCommentShare[0];
 			$data['shares'] = $dataCommentShare[1];
 			$data['total'] = $total + $data['comments'] + $data['shares'];
-			if (!$check) {
+			if ($check) {
 				set_alert('success', _l('get_token_to_update_infor', _l('content')));
 			}
 		}

@@ -217,7 +217,7 @@
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <h4 class="bold no-margin"><?php echo _l('effect_of_content')?></h4>
+                                        <h4 class="bold no-margin">EFFECT OF THE ARTICLE</h4>
                                     </div>
                                     <br/>
                                     <hr/>

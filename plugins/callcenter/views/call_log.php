@@ -220,9 +220,9 @@
                                                             posX,
                                                         ]
                                                     },
-                                                    //      color: {
-                                                    //        pattern: ["#62a8ea"]
-                                                    //      },
+                                                         color: {
+                                                           pattern: ["#62a8ea"]
+                                                         },
                                                     padding: {
                                                         right: 40
                                                     },
@@ -230,15 +230,15 @@
                                                         x: {
                                                             type: 'timeseries',
                                                             tick: {
-                                                                outer: false,
+                                                                outer: true,
                                                                 format: '%Y/%m/%d'
                                                             }
                                                         },
                                                         y: {
                                                             max: maxPosY,
-                                                            min: 1,
+                                                            min: 0.5,
                                                             tick: {
-                                                                outer: false,
+                                                                outer: true,
                                                                 count: posY.length,
                                                                 values: posY
                                                             }
@@ -246,10 +246,10 @@
                                                     },
                                                     grid: {
                                                         x: {
-                                                            show: false
+                                                            show: true
                                                         },
                                                         y: {
-                                                            show: false
+                                                            show: true
                                                         }
                                                     }
                                                 });
@@ -282,7 +282,7 @@
 //                                                         //isVideocall: $('#isVideocall option:selected').val()
 //                                                     },
 //                                                     dataType: 'json',
-                                                        type: 'GET',
+                                                        type: 'post',
                                                          url: urlAPI,
                                                            data: {
                                                         'inputFromNumber': inputFromNumber.val(),
@@ -451,8 +451,8 @@
                                                 var start = moment().subtract(29, 'days');
                                                 var end = moment();
                                                 function cb(start, end) {
-                                                    $('#reportrange span').html(start.format('YYYY/MM/DD') + ' - ' + end.format('YYYY/MM/DD'));
-                                                    $('.dateRange').html(start.format('YYYY/MM/DD') + ' - ' + end.format('YYYY/MM/DD'));
+                                                    $('#reportrange span').html(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
+                                                    $('.dateRange').html(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
                                                 }
                                                 $('#reportrange').daterangepicker({
                                                     autoUpdateInput: '',
@@ -473,9 +473,9 @@
                                                 }, cb);
                                                 cb(start, end);
 
-                                                $('#reportrange span').html(moment().startOf('month').format('YYYY/MM/DD') + ' - ' + moment().endOf('month').format('YYYY/MM/DD'));
+                                                $('#reportrange span').html(moment().startOf('month').format('YYYY-MM-DD') + ' - ' + moment().endOf('month').format('YYYY-MM-DD'));
                                                 $('#btnResetDateRange').click(function () {
-                                                    $('#reportrange span').html('YYYY/MM/DD - YYYY/MM/DD');
+                                                    $('#reportrange span').html('YYYY-MM-DD - YYYY-MM-DD');
                                                     $('.dateRange').html('All dates');
                                                 });
                                             }

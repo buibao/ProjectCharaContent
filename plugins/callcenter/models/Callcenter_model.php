@@ -28,66 +28,25 @@ class Callcenter_model extends CRM_Model {
         $query = $this->db->query($sql);
         return $query->result_array();
     }
-
-     public function callByDayChart($inputFromNumber='',$inputToNumber='',$reportrange='') {
-        $stringQuery ='';
-        
-        if($inputFromNumber != ''){
-            $stringQuery += ' && from_number = ' . $inputFromNumber; 
-        }
-        if($inputToNumber != ''){
-            $stringQuery += ' && inputToNumber = ' . $inputToNumber; 
-        }
-
-        $sql = "SELECT  time_start AS created_datetime,SUM(CAST(`duration`/60 AS DECIMAL(18,2))) AS total FROM tblcalllog WHERE duration > 0 ".$stringQuery." GROUP BY time_start";
+        // `time_start` BETWEEN '2019-05-01' AND '2019-05-04'
+    //SELECT * FROM `tblcalllog` WHERE `time_start`  BETWEEN LIKE 'YYYY-MM-DD' AND like 'YYYY-MM-DD' ORDER BY `time_start`  ASC
+    public function callByDayChart($inputFromNumber='',$inputToNumber='',$startDate='',$endDate='') {
+        $stringQuery = " from_number like '%".$inputFromNumber."%'" ." and to_number  like '%".$inputToNumber."%'";
+        $sql = "SELECT  time_start AS created_datetime,SUM(CAST(`duration`/60 AS DECIMAL(18,2))) AS total FROM tblcalllog WHERE duration > 0 and ".$stringQuery." GROUP BY time_start";
         $query = $this->db->query($sql);
         return $query->result_array();
     } 
-    public function callSumChart($inputFromNumber='',$inputToNumber='',$reportrange='') {
-         $stringQuery ='';
-         $sql="";
-
-        if($inputFromNumber != ''){
-            $stringQuery += ' from_number = ' . $inputFromNumber; 
-            if($inputToNumber != ''){
-            $stringQuery += ' && inputToNumber = ' . $inputToNumber; 
-            }
-        }else{
-            if($inputToNumber != ''){
-            $stringQuery += ' inputToNumber = ' . $inputToNumber; 
-            }
-        }
+    public function callSumChart($inputFromNumber='',$inputToNumber='',$startDate='',$endDate='') {
+         $stringQuery = " from_number like '%".$inputFromNumber."%'" ." and to_number  like '%".$inputToNumber."%'";
+        $sql = "SELECT SUM(duration) AS total FROM tblcalllog WHERE " . $stringQuery;   
         
-        if($stringQuery == ''){
-            $sql = "SELECT SUM(duration) AS total FROM tblcalllog";
-        }else{
-          $sql = "SELECT SUM(duration) AS total FROM tblcalllog WHERE " . $stringQuery;   
-        }
-       
         $query = $this->db->query($sql);
         return $query->row();
     } 
-    public function callsChart($inputFromNumber='',$inputToNumber='',$reportrange='') {
-           $stringQuery ='';
-         $sql="";
-
-        if($inputFromNumber != ''){
-            $stringQuery += ' from_number = ' . $inputFromNumber; 
-            if($inputToNumber != ''){
-            $stringQuery += ' && inputToNumber = ' . $inputToNumber; 
-            }
-        }else{
-            if($inputToNumber != ''){
-            $stringQuery += ' inputToNumber = ' . $inputToNumber; 
-            }
-        }
-        
-        if($stringQuery == ''){
-           $sql = "SELECT *  FROM tblcalllog ";
-        }else{
-          $sql = "SELECT *  FROM tblcalllog WHERE " . $stringQuery;   
-        }
-       
+    public function callsChart($inputFromNumber='',$inputToNumber='',$startDate='',$endDate='') {
+        $stringQuery = " from_number like '%".$inputFromNumber."%'" ." and to_number  like '%".$inputToNumber."%'";
+        $sql = "SELECT *  FROM tblcalllog WHERE " . $stringQuery;   
+      
         $query = $this->db->query($sql);
         return $query->result_array();
     }

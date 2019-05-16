@@ -67,33 +67,27 @@ class API extends Admin_controller
         $model['historys'] =  $dt;
         echo json_encode($model);
     }
-      public function Contact($inputFromNumber='',$inputToNumber='',$reportrange=''){
-       // echo json_encode($inputFromNumber . $inputToNumber . $reportrange);
-//         $model = array();
+      public function Contact(){
         
-//          $user  = $GLOBALS['current_user'];
-//     $ids  = $user->staffid;
-//      $User = $this->Callcenter_model->getSingle($ids);
-//    $auth =  base64_encode($User->APIKey .":". $User->APISecret);
-//     $context = stream_context_create([
-//     "http" => [
-//         "header" => "Authorization: Basic YzA5NWVkZGIzMGMxNDE4NGM1N2E4YzJkMmQxYWQ0ZjQ6OTQzYWJkYmUzMDJhZWY1Y2UwYWY5MWU0NDYyYTJjNTA="
-//     ]
-// ]);
-
-//  $strings2 = 'https://acd-api.vht.com.vn/rest/cdrs?page=1&limit=50&sort_type=DESC'; 
-//   $homepage2 = file_get_contents($strings2, false, $context);
-//   $results2 = json_decode($homepage2);
-//   $dt = $results2->items;
- 
-$calls = $this->Callcenter_model->callsChart($inputFromNumber,$inputToNumber,$reportrange);
+$inputFromNumber = $_POST['inputFromNumber'];
+$inputToNumber = $_POST['inputToNumber'];
+$reportrange = $_POST['reportrange'];
+$str_arr = explode (" - ", $reportrange);
+$check ='';  
+if(strcmp($str_arr[0], 'YYYY-MM-DD') ==0){
+$check = 'done have';
+}
+$calls = $this->Callcenter_model->callsChart($inputFromNumber,$inputToNumber,$str_arr[0],$str_arr[1]);
 $rowcount = count($calls);
-$callChart = $this->Callcenter_model->callByDayChart($inputFromNumber,$inputToNumber,$reportrange);
-$callSum = $this->Callcenter_model->callSumChart($inputFromNumber,$inputToNumber,$reportrange);
+$callChart = $this->Callcenter_model->callByDayChart($inputFromNumber,$inputToNumber,$str_arr[0],$str_arr[1]);
+$callSum = $this->Callcenter_model->callSumChart($inputFromNumber,$inputToNumber,$str_arr[0],$str_arr[1]);
 $results2->data->callByDay = $callChart;
 $results2->data->callSum = gmdate("H:i:s", $callSum->total);
 $results2->data->total = $calls;
 $results2->data->totalCount = $rowcount;
+$results2->data->stringG1 = $str_arr[0];
+$results2->data->stringG2 = $str_arr[1];
+$results2->data->stringG3 = $check;
         echo json_encode($results2);
     }
     

@@ -90,19 +90,24 @@ foreach ($rResult as $aRow) {
 
     // $rowName .= '</div>';
      $type = '';
+     $urlRecording ='';
      if ($aRow['direction'] == 3 ) {
-      $type = "<img src='https://developer.stringee.com/static/assets/images/icon-in2ex.png' class='icon-call' />";
+      $type = "<img src='https://developer.stringee.com/static/assets/images/icon-in2ex.png' class='icon-call' style='width: 50px;height: 20px;' />";
        } else {
-       $type = "<img src='https://developer.stringee.com/static/assets/images/icon-ex2in.png' class='icon-call' />";
+       $type = "<img src='https://developer.stringee.com/static/assets/images/icon-ex2in.png' class='icon-call' style='width: 50px;height: 20px;' />";
       }
-
+      if($aRow['recording_url'] ==""){
+        $urlRecording = "No";
+      }else{
+       $urlRecording = "<td><a href='".$aRow['recording_url']."' class='btn btn-danger btn-xs text-white btnDownload' target='_blank' >Mở file</a></td>" ;
+      }
 
     $row[] = $aRow['cdr_id'];
     $row[] = $type;
     $row[] = $aRow['from_number'];
     $row[] = $aRow['to_number'];
     $row[] = $aRow['duration'];
-    $row[] = "<td><a href='".$aRow['recording_url']."' target='_blank' >Mở file</a></td>";
+    $row[] = $urlRecording;
     $row[] = $aRow['time_connected'];
     $row[] = $aRow['time_ended'];
 

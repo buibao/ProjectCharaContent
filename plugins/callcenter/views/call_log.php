@@ -148,18 +148,19 @@
 <?php init_tail(); ?>
  
       <!-- Core -->
+       <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.4/dist/loadingoverlay.min.js"></script>
         <link rel="stylesheet" href="https://developer.stringee.com/static/assets/css/site-custom.css">
-  
+         <script src="https://developer.stringee.com/static/global/vendor/babel-external-helpers/babel-external-helpers.js"></script>
+   <script src="https://developer.stringee.com/static/global/vendor/tether/tether.js"></script>
         <script src="https://developer.stringee.com/static/assets/js/jquery.twbsPagination.min.js"></script>
       
         <script src="https://developer.stringee.com/static/global/vendor/bootstrap/bootstrap.js"></script>
         <script src="https://developer.stringee.com/static/global/vendor/animsition/animsition.js"></script>
 
-        <script src="https://developer.stringee.com/static/assets/js/Site.js"></script>
+      <!--   <script src="https://developer.stringee.com/static/assets/js/Site.js"></script> -->
         <!-- Page -->
     
         <script src="https://developer.stringee.com/static/assets/js/site-custom.js"></script>
-   
 <!-- Include Required Prerequisites -->
 <!-- <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script> -->
 <!-- Include Date Range Picker -->
@@ -257,12 +258,12 @@
                                             function loadTableCallReports(pageNumber) {
                                                 var inputFromNumber = $('#inputFromNumber');
                                                 var inputToNumber = $('#inputToNumber');
-                                                var selectFromInternal = $('#selectFromInternal');
-                                                var selectToInternal = $('#selectToInternal');
-                                                var selectProjectId = $('#selectProjectId option:selected');
-                                                var inputUserID = $('#inputUserID');
+                                                // var selectFromInternal = $('#selectFromInternal');
+                                                // var selectToInternal = $('#selectToInternal');
+                                                // var selectProjectId = $('#selectProjectId option:selected');
+                                                // var inputUserID = $('#inputUserID');
                                                 var reportrange = $('#reportrange span').html();
-                                                var urlAPI = '<?php echo base_url().'API/Contact';?>';
+                                                var urlAPI = '<?php echo base_url().'API/Contact/';?>';
                                                 $.ajax({
 //                                                     type: 'post',
 //                                                     url: 'admin/callcenter/calllog/',
@@ -283,6 +284,11 @@
 //                                                     dataType: 'json',
                                                         type: 'GET',
                                                          url: urlAPI,
+                                                           data: {
+                                                        'inputFromNumber': inputFromNumber.val(),
+                                                        'inputToNumber': inputToNumber.val(),
+                                                        'reportrange': reportrange,
+                                                    },
                                                            dataType:"json",
                                                      success: function (response) {
                                                         console.log(response);
@@ -426,7 +432,12 @@
                                             // CLICK SEARCH
                                             $('#btnSearchCall').click(function () {
                                                 $('#paginationCall').twbsPagination('destroy');
+                                                console.log($('#inputFromNumber').val());
+                                                console.log($('#inputToNumber').val());
+                                                 console.log($('#reportrange span').html());
+                                               
                                                 loadTableCallReports();
+
 
                                             });
 

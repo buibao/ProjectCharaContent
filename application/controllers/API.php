@@ -67,7 +67,8 @@ class API extends Admin_controller
         $model['historys'] =  $dt;
         echo json_encode($model);
     }
-      public function Contact(){
+      public function Contact($inputFromNumber='',$inputToNumber='',$reportrange=''){
+       // echo json_encode($inputFromNumber . $inputToNumber . $reportrange);
 //         $model = array();
         
 //          $user  = $GLOBALS['current_user'];
@@ -85,17 +86,14 @@ class API extends Admin_controller
 //   $results2 = json_decode($homepage2);
 //   $dt = $results2->items;
  
-$calls = $this->Callcenter_model->calls();
+$calls = $this->Callcenter_model->callsChart($inputFromNumber,$inputToNumber,$reportrange);
 $rowcount = count($calls);
-$callChart = $this->Callcenter_model->callByDay();
-$callSum = $this->Callcenter_model->callSum();
+$callChart = $this->Callcenter_model->callByDayChart($inputFromNumber,$inputToNumber,$reportrange);
+$callSum = $this->Callcenter_model->callSumChart($inputFromNumber,$inputToNumber,$reportrange);
 $results2->data->callByDay = $callChart;
 $results2->data->callSum = gmdate("H:i:s", $callSum->total);
 $results2->data->total = $calls;
 $results2->data->totalCount = $rowcount;
-
-       
-      
         echo json_encode($results2);
     }
     

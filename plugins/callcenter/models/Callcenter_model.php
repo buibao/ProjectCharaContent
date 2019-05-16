@@ -29,6 +29,69 @@ class Callcenter_model extends CRM_Model {
         return $query->result_array();
     }
 
+     public function callByDayChart($inputFromNumber='',$inputToNumber='',$reportrange='') {
+        $stringQuery ='';
+        
+        if($inputFromNumber != ''){
+            $stringQuery += ' && from_number = ' . $inputFromNumber; 
+        }
+        if($inputToNumber != ''){
+            $stringQuery += ' && inputToNumber = ' . $inputToNumber; 
+        }
+
+        $sql = "SELECT  time_start AS created_datetime,SUM(CAST(`duration`/60 AS DECIMAL(18,2))) AS total FROM tblcalllog WHERE duration > 0 ".$stringQuery." GROUP BY time_start";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    } 
+    public function callSumChart($inputFromNumber='',$inputToNumber='',$reportrange='') {
+         $stringQuery ='';
+         $sql="";
+
+        if($inputFromNumber != ''){
+            $stringQuery += ' from_number = ' . $inputFromNumber; 
+            if($inputToNumber != ''){
+            $stringQuery += ' && inputToNumber = ' . $inputToNumber; 
+            }
+        }else{
+            if($inputToNumber != ''){
+            $stringQuery += ' inputToNumber = ' . $inputToNumber; 
+            }
+        }
+        
+        if($stringQuery == ''){
+            $sql = "SELECT SUM(duration) AS total FROM tblcalllog";
+        }else{
+          $sql = "SELECT SUM(duration) AS total FROM tblcalllog WHERE " . $stringQuery;   
+        }
+       
+        $query = $this->db->query($sql);
+        return $query->row();
+    } 
+    public function callsChart($inputFromNumber='',$inputToNumber='',$reportrange='') {
+           $stringQuery ='';
+         $sql="";
+
+        if($inputFromNumber != ''){
+            $stringQuery += ' from_number = ' . $inputFromNumber; 
+            if($inputToNumber != ''){
+            $stringQuery += ' && inputToNumber = ' . $inputToNumber; 
+            }
+        }else{
+            if($inputToNumber != ''){
+            $stringQuery += ' inputToNumber = ' . $inputToNumber; 
+            }
+        }
+        
+        if($stringQuery == ''){
+           $sql = "SELECT *  FROM tblcalllog ";
+        }else{
+          $sql = "SELECT *  FROM tblcalllog WHERE " . $stringQuery;   
+        }
+       
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
     // FIX CODE
     public function insertVHT($data)
     {

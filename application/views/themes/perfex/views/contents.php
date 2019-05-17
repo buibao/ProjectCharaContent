@@ -29,7 +29,7 @@
             </thead>
             <tbody>
                 <?php foreach($contents as $content){
-                  if ($content['status'] == 3 ||$content['status'] == 4) {
+                  if (($content['status'] == 3 || $content['status'] == 4 || $content['status'] == 5)) {
                     $expiry_class = '';
                     if (!empty($content['dateend'])) {
                         $_date_end = date('Y-m-d', strtotime($content['dateend']));

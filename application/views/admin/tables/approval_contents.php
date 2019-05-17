@@ -12,7 +12,8 @@ $aColumns = [
 ];
 $sIndexColumn = 'id';
 $sTable = 'tblcontents';
-$join = [];
+$join = [
+];
 $where = ['OR task_id = ' .$id];
 $filter = [];
 $statusIds = [];
@@ -102,7 +103,7 @@ foreach ($rResult as $aRow) {
 				}
 			}
 		}
-		//fix assignto
+//fix assignto
 		foreach ($staff as $value) {
 			if ($value['staffid'] == $aRow['assignto']) {
 				$row[] = $value['firstname'] . " " . $value['lastname'];

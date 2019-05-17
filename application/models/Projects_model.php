@@ -1568,7 +1568,7 @@ class Projects_model extends CRM_Model
         return $this->db->get('tblprojectsettings')->result_array();
     }
 
-    public function get_project_members($id)
+     public function get_project_members($id)
     {
         $this->db->select('email,project_id,staff_id,firstname,lastname');
         $this->db->join('tblstaff', 'tblstaff.staffid=tblprojectmembers.staff_id');

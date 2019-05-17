@@ -1,4 +1,3 @@
-
 <?php init_head();?>
 <div id="wrapper">
   <div class="content">
@@ -70,13 +69,8 @@ if (!has_permission('contents', '', 'view')) {
 <?php init_tail();?>
 <script>
     $(function(){
-
         var ContentsServerParams = {};
-
         initDataTable('.table-contents', admin_url+'contents/table', undefined, undefined, ContentsServerParams,<?php echo do_action('contents_table_default_order', json_encode(array(5, 'asc'))); ?>);
-
-
-
     });
 </script>
 </body>

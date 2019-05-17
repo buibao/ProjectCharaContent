@@ -16,6 +16,9 @@
                     foreach($groups as $group){
                        echo form_hidden('customer_group_'.$group['id']);
                    }
+		   foreach($fields as $field){
+                       echo form_hidden('customer_field_'.$field['id']);
+                   }
                    foreach($contract_types as $type){
                        echo form_hidden('contract_type_'.$type['id']);
                    }
@@ -89,7 +92,19 @@
                                             <li class="divider"></li>
                                             <?php } ?>
                                             <!-- FIX SOURCE -->
-                                        
+                                         <?php if(count($fields) > 0){ ?>
+                                            <li class="dropdown-submenu pull-left groups">
+                                                <a href="#" tabindex="-1"><?php echo _l('customer_fields'); ?></a>
+                                                <ul class="dropdown-menu dropdown-menu-left">
+                                                    <?php foreach($fields as $field){ ?>
+                                                    <li><a href="#" data-cview="customer_field_<?php echo $field['id']; ?>" onclick="dt_custom_view('customer_field_<?php echo $field['id']; ?>','.table-clients','customer_field_<?php echo $field['id']; ?>'); return false;"><?php echo $field['name']; ?></a></li>
+                                                    <?php } ?>
+                                                </ul>
+                                            </li>
+
+                                            <div class="clearfix"></div>
+                                            <li class="divider"></li>
+                                            <?php } ?>
                                             
 
                                             <!-- END FIX SOURCE -->

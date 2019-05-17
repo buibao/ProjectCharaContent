@@ -78,14 +78,23 @@
                            <input type="checkbox" value="1" name="is_not_staff" id="is_not_staff" <?php echo $checked; ?>>
                            <label for="is_not_staff"><?php echo _l('is_not_staff_member'); ?></label>
                            </div>
-                        <div class="is-not-staff">
-                           <div class="checkbox checkbox-primary">
-                              <input type="checkbox" value="1" name="intern" id="intern">
-                              <label>Internship</label>
-                           </div>
-                        </div>
-                        <hr />
                      </div>
+                      <div class="is-not-intern<?php if(isset($member) && $member->admin == 1){ echo ' hide'; }?>">
+                           <div class="checkbox checkbox-primary">
+                              <?php
+                              $checked = '';
+                              if(isset($member)) {
+                               if($member->intern == 1){
+                                $checked = ' checked';
+                              }
+                              }
+                              ?>
+                           <input type="checkbox" value="1" name="intern" id="is_not_intern" <?php echo $checked; ?>>
+                           <label for="is_not_intern"><?php echo _l('intern'); ?></label>
+                           </div>
+
+                        </div>
+                       <hr />
                      <?php if((isset($member) && $member->profile_image == NULL) || !isset($member)){ ?>
                      <div class="form-group">
                         <label for="profile_image" class="profile-image"><?php echo _l('staff_edit_profile_image'); ?></label>
@@ -464,12 +473,25 @@
 
        $('#is_not_staff').on('change', function() {
            var checked = $(this).prop('checked');
+            var isNotIntern = $('.is-not-intern');
            var row_permission_leads = $('tr[data-name="leads"]');
            if (checked == true) {
                row_permission_leads.addClass('hide');
+               isNotIntern.addClass('hide');
                row_permission_leads.find('input').prop('checked', false);
            } else {
                row_permission_leads.removeClass('hide');
+               isNotIntern.removeClass('hide');
+           }
+       });
+        $('#is_not_intern').on('change', function() {
+         console.log("Heelo");
+           var checked = $(this).prop('checked');
+             var isNotStaffMember = $('.is-not-staff');
+           if (checked == true) {
+               isNotStaffMember.addClass('hide');
+           } else {
+               isNotStaffMember.removeClass('hide');
            }
        });
 

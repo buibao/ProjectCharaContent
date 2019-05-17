@@ -80,7 +80,7 @@ class Projects_model extends CRM_Model
 
         return $statuses;
     }
-    
+	
     public function get_distinct_tasks_timesheets_staff($project_id)
     {
         return $this->db->query('SELECT DISTINCT staff_id FROM tbltaskstimers LEFT JOIN tblstafftasks ON tblstafftasks.id = tbltaskstimers.task_id WHERE rel_type="project" AND rel_id=' . $project_id)->result_array();
@@ -1570,7 +1570,7 @@ class Projects_model extends CRM_Model
 
     public function get_project_members($id)
     {
-        $this->db->select('email,project_id,staff_id');
+        $this->db->select('email,project_id,staff_id,firstname,lastname');
         $this->db->join('tblstaff', 'tblstaff.staffid=tblprojectmembers.staff_id');
         $this->db->where('project_id', $id);
 

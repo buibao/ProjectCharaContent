@@ -196,7 +196,7 @@
                      </div>
                      <div class="col-md-6">
                      <label for="priority" class="control-label"><?php echo _l('approved_by'); ?></label>
-                        <select class="form-control" id="locality" name="approveId">
+                        <select class="form-control select_id" id="locality" name="approveId">
                         </select>
                      </div>
                      </div>
@@ -378,6 +378,45 @@
             }
          });
       }).change();
+
+    var selectedCountry = $('#rel_id').children("option:selected").val();
+    console.log("selectedCountry = " + selectedCountry);
+    if(selectedCountry != undefined){
+<?php
+$approveID = $task->approveId;
+echo "var currentapproveID = ".$approveID.";";
+;?>
+
+     console.log("CHeck RUN");
+      console.log("currentapproveID = " +currentapproveID);
+               var dropdown = $('#locality');
+                dropdown.empty();
+               //   dropdown.append('<option >Choose Approver</option>');
+                //  dropdown.prop('selectedIndex', 0);
+
+                  $.getJSON(admin_url + 'tasks/getStaff_Project/' + selectedCountry, function(data) {
+                     console.log(data);
+                     $(data).each(function() {
+                       
+                        if(currentapproveID != 0 && this.staff_id == currentapproveID){
+                           dropdown.append("<option  selected='true' value=" + this.staff_id + ">" + this.firstname + " " + this.lastname + "</option>");
+                        }else{
+                            var option = $("<option />");
+
+                        //Set Customer Name in Text part.
+                        option.html(this.firstname + " " + this.lastname);
+
+                        //Set Customer CustomerId in Value part.
+                        option.val(this.staff_id);
+                         //Add the Option element to DropDownList.
+                        dropdown.append(option);
+                        }
+                       
+                     });
+                  });
+             
+    }
+     console.log('projectID = ' + selectedCountry);
    </script>
    <script>
       var _rel_id = $('#rel_id'),
@@ -441,10 +480,12 @@
                      }
                      init_project_details(_rel_type.val(), project.allow_to_view_tasks);
                   }, 'json');
+
+                    console.log('projectID = ' + $(this).val());
                   var dropdown = $('#locality');
-                  // dropdown.empty();
-                  // dropdown.append('<option selected="true" disabled>Choose State/Province</option>');
-                  // dropdown.prop('selectedIndex', 0);
+                   dropdown.empty();
+                  dropdown.append('<option selected="true" >Choose Approver</option>');
+                //  dropdown.prop('selectedIndex', 0);
 
                   $.getJSON(admin_url + 'tasks/getStaff_Project/' + $(this).val(), function(data) {
                      console.log(data);

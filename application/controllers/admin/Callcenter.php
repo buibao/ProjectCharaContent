@@ -56,7 +56,7 @@ class Callcenter extends Admin_controller {
 
         $this->load->view('callcenter_index',array('type' => $type, 'content' => $content));
     }
- public function all_contacts()
+    public function all_contacts()
     {
         if ($this->input->is_ajax_request()) {
             $this->app->get_table_data('call_all_contacts');
@@ -70,15 +70,30 @@ class Callcenter extends Admin_controller {
         $data['title'] = _l('customer_contacts');
         $this->load->view('all_contacts', $data);
     }
-     public function table()
+      public function call_log()
     {
-        if (!has_permission('customers', '', 'view')) {
-            if (!have_assigned_customers() && !has_permission('customers', '', 'create')) {
-                ajax_access_denied();
-            }
+
+        // $this->app->get_table_data('contents', [
+        //     'clientid' => $clientid, 'ids' => $idtask, 'staff' => $idstaff,'id'=>$id
+        // ]);
+
+        if ($this->input->is_ajax_request()) {
+            $this->app->get_table_data('call_log');
         }
 
-        $this->app->get_table_data('clientscallcenter');
+        if (is_gdpr() && get_option('gdpr_enable_consent_for_contacts') == '1') {
+            $this->load->model('gdpr_model');
+            $data['consent_purposes'] = $this->gdpr_model->get_consent_purposes();
+        }
+
+        $data['title'] = 'Call Log';
+        $this->load->view('call_log', $data);
+    }
+     public function table()
+    {
+      
+            $this->app->get_table_data('call_log');
+     
     }
    
    public function getNameClient(){
@@ -144,51 +159,54 @@ $_SESSION['image'] = $tringg;
 echo $tringg;
  }
  // Input Data
-    public function calllog($id){
-      $user  = $GLOBALS['current_user'];
+    public function calllog(){
+    $user  = $GLOBALS['current_user'];
     $ids  = $user->staffid;
-     $User = $this->Callcenter_model->getSingle($ids);
-       $auth = base64_encode($User->APIKey .":". $User->APISecret);
-
-     $token ='eyJjdHkiOiJzdHJpbmdlZS1hcGk7dj0xIiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiJTS21zc2RhbnBuZUlXalRLWFRTV0NPVkRtNklXczJtUjZFLTE1NTc1ODYzNTUiLCJpc3MiOiJTS21zc2RhbnBuZUlXalRLWFRTV0NPVkRtNklXczJtUjZFIiwiZXhwIjoxNTU3NTg5OTU1LCJpY2NfYXBpIjp0cnVlLCJ1c2VySWQiOiJhZ2VudF8xIiwicmVzdF9hcGkiOnRydWV9.YVYuk0BaMVNtWfiKQl_U8s8MoiMq7gXGFIesag13Axg';
+    $User = $this->Callcenter_model->getSingle($ids);
+    $auth = base64_encode($User->APIKey .":". $User->APISecret);
     $context = stream_context_create([
-     "http" => [
-        'method'=>"GET",
-        "header" => "X-STRINGEE-AUTH: $token"
+    "http" => [
+        "header" => "Authorization: Basic " . $auth
     ]
-]);
-
- //$strings = 'https://acd-api.vht.com.vn/rest/cdrs?page='.$id."&limit=50&sort_type=DESC";
- $strings = 'https://api.stringee.com/v1/call/log';
-
-    if(strlen($_SESSION['keyState']) > 2 || strlen($_SESSION['keyFromNumber']) > 2 || strlen($_SESSION['keyToNumber']) > 2 || strlen($_SESSION['keyStartTime']) > 5 ||  strlen($_SESSION['keyEndTime']) > 5  ){
+    ]);
+   for($i=1; $i <=2; $i++){
    
-    if(strlen($_SESSION['keyState']) > 2){
-         $strings = $strings . "&state=".$_SESSION['keyState'];
-    }
-    if(strlen($_SESSION['keyFromNumber']) > 2){
-         $strings  = $strings . "&from_number=".$_SESSION['keyFromNumber'];
-    }
-     if(strlen($_SESSION['keyStartTime']) > 5){
-         $strings  = $strings . "&date_started=".$_SESSION['keyStartTime'];
-    }
-    if(strlen($_SESSION['keyToNumber']) > 5){
-         $strings  = $strings . "&date_ended=".$_SESSION['keyEndTime'];
-    }
-   
-}else{
-    $strings = $strings;
-}
+
+   $strings = 'https://acd-api.vht.com.vn/rest/cdrs?page='.$i.'&limit=50&sort_type=DESC';
 
 
-   
     $homepage = file_get_contents($strings, false, $context);
     $results = json_decode($homepage);
-    $pages = CEIL($results->total / 50);
-    $dt = $results->data->calls;      
+    $dt = $results->items;  
 
- $this->load->view('callcenter_calllogs',array( 'dt' => $dt, 'results'=>$results,'pages' => $pages,'idPage'=>$id));
-  
+       foreach ($dt as $value ) {
+       $data['cdr_id']= $value->cdr_id;
+       $data['call_id']= $value->call_id;
+       $data['cause']= $value->cause;
+       $data['q850_cause']= $value->q850_cause;
+       $data['from_extension']= $value->from_extension;
+       $data['to_extension']= $value->to_extension;
+       $data['from_number']= $value->from_number;
+       $data['to_number']= $value->to_number;
+       $data['duration']= $value->duration;
+       $data['direction']= $value->direction;
+
+       $data['time_start']=date('Y-m-d',  $value->time_started); 
+       $data['time_connect']=  date('Y-m-d', $value->time_connected);
+       $data['time_end']=  date('Y-m-d', $value->time_ended);
+
+       $data['time_started']= date('D m/d/Y H:i:s', $value->time_started);
+       $data['time_connected']= date('D m/d/Y H:i:s', $value->time_connected);
+       $data['time_ended']= date('D m/d/Y H:i:s', $value->time_ended);
+
+       $data['recording_path']= $value->recording_path;
+       $data['recording_url']= $value->recording_url;
+       $data['record_file_size']= $value->record_file_size;
+
+       $this->Callcenter_model->insertlog($data);
+      
+    }  
+   }
 }
  public function searchCall(){
      $data = $this->input->post();

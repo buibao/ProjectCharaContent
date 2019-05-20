@@ -51,97 +51,45 @@ class API extends Admin_controller
     $ids  = $user->staffid;
      $User = $this->Callcenter_model->getSingle($ids);
    $auth =  base64_encode($User->APIKey .":". $User->APISecret);
-   $token =$User->Token;
+  // echo json_encode($auth);
     $context = stream_context_create([
     "http" => [
-        'method'=>"GET",
-        "header" => "X-STRINGEE-AUTH: $token"
+        "header" => "Authorization: Basic $auth"
     ]
 ]);
 
- $strings2 = 'https://api.stringee.com/v1/call/log'; 
+ $strings2 = 'https://acd-api.vht.com.vn/rest/cdrs?page=1&limit=50&sort_type=DESC'; 
   $homepage2 = file_get_contents($strings2, false, $context);
   $results2 = json_decode($homepage2);
-  $dt = $results2->data->calls;      
+  $dt = $results2->items;      
 
         $contacts = $this->API_model->getContacts();
         $model['contacts'] = $contacts;
         $model['historys'] =  $dt;
         echo json_encode($model);
     }
-
-        public function Contact(){
-        $model = array();
+      public function Contact(){
         
-         $user  = $GLOBALS['current_user'];
-    $ids  = $user->staffid;
-     $User = $this->Callcenter_model->getSingle($ids);
-   $auth =  base64_encode($User->APIKey .":". $User->APISecret);
-   $token =$User->Token;
-    $context = stream_context_create([
-    "http" => [
-      'method'=>"GET",
-        "header" => "X-STRINGEE-AUTH: $token"
-    ]
-]);
-
- $strings2 = 'https://api.stringee.com/v1/call/log'; 
-  $homepage2 = file_get_contents($strings2, false, $context);
-  $results2 = json_decode($homepage2);
-  $dt = $results2->data->calls;    
-  $stringCreateDate = "";
-  $stringTotal = 0;
-
-$arrayName =  array(
-        '0' => array(
-            'created_datetime' => '2019-05-07',
-            'total' => '22',
-        ),
-        '1' => array(
-            'created_datetime' => '2019-05-9',
-            'total' => '1',
-        ),
-        '2' => array(
-            'created_datetime' => '2019-05-10',
-            'total' => '2',
-        ),
-        '3' => array(
-            'created_datetime' => '2019-05-11',
-            'total' => '3',
-        ),
-        '4' => array(
-            'created_datetime' => '2019-05-12',
-            'total' => '2',
-        ),
-        
-    );
-$results2->data->callByDay = $arrayName;
-
-
-        //$contacts = $this->API_model->getContacts();
-      //  $model['contacts'] = $contacts;
-        $model['historys'] =  $dt;
+        $inputFromNumber = $_POST['inputFromNumber'];
+        $inputToNumber = $_POST['inputToNumber'];
+        $reportrange = $_POST['reportrange'];
+        $str_arr = explode (" - ", $reportrange);
+        $check ='';  
+        if(strcmp($str_arr[0], 'YYYY-MM-DD') ==0){
+        $check = 'done have';
+        }
+        $calls = $this->Callcenter_model->callsChart($inputFromNumber,$inputToNumber,$str_arr[0],$str_arr[1]);
+        $rowcount = count($calls);
+        $callChart = $this->Callcenter_model->callByDayChart($inputFromNumber,$inputToNumber,$str_arr[0],$str_arr[1]);
+        $callSum = $this->Callcenter_model->callSumChart($inputFromNumber,$inputToNumber,$str_arr[0],$str_arr[1]);
+        $results2->data->callByDay = $callChart;
+        $results2->data->callSum = gmdate("H:i:s", $callSum->total);
+        $results2->data->total = $calls;
+        $results2->data->totalCount = $rowcount;
+        $results2->data->stringG1 = $str_arr[0];
+        $results2->data->stringG2 = $str_arr[1];
+        $results2->data->stringG3 = $check;
         echo json_encode($results2);
-    }
-    public function downloadCall(){
-        $user  = $GLOBALS['current_user'];
-    $ids  = $user->staffid;
-     $User = $this->Callcenter_model->getSingle($ids);
-   $auth =  base64_encode($User->APIKey .":". $User->APISecret);
-   $token =$User->Token;
-       $context = stream_context_create([
-    "http" => [
-      'Content-Type'=> 'audio/mpeg',
-        'method'=>"GET",
-        "header" => "X-STRINGEE-AUTH: $token"
-    ]
-]);
-
- $strings2 = 'https://api.stringee.com/v1/call/recording/call-vn-1-2H2YSVI9R3-1557334338904'; 
-  $homepage2 = file_get_contents($strings2, false, $context);
-
- // $results2 = json_decode($homepage2);
-    echo json_encode($homepage2);
     }
     
 }

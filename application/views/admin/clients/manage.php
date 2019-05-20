@@ -12,11 +12,11 @@
                 <div class="_filters _hidden_inputs hidden">
                     <?php
                     echo form_hidden('my_customers');
-                   echo form_hidden('requires_registration_confirmation');
+                    echo form_hidden('requires_registration_confirmation');
                     foreach($groups as $group){
                        echo form_hidden('customer_group_'.$group['id']);
                    }
-                    foreach($fields as $field){
+		   foreach($fields as $field){
                        echo form_hidden('customer_field_'.$field['id']);
                    }
                    foreach($contract_types as $type){

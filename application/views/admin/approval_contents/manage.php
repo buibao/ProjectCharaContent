@@ -1,4 +1,3 @@
-
 <?php init_head();?>
 <div id="wrapper">
   <div class="content">
@@ -35,13 +34,8 @@
 <?php init_tail();?>
 <script>
     $(function(){
-
         var ContentsServerParams = {};
-
         initDataTable('.table-approval_contents', admin_url+'approval_contents/table', undefined, undefined, ContentsServerParams,<?php echo do_action('approval_contents_table_default_order', json_encode(array(5, 'asc'))); ?>);
-
-
-
     });
 </script>
 </body>

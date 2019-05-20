@@ -3761,6 +3761,15 @@ $lang['incoming_call'] ='CallAway';
 $lang['away_call'] ='IncomingCall';
 
 
+$lang['effect_of_content'] ='EFFECT OF CONTENT';
+$lang['get_token_to_update_infor'] ='Please Add New Token To Update Infor';
+
+$lang['approved_by'] ='Approved By';
+$lang['count'] ='Amount Of Content';
+$lang['add_new_token'] = 'Please Add New Token';
+
+
+
 
 
 

@@ -239,7 +239,6 @@
    $(document).ready(function() {
       listComment();
    });
-
    function listComment() {
       $.post("",
          function(data) {
@@ -253,31 +252,22 @@
                .replace(/\r/g, "\\r")
                .replace(/\t/g, "\\t")
                .replace(/\f/g, "\\f");
-
             // .replace(/\n/g, "\\n")
             //  .replace(/\r/g, "\\r")
             //  .replace(/\t/g, "\\t")
             //  .replace(/\f/g, "\\f");
-
             // remove non-printable and other non-valid JSON chars
             //datarecieve = datarecieve.replace(/[\u0000-\u001F]+/g,""); 
-
             var data = JSON.parse(datarecieve);
             console.log(data);
             var comments = "";
-
             var results = new Array();
-
             // var list = $("<ul class='outer-comment'>");
             // var item = $("<li>").html(comments);
-
             for (var i = 0;
                (i < data.length); i++) {
-
                comments = data[i]['description'];
-
             }
-
             $("#description").html(comments);
          });
    }
@@ -298,8 +288,6 @@
          }
       });
    });
-
-
    $(function() {
       // Initializes and creates emoji set from sprite sheet
       window.emojiPicker = new EmojiPicker({
@@ -309,7 +297,6 @@
       });
       // '<?php 
             ?>'
-
       window.emojiPicker.discover();
    });
 </script>
@@ -317,14 +304,12 @@
     .ft {
         float: right;
     }
-
     .q {
         margin-right: 10px;
     }
 </style>
 <style>
     .icon1 {
-
         padding: 1px;
         border: 2px solid white;
         border-radius: 50%;
@@ -336,12 +321,10 @@
    textarea {
       overflow: auto;
    }
-
    body.content {
       padding-left: 0;
       padding-top: 0;
    }
-
    .emoji-menu {
       position: absolute;
       right: 0;

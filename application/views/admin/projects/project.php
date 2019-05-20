@@ -156,7 +156,7 @@
 
                     <!--Add new Link field-->
                     <div class="col-md-6">
-                        <?php $value = (isset($project) ? _d($project->link_page) : ''); ?>
+                        <?php $value = (isset($project) ? $project->link_page : ''); ?>
                         <?php echo render_input('link_page','project_link_page',$value); ?>
                     </div>
                     

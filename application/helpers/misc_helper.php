@@ -521,6 +521,13 @@ function get_permission_conditions()
             'create'   => true,
             'delete'   => true,
         ],
+ 'post_facebook' => [
+            'view'     => true,
+            'view_own' => true,
+            'edit'     => true,
+            'create'   => true,
+            'delete'   => true,
+        ],
 'kpi' => [
             'view'     => true,
             'view_own' => false,

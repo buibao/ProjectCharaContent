@@ -71,7 +71,6 @@
   <?php init_tail(); ?>
   <script>
     $(function() {
-
       var ContentsServerParams = {};
         
       initDataTable('.table-post_contents', admin_url + 'post_contents/table', undefined, undefined, ContentsServerParams, <?php echo do_action('post_contents_table_default_order', json_encode(array(5, 'asc'))); ?>);

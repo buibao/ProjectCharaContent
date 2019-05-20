@@ -833,7 +833,7 @@ for(var i = 0; i < Object.keys(data.historys).length; i++){
 	var urlImage ='';
 	var status = '';
 	var iconDirection ='';
-	var timestamp = data.historys[i].start_time_datetime;
+	var timestamp = data.historys[i].time_started;
     var date = new Date(timestamp * 1000);
     var year    = date.getFullYear();
     var month   = date.getMonth()+1;
@@ -843,7 +843,7 @@ for(var i = 0; i < Object.keys(data.historys).length; i++){
   
     if((day+month+year) != timeCheck){
 iframe_html += '                    <div class="date-time">'+
-'                        <time class="date" datetime="">'+timestamp+'</time>'+
+'                        <time class="date" datetime="">'+year+"-"+month+"-"+day+'</time>'+
 '                    </div>';
      timeCheck =day+month+year;
     }

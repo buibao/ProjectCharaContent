@@ -1,5 +1,4 @@
 <?php
-
 defined('BASEPATH') or exit('No direct script access allowed');
 class Staff extends Admin_controller
 {
@@ -7,7 +6,6 @@ class Staff extends Admin_controller
     {
         parent::__construct();
     }
-
     /* List all staff members */
     public function index()
     {
@@ -21,7 +19,6 @@ class Staff extends Admin_controller
         $data['title']         = _l('staff_members');
         $this->load->view('admin/staff/manage', $data);
     }
-
     /* Add new staff member or edit existing */
     public function member($id = '')
     {
@@ -29,15 +26,13 @@ class Staff extends Admin_controller
             access_denied('staff');
         }
         do_action('staff_member_edit_view_profile', $id);
-
         $this->load->model('departments_model');
         if ($this->input->post()) {
             $data = $this->input->post();
             // Don't do XSS clean here.
             $data['email_signature'] = $this->input->post('email_signature', false);
             $data['password']        = $this->input->post('password', false);
-            $data['datemodified']        = date('Y-m-d H:i:s');
-            if ($id == '') {
+             if ($id == '') {
                 if (!has_permission('staff', '', 'create')) {
                     access_denied('staff');
                 }
@@ -76,7 +71,6 @@ class Staff extends Admin_controller
             $title                     = $member->firstname . ' ' . $member->lastname;
             $data['staff_permissions'] = $this->roles_model->get_staff_permissions($id);
             $data['staff_departments'] = $this->departments_model->get_staff_departments($member->staffid);
-
             $ts_filter_data = [];
             if ($this->input->get('filter')) {
                 if ($this->input->get('range') != 'period') {
@@ -88,7 +82,6 @@ class Staff extends Admin_controller
             } else {
                 $ts_filter_data['this_month'] = true;
             }
-
             $data['logged_time'] = $this->staff_model->get_logged_time_data($id, $ts_filter_data);
             $data['timesheets']  = $data['logged_time']['timesheets'];
         }
@@ -106,11 +99,9 @@ class Staff extends Admin_controller
         $data['title']         = $title;
         $this->load->view('admin/staff/member', $data);
     }
-
     public function save_dashboard_widgets_order()
     {
         do_action('before_save_dashboard_widgets_order');
-
         $post_data = $this->input->post();
         foreach ($post_data as $container => $widgets) {
             if ($widgets == 'empty') {
@@ -119,23 +110,18 @@ class Staff extends Admin_controller
         }
         update_staff_meta(get_staff_user_id(), 'dashboard_widgets_order', serialize($post_data));
     }
-
     public function save_dashboard_widgets_visibility()
     {
         do_action('before_save_dashboard_widgets_visibility');
-
         $post_data = $this->input->post();
         update_staff_meta(get_staff_user_id(), 'dashboard_widgets_visibility', serialize($post_data['widgets']));
     }
-
     public function reset_dashboard()
     {
         update_staff_meta(get_staff_user_id(), 'dashboard_widgets_visibility', null);
         update_staff_meta(get_staff_user_id(), 'dashboard_widgets_order', null);
-
         redirect(admin_url());
     }
-
     public function save_hidden_table_columns()
     {
         do_action('before_save_hidden_table_columns');
@@ -144,7 +130,6 @@ class Staff extends Admin_controller
         $hidden = isset($data['hidden']) ? $data['hidden'] : [];
         update_staff_meta(get_staff_user_id(), 'hidden-columns-' . $id, json_encode($hidden));
     }
-
     public function change_language($lang = '')
     {
         $lang = do_action('before_staff_change_language', $lang);
@@ -156,7 +141,6 @@ class Staff extends Admin_controller
             redirect(admin_url());
         }
     }
-
     public function timesheets()
     {
         $data['view_all'] = false;
@@ -164,11 +148,9 @@ class Staff extends Admin_controller
             $data['staff_members_with_timesheets'] = $this->db->query('SELECT DISTINCT staff_id FROM tbltaskstimers WHERE staff_id !=' . get_staff_user_id())->result_array();
             $data['view_all']                      = true;
         }
-
         if ($this->input->is_ajax_request()) {
             $this->app->get_table_data('staff_timesheets', ['view_all' => $data['view_all']]);
         }
-
         if ($data['view_all'] == false) {
             unset($data['view_all']);
         }
@@ -176,7 +158,6 @@ class Staff extends Admin_controller
         $data['title']       = '';
         $this->load->view('admin/staff/timesheets', $data);
     }
-
     public function delete()
     {
         if (!is_admin()) {
@@ -192,7 +173,6 @@ class Staff extends Admin_controller
         }
         redirect(admin_url('staff'));
     }
-
     /* When staff edit his profile */
     public function edit_profile()
     {
@@ -201,7 +181,6 @@ class Staff extends Admin_controller
             $data = $this->input->post();
             // Don't do XSS clean here.
             $data['email_signature'] = $data['email_signature'] = $this->input->post('email_signature', false);
-
             $success = $this->staff_model->update_profile($data, get_staff_user_id());
             if ($success) {
                 set_alert('success', _l('staff_profile_updated'));
@@ -216,7 +195,6 @@ class Staff extends Admin_controller
         $data['title']             = $member->firstname . ' ' . $member->lastname;
         $this->load->view('admin/staff/profile', $data);
     }
-
     /* Remove staff profile image / ajax */
     public function remove_staff_profile_image($id = '')
     {
@@ -233,14 +211,12 @@ class Staff extends Admin_controller
         $this->db->update('tblstaff', [
             'profile_image' => null,
         ]);
-
         if (!is_numeric($id)) {
             redirect(admin_url('staff/edit_profile/' . $staff_id));
         } else {
             redirect(admin_url('staff/member/' . $staff_id));
         }
     }
-
     /* When staff change his password */
     public function change_password_profile()
     {
@@ -258,23 +234,18 @@ class Staff extends Admin_controller
             redirect(admin_url('staff/edit_profile'));
         }
     }
-
     /* View public profile. If id passed view profile by staff id else current user*/
     public function profile($id = '')
     {
         if ($id == '') {
             $id = get_staff_user_id();
         }
-
         do_action('staff_profile_access', $id);
-
         $data['logged_time'] = $this->staff_model->get_logged_time_data($id);
         $data['staff_p']     = $this->staff_model->get($id);
-
         if (!$data['staff_p']) {
             blank_page('Staff Member Not Found', 'danger');
         }
-
         $this->load->model('departments_model');
         $data['staff_departments'] = $this->departments_model->get_staff_departments($data['staff_p']->staffid);
         $data['departments']       = $this->departments_model->get();
@@ -286,7 +257,6 @@ class Staff extends Admin_controller
         $data['total_pages'] = ceil($total_notifications / $this->misc_model->get_notifications_limit());
         $this->load->view('admin/staff/myprofile', $data);
     }
-
     /* Change status to staff active or inactive / ajax */
     public function change_staff_status($id, $status)
     {
@@ -296,7 +266,6 @@ class Staff extends Admin_controller
             }
         }
     }
-
     /* Logged in staff notifications*/
     public function notifications()
     {

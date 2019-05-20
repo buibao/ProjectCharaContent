@@ -63,7 +63,7 @@
                            </div>
 
                         </div>
-                        <label for="task_title" class="control-label"> <small class="req text-danger">* </small><?php echo _l('photo_content'); ?></label>
+                        <label for="task_title" class="control-label"> <small class="req text-danger"></small><?php echo _l('photo_content'); ?></label>
                         <?php if ($attachments == null) { ?>
                            <div id="new-task-attachments">
                               <div class="row attachments">
@@ -71,7 +71,7 @@
                                     <div class="col-md-12">
                                        <div class="form-group">
                                           <div class="input-group col-md-12">
-                                             <input type="file" id="attachmentInput" extension="<?php echo str_replace('.', '', get_option('allowed_files')); ?>" filesize="<?php echo file_upload_max_size(); ?>" class="form-control " name="attachments[0]" required>
+                                             <input type="file" id="attachmentInput" extension="<?php echo str_replace('.', '', get_option('allowed_files')); ?>" filesize="<?php echo file_upload_max_size(); ?>" class="form-control " name="attachments[0]">
                                           </div>
                                        </div>
                                     </div>
@@ -226,7 +226,6 @@
    $(document).ready(function() {
       listComment();
    });
-
    function listComment() {
       $.post("",
          function(data) {
@@ -240,31 +239,22 @@
                .replace(/\r/g, "\\r")
                .replace(/\t/g, "\\t")
                .replace(/\f/g, "\\f");
-
             // .replace(/\n/g, "\\n")
             //  .replace(/\r/g, "\\r")
             //  .replace(/\t/g, "\\t")
             //  .replace(/\f/g, "\\f");
-
             // remove non-printable and other non-valid JSON chars
             //datarecieve = datarecieve.replace(/[\u0000-\u001F]+/g,""); 
-
             var data = JSON.parse(datarecieve);
             console.log(data);
             var comments = "";
-
             var results = new Array();
-
             // var list = $("<ul class='outer-comment'>");
             // var item = $("<li>").html(comments);
-
             for (var i = 0;
                (i < data.length); i++) {
-
                comments = data[i]['description'];
-
             }
-
             $("#description").val(comments);
          });
    }
@@ -285,8 +275,6 @@
          }
       });
    });
-
-
    $(function() {
       // Initializes and creates emoji set from sprite sheet
       window.emojiPicker = new EmojiPicker({
@@ -296,10 +284,8 @@
       });
       // '<?php 
             ?>'
-
       window.emojiPicker.discover();
    });
-
    $("#submitdraft").click(function() {
       var inputs = document.querySelector('#status');
       inputs.checked = true;
@@ -307,16 +293,12 @@
    _validate_form($('#content-form'), {
       task_title: 'required',
       subject: 'required',
-
    });
-
-
    $("#task_title")
       .change(function() {
          var str = "";
          var task_id = $("#task_title option:selected").val();
          console.log(task_id);
-
          $.getJSON("get_task_json", {
             task_id: task_id
          }, function(resp) {
@@ -332,20 +314,15 @@
    // $(document).ready(function() {
    //       $.ajaxSetup({cache: false});
    //        var winterval=setInterval(function () {
-
    //             $.getJSON("get_task_json", function (row) {
    //                var data=$.parseJSON(row);
-
-
    //                   if (data.startdate) {
    //                      $('#C1-Cycle').val(data.startdate);
    //                  }
    //                  if (data.duedate) {
    //                      $('#C2-Cycle-Cycle').val(data.duedate);
    //                  }
-
    //             });
-
    //        }, 1000);
    //   });
    // <!--end fix content date -->
@@ -355,12 +332,10 @@
    textarea {
       overflow: auto;
    }
-
    body.content {
       padding-left: 0;
       padding-top: 0;
    }
-
    .emoji-menu {
       position: absolute;
       right: 0;

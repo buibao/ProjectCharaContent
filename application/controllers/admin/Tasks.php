@@ -286,14 +286,12 @@ class Tasks extends Admin_controller
         if ($this->input->get('milestone_id')) {
             $this->db->where('id', $this->input->get('milestone_id'));
             $milestone = $this->db->get('tblmilestones')->row();
-           // $member= $this->projects_model->get_project_members($id);
             if ($milestone) {
                 $data['_milestone_selected_data'] = [
                     'id'       => $milestone->id,
                     'due_date' => _d($milestone->due_date),
                 ];
             }
-           
         }
         if ($this->input->get('start_date')) {
             $data['start_date'] = $this->input->get('start_date');
@@ -378,13 +376,6 @@ class Tasks extends Admin_controller
         $this->load->view('admin/tasks/task', $data);
     }
 
-    public function getStaff_Project($id){
- 
-         $member= $this->projects_model->get_project_members($id);
-         
-         echo json_encode($member);
-           
-    }
     public function copy()
     {
         if (has_permission('tasks', '', 'create')) {
@@ -425,7 +416,6 @@ class Tasks extends Admin_controller
 
 
         $tasks_where = [];
-
 
         if (!has_permission('tasks', '', 'view')) {
             $tasks_where = get_tasks_where_string(false);
@@ -960,6 +950,14 @@ class Tasks extends Admin_controller
         if (has_permission('tasks', '', 'create') || has_permission('tasks', '', 'edit')) {
             handle_tags_save($this->input->post('tags'), $this->input->post('task_id'), 'task');
         }
+    }
+	
+     public function getStaff_Project($id){
+ 
+         $member= $this->projects_model->get_project_members($id);
+         
+         echo json_encode($member);
+           
     }
 
     public function bulk_action()

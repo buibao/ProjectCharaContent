@@ -120,8 +120,9 @@
                      <?php echo render_input('lastname','staff_add_edit_lastname',$value); ?>
                      <?php $value = (isset($member) ? $member->email : ''); ?>
                      <?php echo render_input('email','staff_add_edit_email',$value,'email',array('autocomplete'=>'on')); ?>
-			            <?php $value = (isset($member) ? $member->leader_id : ''); ?>
+	             <?php ?>
                      <?php
+			 $value = (isset($member) ? $member->leader_id : ''); 
                          $selected = $value;
                      ?>
                          <?php

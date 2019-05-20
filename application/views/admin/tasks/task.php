@@ -2,8 +2,8 @@
 <div class="modal fade<?php if (isset($task)) {
                            echo ' edit';
                         } ?>" id="_task_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" <?php if ($this->input->get('opened_from_lead_id')) {
-                                                                                                                                                echo 'data-lead-id=' . $this->input->get('opened_from_lead_id');
-                                                                                                                                             } ?>>
+                                                                                                               echo 'data-lead-id=' . $this->input->get('opened_from_lead_id');
+                                                                                                            } ?>>
    <div class="modal-dialog" role="document">
       <div class="modal-content">
          <div class="modal-header">
@@ -46,13 +46,11 @@
                                  if (total_rows('tblfiles', array('rel_id' => $task->id, 'rel_type' => 'task')) > 0) {
                                     $copy_template .= "<div class='checkbox checkbox-primary'><input type='checkbox' name='copy_task_attachments' id='copy_task_attachments'><label for='copy_task_attachments'>" . _l('task_view_attachments') . "</label></div>";
                                  }
-
                                  $copy_template .= "<p>" . _l('task_status') . "</p>";
                                  $task_copy_statuses = do_action('task_copy_statuses', $task_statuses);
                                  foreach ($task_copy_statuses as $copy_status) {
                                     $copy_template .= "<div class='radio radio-primary'><input type='radio' value='" . $copy_status['id'] . "' name='copy_task_status' id='copy_task_status_" . $copy_status['id'] . "'" . ($copy_status['id'] == do_action('copy_task_default_status', 1) ? ' checked' : '') . "><label for='copy_task_status_" . $copy_status['id'] . "'>" . $copy_status['name'] . "</label></div>";
                                  }
-
                                  $copy_template .= "<div class='text-center'>";
                                  $copy_template .= "<button type='button' data-task-copy-from='" . $task->id . "' class='btn btn-success copy_task_action'>" . _l('copy_task_confirm') . "</button>";
                                  $copy_template .= "</div>";
@@ -154,6 +152,7 @@
                         </select>
                      </div>
                   </div>
+                  
                   <div class="row">
                      <div class="col-md-6">
                         <?php if (isset($task)) {
@@ -175,34 +174,6 @@
                         <?php echo render_date_input('duedate', 'task_add_edit_due_date', $value, $project_end_date_attrs); ?>
                      </div>
 
-
-                     <!--  //fix count -->
-                     <div class="col-md-6" id="count">
-                        <?php $value = (isset($task) ? $task->count : ''); ?>
-                        <?php echo render_input('count', 'count', $value); ?>
-                     </div>
-
-                      <div class="col-md-6" id="count">
-                     
-                      <select class="form-control"  id="locality-dropdown" name="approveId">
-                     </select>
-
-                  
-                     
-                           
-                     </div>
-
-                       <!--  <div class="col-md-6" id="count">
-                          <?php $value //= (isset($task) ? $task->leader_id : ''); ?>
-                     <?php
-                         $selected// = $value;
-                     ?>
-                         <?php
-                           //echo render_select('leader_id',$tasksCustom,array('staffid',array('firstname','lastname')),'Leader',$selected); 
-                           ?> 
-                     </div> -->
-
-
                      <div class="col-md-6">
                         <div class="form-group">
                            <label for="priority" class="control-label"><?php echo _l('task_add_edit_priority'); ?></label>
@@ -218,6 +189,17 @@
                      </div>
 
                   </div>
+                  <div class ="row" id="count">
+                     <div class="col-md-6">
+                        <?php $value = (isset($task) ? $task->count : ''); ?>
+                        <?php echo render_input('count', 'count', $value); ?>
+                     </div>
+                     <div class="col-md-6">
+                     <label for="priority" class="control-label"><?php echo _l('approved_by'); ?></label>
+                        <select class="form-control select_id" id="locality" name="approveId">
+                        </select>
+                     </div>
+                     </div>
                   <div class="recurring_custom <?php if ((isset($task) && $task->custom_recurring != 1) || (!isset($task))) {
                                                    echo 'hide';
                                                 } ?>">
@@ -259,8 +241,8 @@
                            <input type="number" class="form-control" <?php if ($value == 0) {
                                                                         echo ' disabled';
                                                                      } ?> name="cycles" id="cycles" value="<?php echo $value; ?>" <?php if (isset($task) && $task->total_cycles > 0) {
-                                                                                                                                                                              echo 'min="' . ($task->total_cycles) . '"';
-                                                                                                                                                                           } ?>>
+                                                                                                                                       echo 'min="' . ($task->total_cycles) . '"';
+                                                                                                                                    } ?>>
                            <div class="input-group-addon">
                               <div class="checkbox">
                                  <input type="checkbox" <?php if ($value == 0) {
@@ -386,35 +368,66 @@
    </div>
    <?php echo form_close(); ?>
    <script>
-       $("#rel_type").change(function () {
-                $(this).find("option:selected").each(function () {
-                    var optionValue = $(this).attr("value");
-                    if (optionValue == "project") {
-                        $("#count").show();
-                    }
-                    else {
-                        $("#count").hide();
-                    }
-                });
-            }).change();
+      $("#rel_type").change(function() {
+         $(this).find("option:selected").each(function() {
+            var optionValue = $(this).attr("value");
+            if (optionValue == "project") {
+               $("#count").show();
+            } else {
+               $("#count").hide();
+            }
+         });
+      }).change();
+
+    var selectedCountry = $('#rel_id').children("option:selected").val();
+    console.log("selectedCountry = " + selectedCountry);
+    if(selectedCountry != undefined){
+<?php
+$approveID = $task->approveId;
+echo "var currentapproveID = ".$approveID.";";
+;?>
+
+     console.log("CHeck RUN");
+      console.log("currentapproveID = " +currentapproveID);
+               var dropdown = $('#locality');
+                dropdown.empty();
+               //   dropdown.append('<option >Choose Approver</option>');
+                //  dropdown.prop('selectedIndex', 0);
+
+                  $.getJSON(admin_url + 'tasks/getStaff_Project/' + selectedCountry, function(data) {
+                     console.log(data);
+                     $(data).each(function() {
+                       
+                        if(currentapproveID != 0 && this.staff_id == currentapproveID){
+                           dropdown.append("<option  selected='true' value=" + this.staff_id + ">" + this.firstname + " " + this.lastname + "</option>");
+                        }else{
+                            var option = $("<option />");
+
+                        //Set Customer Name in Text part.
+                        option.html(this.firstname + " " + this.lastname);
+
+                        //Set Customer CustomerId in Value part.
+                        option.val(this.staff_id);
+                         //Add the Option element to DropDownList.
+                        dropdown.append(option);
+                        }
+                       
+                     });
+                  });
+             
+    }
+     console.log('projectID = ' + selectedCountry);
    </script>
    <script>
       var _rel_id = $('#rel_id'),
          _rel_type = $('#rel_type'),
          _rel_id_wrapper = $('#rel_id_wrapper'),
          data = {};
-
       var _milestone_selected_data;
-     
       _milestone_selected_data = undefined;
-   
-
       $(function() {
-
          $("body").off("change", "#rel_id");
-
          var inner_popover_template = '<div class="popover"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"></div></div></div>';
-
          $('#_task_modal .task-menu-options .trigger').popover({
             html: true,
             placement: "bottom",
@@ -425,16 +438,12 @@
             },
             template: inner_popover_template
          });
-
          custom_fields_hyperlink();
-
-
          _validate_form($('#task-form'), {
             name: 'required',
             startdate: 'required',
             duedate: 'required'
          }, task_form_handler);
-
          $('.rel_id_label').html(_rel_type.find('option:selected').text());
          _rel_type.on('change', function() {
             var clonedSelect = _rel_id.html('').clone();
@@ -442,7 +451,6 @@
             _rel_id = clonedSelect;
             $('#rel_id_select').append(clonedSelect);
             $('.rel_id_label').html(_rel_type.find('option:selected').text());
-
             task_rel_select();
             if ($(this).val() != '') {
                _rel_id_wrapper.removeClass('hide');
@@ -451,7 +459,6 @@
             }
             init_project_details(_rel_type.val());
          });
-
          init_datepicker();
          init_color_pickers();
          init_selectpicker();
@@ -474,35 +481,34 @@
                      init_project_details(_rel_type.val(), project.allow_to_view_tasks);
                   }, 'json');
 
+                    console.log('projectID = ' + $(this).val());
+                  var dropdown = $('#locality');
+                   dropdown.empty();
+                  dropdown.append('<option selected="true" >Choose Approver</option>');
+                //  dropdown.prop('selectedIndex', 0);
 
-                     var dropdown = $('#locality-dropdown');
+                  $.getJSON(admin_url + 'tasks/getStaff_Project/' + $(this).val(), function(data) {
+                     console.log(data);
+                     $(data).each(function() {
+                        var option = $("<option />");
 
-                     dropdown.empty();
+                        //Set Customer Name in Text part.
+                        option.html(this.firstname + " " + this.lastname);
 
-                     dropdown.append('<option selected="true" disabled>Choose State/Province</option>');
-                     dropdown.prop('selectedIndex', 0);
+                        //Set Customer CustomerId in Value part.
+                        option.val(this.staff_id);
 
-                  const url = 'https://api.myjson.com/bins/7xq2x';
-
-// Populate dropdown with list of provinces
-               $.getJSON(admin_url + 'tasks/getStaff_Project/' + $(this).val(), function (data) {
-               $.each(data, function (key, entry) {
-                dropdown.append($('<option></option>').attr('value', entry.staff_id).text(entry.email));
-                })
-               });
-                 
-
+                        //Add the Option element to DropDownList.
+                        dropdown.append(option);
+                     });
+                  });
                }
-
             }
          });
-
          <?php if (!isset($task) && $rel_id != '') { ?>
             _rel_id.change();
          <?php } ?>
-
       });
-
       <?php if (isset($_milestone_selected_data)) { ?>
          _milestone_selected_data = '<?php echo json_encode($_milestone_selected_data); ?>';
          _milestone_selected_data = JSON.parse(_milestone_selected_data);

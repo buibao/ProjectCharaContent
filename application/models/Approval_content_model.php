@@ -1,5 +1,4 @@
 <?php
-
 defined('BASEPATH') or exit('No direct script access allowed');
 class Approval_content_model extends CRM_Model
 {
@@ -30,7 +29,6 @@ class Approval_content_model extends CRM_Model
                     }
                 }
             }
-
             return $approval_content;
         }
         $approval_contents = $this->db->get('tblcontents')->result_array();
@@ -39,7 +37,6 @@ class Approval_content_model extends CRM_Model
             $approval_contents[$i]['attachments'] = $this->get_content_attachments('', $approval_content['id']);
             $i++;
         }
-
         return $approval_contents;
     }
     public function get_contents_years()
@@ -48,14 +45,11 @@ class Approval_content_model extends CRM_Model
     }
     public function update($data, $id)
     {
-
         if (isset($data['status']) && ($data['status'] == 1 || $data['status'] === 'on')) {
             $data['status'] = 3;
         } else {
             $data['status'] = 2;
         }
-
-
                 $_data = do_action('before_content_updated', [
             'data' => $data,
             'id'   => $id,
@@ -69,5 +63,4 @@ class Approval_content_model extends CRM_Model
         }
         return false;
     }
-
 }

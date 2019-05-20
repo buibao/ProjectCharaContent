@@ -1,10 +1,8 @@
 <?php
-
 defined('BASEPATH') or exit('No direct script access allowed');
 class Post_content_model extends CRM_Model {
 	public function __construct() {
 		parent::__construct();
-
 	}
 	public function getDatabase() {
 		$this->db->select('*');
@@ -15,7 +13,6 @@ class Post_content_model extends CRM_Model {
 		// echo "<pre>";
 		// var_dump($ketqua);// in ra
 	}
-
 	/**
 	 * Get content/s
 	 * @param  mixed  $id         contract id
@@ -23,7 +20,6 @@ class Post_content_model extends CRM_Model {
 	 * @param  boolean $for_editor if for editor is false will replace the field if not will not replace
 	 * @return mixed
 	 */
-
 	// public function get($id )
 	// {
 	//         $this->db->where('tblcontents.id', $id);
@@ -32,16 +28,13 @@ class Post_content_model extends CRM_Model {
 	// }
 	public function getAllContent($id) {
 		$this->db->where('id', $id);
-
 		return $this->db->get('tblcontents')->row();
 	}
 	public function get_task_json($task_id = '') {
 		$this->db->select("*");
 		$this->db->from('tblstafftasks');
 		$this->db->where('id', $task_id);
-
 		$query = $this->db->get();
-
 		$resp = $query->result();
 		return json_encode($resp);
 	}
@@ -49,7 +42,6 @@ class Post_content_model extends CRM_Model {
 		
 	}
 	public function get($id = '', $where = [], $for_editor = false) {
-
 		if (is_numeric($id)) {
 			$this->db->where('tblcontents.id', $id);
 			$content = $this->db->get('tblcontents')->row();
@@ -69,7 +61,6 @@ class Post_content_model extends CRM_Model {
 					}
 				}
 			}
-
 			return $content;
 		}
 		$contents = $this->db->get('tblcontents')->result_array();
@@ -78,13 +69,11 @@ class Post_content_model extends CRM_Model {
 			$contents[$i]['attachments'] = $this->get_content_attachments('', $content['id']);
 			$i++;
 		}
-
 		return $contents;
 	}
 	public function get_contents_years() {
 		return $this->db->query('SELECT DISTINCT(YEAR(start_date)) as year FROM tblcontents')->result_array();
 	}
-
 	/**
 	 * @param  integer ID
 	 * @return object
@@ -93,16 +82,13 @@ class Post_content_model extends CRM_Model {
 	public function get_content_attachments($attachment_id = '', $id = '') {
 		if (is_numeric($attachment_id)) {
 			$this->db->where('id', $attachment_id);
-
 			return $this->db->get('tblfiles')->row();
 		}
 		$this->db->order_by('dateadded', 'desc');
 		$this->db->where('rel_id', $id);
 		$this->db->where('rel_type', 'content');
-
 		return $this->db->get('tblfiles')->result_array();
 	}
-
 	/**
 	 * @param   array $_POST data
 	 * @return  integer Insert ID
@@ -114,7 +100,6 @@ class Post_content_model extends CRM_Model {
 		} else {
 			$data['status'] = 2;
 		}
-
 		$data['hash'] = app_generate_hash();
 		$this->db->insert('tblcontents', $data);
 		$insert_id = $this->db->insert_id();
@@ -124,13 +109,10 @@ class Post_content_model extends CRM_Model {
 			}
 			do_action('after_contract_added', $insert_id);
 			logActivity('New Contract Added [' . $data['subject'] . ']');
-
 			return $insert_id;
 		}
-
 		return false;
 	}
-
 	/**
 	 * @param  array $_POST data
 	 * @param  integer Contract ID
@@ -138,13 +120,11 @@ class Post_content_model extends CRM_Model {
 	 * Update content
 	 */
 	public function update($data, $id) {
-
 		if (isset($data['status']) && ($data['status'] == 1 || $data['status'] === 'on')) {
 			$data['status'] = 1;
 		} else {
 			$data['status'] = 2;
 		}
-
 		$_data = do_action('before_content_updated', [
 			'data' => $data,
 			'id' => $id,
@@ -165,10 +145,8 @@ class Post_content_model extends CRM_Model {
 	 */
 	public function delete($id) {
 		do_action('before_contract_deleted', $id);
-
 		$this->db->where('id', $id);
 		$this->db->delete('tblcontents');
-
 		return true;
 	}
 	function search($keyword) {
@@ -215,15 +193,11 @@ class Post_content_model extends CRM_Model {
 				'filter_default' => false,
 			],
 		];
-
 		return do_action('before_get_credit_notes_statuses', $statuses);
 	}
-
 	public function update_status($id) {
-
 		$this->db->where('id', $id);
 		$this->db->update('tblcontents', ['status' => 5]);
 		return true;
 	}
-
 }

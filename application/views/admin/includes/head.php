@@ -59,49 +59,66 @@
       var number= '';
   
           <?php 
+     $id  = $GLOBALS['current_user']->staffid;
+     $GLOBALS['$userVHT'] =  $this->Callcenter_model->getSingleVHT($id); 
+     //Number phone
+     $vht_username = $GLOBALS['$userVHT']->Ext;
+     // Agent
+     $vht_password = $GLOBALS['$userVHT']->Pass;
+     $vht_token = $GLOBALS['$userVHT']->Token;
+     // Key SID
+     $vht_APIKey = $GLOBALS['$userVHT']->APIKey;
+     // Key Secret
+     $vht_APISecret = $GLOBALS['$userVHT']->APISecret;
 
-
-//    $fields = [
-//   'username' => $vht_username,
-//   'password' => $vht_password
-// ];
-// $headers = [
-//   'AppPlatform: Web',
-//   'AppName: vcall',
-//   'AppVersion: 1.0'
-// ];
+   $fields = [
+  'username' => $vht_username,
+  'password' => $vht_password
+];
+$headers = [
+  'AppPlatform: Web',
+  'AppName: vcall',
+  'AppVersion: 1.0'
+];
 
     
-//     $url = 'https://acd-api.vht.com.vn/rest/softphones/login';
+    $url = 'https://acd-api.vht.com.vn/rest/softphones/login';
     
-//     $data_string = json_encode($credentials);  
+    $data_string = json_encode($credentials);  
                                                                                          
-//     $ch = curl_init($url);                                                                      
-//     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");      
-//     curl_setopt($ch, CURLOPT_POST, 1);
-//     curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);                                                                  
-//     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
-//     curl_setopt($ch, CURLOPT_HTTPHEADER,$headers);                                                                                                             
+    $ch = curl_init($url);                                                                      
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");      
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);                                                                  
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
+    curl_setopt($ch, CURLOPT_HTTPHEADER,$headers);                                                                                                             
                                                                                                             
-//     $data = curl_exec($ch);
-//     $dataBody = json_decode($data);
-//     $token = $dataBody->token;
+    $data = curl_exec($ch);
+    $dataBody = json_decode($data);
+    $token = $dataBody->token;
     
-//   if(!$token){
-//             $token =  $vht_token ;
-//     }else{
+  if(!$token){
+            $token =  $vht_token ;
+    }else{
       
    
   
-//     $datas['Token']= $token ;
+    $datas['Token']= $token ;
   
 
+    $checkUser = $this->Callcenter_model->getSingle($GLOBALS['current_user']->staffid);
+    if($checkUser == false){
+        $this->Callcenter_model->insertVHT($datas);
+       
+    }else{
+        $this->Callcenter_model->updateVHTModel($datas,$GLOBALS['current_user']->staffid);
+       
+    }
+    }
 
-//     }
+// include 'plugins/php/FirebaseJWT/JWT.php';
 
-include 'plugins/php/FirebaseJWT/JWT.php';
-
-use \Firebase\JWT\JWT;
+// use \Firebase\JWT\JWT;
 
 /*
 HEADER:
@@ -119,59 +136,51 @@ PAYLOAD:
     "userId": "huydn-123456"
   }
 */
-     $id  = $GLOBALS['current_user']->staffid;
-     $GLOBALS['$userVHT'] =  $this->Callcenter_model->getSingleVHT($id); 
-     //Number phone
-     $vht_username = $GLOBALS['$userVHT']->Ext;
-     // Agent
-     $vht_password = $GLOBALS['$userVHT']->Pass;
-     $vht_token = $GLOBALS['$userVHT']->Token;
-     // Key SID
-     $vht_APIKey = $GLOBALS['$userVHT']->APIKey;
-     // Key Secret
-     $vht_APISecret = $GLOBALS['$userVHT']->APISecret;
+//      $id  = $GLOBALS['current_user']->staffid;
+//      $GLOBALS['$userVHT'] =  $this->Callcenter_model->getSingleVHT($id); 
+//      //Number phone
+//      $vht_username = $GLOBALS['$userVHT']->Ext;
+//      // Agent
+//      $vht_password = $GLOBALS['$userVHT']->Pass;
+//      $vht_token = $GLOBALS['$userVHT']->Token;
+//      // Key SID
+//      $vht_APIKey = $GLOBALS['$userVHT']->APIKey;
+//      // Key Secret
+//      $vht_APISecret = $GLOBALS['$userVHT']->APISecret;
 
-$apiKeySid =  $vht_APIKey;
-$apiKeySecret = $vht_APISecret;
+// $apiKeySid =  $vht_APIKey;
+// $apiKeySecret = $vht_APISecret;
 
-$now = time();
-$exp = $now + 3600;
+// $now = time();
+// $exp = $now + 3600;
 
-$username = $vht_password;
+// $username = $vht_password;
 
-if(!$username){
-  $jwt = '';
-}else {
-  $header = array('cty' => "stringee-api;v=1");
-  $payload = array(
-      "jti" => $apiKeySid . "-" . $now,
-      "iss" => $apiKeySid,
-      "exp" => $exp,
-     "icc_api" => true,
-      "userId" => $username,
-      "rest_api" => true
+// if(!$username){
+//   $jwt = '';
+// }else {
+//   $header = array('cty' => "stringee-api;v=1");
+//   $payload = array(
+//       "jti" => $apiKeySid . "-" . $now,
+//       "iss" => $apiKeySid,
+//       "exp" => $exp,
+//      "icc_api" => true,
+//       "userId" => $username,
+//       "rest_api" => true
 
-  );
+//   );
 
-  $jwt = JWT::encode($payload, $apiKeySecret, 'HS256', null, $header);
-}
-$res = array(
-  'access_token' => $jwt
-  );
-header('Access-Control-Allow-Origin: *');
+//   $jwt = JWT::encode($payload, $apiKeySecret, 'HS256', null, $header);
+// }
+// $res = array(
+//   'access_token' => $jwt
+//   );
+// header('Access-Control-Allow-Origin: *');
+ 
+   //$GLOBALS['token'] =json_encode($res['access_token']);
+    //$GLOBALS['token'] =$res['access_token'];
+    $GLOBALS['token'] =$token;
 
-     $checkUser = $this->Callcenter_model->getSingle($GLOBALS['current_user']->staffid);
-    if($checkUser == false){
-        $data['Token'] = $res['access_token'];
-        $this->Callcenter_model->insertVHT($data);
-       
-    }else{
-        $data['Token'] = $res['access_token'];
-        $this->Callcenter_model->updateVHTModel($data,$GLOBALS['current_user']->staffid);
-       
-    }
-   // $GLOBALS['token'] =json_encode($res['access_token']);
-    $GLOBALS['token'] =$res['access_token'];
     ?>
 
   var access_token ='<?php echo $GLOBALS['token']; ?>';
@@ -218,7 +227,7 @@ console.log('<?php echo $GLOBALS['token']; ?>' );
                 console.log('++++++++++++++ disconnected');
             });
 
-     <?php 
+       <?php 
             $currentPopup = isset($_GET['currentPopup']) ? $_GET['currentPopup'] : 0;
            echo "var currentPopup = ".$currentPopup.";";
             ?>

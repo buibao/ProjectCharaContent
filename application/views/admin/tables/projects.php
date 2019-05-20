@@ -69,7 +69,7 @@ if (count($custom_fields) > 4) {
 }
 
 $result = data_tables_init($aColumns, $sIndexColumn, $sTable, $join, $where, [
-    'clientid',
+    'clientid','project_type',
     '(SELECT GROUP_CONCAT(staff_id SEPARATOR ",") FROM tblprojectmembers WHERE project_id=tblprojects.id ORDER BY staff_id) as members_ids',
 ]);
 
@@ -112,6 +112,8 @@ foreach ($rResult as $aRow) {
 
     $row[] = '<a href="' . admin_url('clients/client/' . $aRow['clientid']) . '">' . $aRow['company'] . '</a>';
 
+   
+
     $row[] = _d($aRow['start_date']);
 
     $row[] = _d($aRow['deadline']);
@@ -136,20 +138,26 @@ foreach ($rResult as $aRow) {
         }
         }
     
-    
-$membersOutput .= '<span class="hide">' . trim($exportMembers, ', ') . '</span>';
+    $membersOutput .= '<span class="hide">' . trim($exportMembers, ', ') . '</span>';
     $row[] =  $membersOutput;
     $status = get_project_status_by_id($aRow['status']);
     $row[]  = '<span class="label label inline-block project-status-' . $aRow['status'] . '" style="color:' . $status['color'] . ';border:1px solid ' . $status['color'] . '">' . $status['name'] . '</span>';
     
     // Show Project Type
-    $types = $this->ci->projects_model->get_name_project_types($aRow['id']);  
-    foreach($types as $type)
-    {
-      $type_name = $type['name']; 
-    }
     
-    $row[] = $type_name;
+    if($types){
+    foreach ($types as $value) {
+            if ($value['id'] == $aRow['project_type']) {
+                $row[] = $value['name'];
+                break;
+            }
+     	}
+    }
+    else{
+	$row[] = '#';
+    }
+	    
+   
     // Custom fields add values
     foreach ($customFieldsColumns as $customFieldColumn) {
         $row[] = (strpos($customFieldColumn, 'date_picker_') !== false ? _d($aRow[$customFieldColumn]) : $aRow[$customFieldColumn]);

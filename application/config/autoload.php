@@ -190,7 +190,7 @@ $autoload['language'] = array('english');
 |
 |   $autoload['model'] = array('first_model' => 'first');
 */
-$autoload['model'] = array( 'misc_model' , 'roles_model' , 'clients_model' , 'tasks_model','Callcenter_model');
+$autoload['model'] = array( 'misc_model' , 'roles_model' , 'clients_model' , 'tasks_model','Callcenter_model','API_model');
 
 if(file_exists(APPPATH.'config/my_autoload.php')){
     include_once(APPPATH.'config/my_autoload.php');

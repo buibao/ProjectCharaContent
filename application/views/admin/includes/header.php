@@ -138,8 +138,8 @@
          <li class="dropdown notifications-wrapper header-notifications" data-toggle="tooltip" title="<?php echo _l('nav_notifications'); ?>" data-placement="bottom">
             <?php $this->load->view('admin/includes/notifications'); ?>
          </li>
-
-           <li  data-toggle="tooltip" title="<?php echo 'Call Center'; ?>" data-placement="bottom">
+           
+           <li  id="checkhidden"data-toggle="tooltip" title="<?php echo 'Call Center'; ?>" data-placement="bottom">
                <?php $this->load->view('admin/includes/call'); ?>
             <a class="fa fa-phone menu-icon" style="font-size: 20px;"  onclick="myFunctionss();"></a>
          </li>
@@ -156,7 +156,18 @@
    </ul>
 </div>
 <script src="<?php echo base_url().'plugins/callcenter/assets/jquery.searchable-1.0.0.min.js'?>"></script>
-   
+<script type="text/javascript">
+    $(document).ready(function () {
+        <?php 
+            $currentPopup = isset($_GET['currentPopup']) ? $_GET['currentPopup'] : 0;
+           echo "var currentPopup = ".$currentPopup.";";
+         
+          ?>
+            if(currentPopup == 1){
+                $('#checkhidden').hide();
+           }
+    });
+</script>
 <script type="text/javascript">
    function myFunctionss() {
  var iframe = document.getElementsByClassName("stringee_iframe_wrapper")[0];

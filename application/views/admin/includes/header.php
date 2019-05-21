@@ -138,11 +138,13 @@
          <li class="dropdown notifications-wrapper header-notifications" data-toggle="tooltip" title="<?php echo _l('nav_notifications'); ?>" data-placement="bottom">
             <?php $this->load->view('admin/includes/notifications'); ?>
          </li>
-           
-           <li  id="checkhidden"data-toggle="tooltip" title="<?php echo 'Call Center'; ?>" data-placement="bottom">
+             <?php if ((has_permission('callcenter', '', 'view'))) {?>
+            <li  id="checkhidden"data-toggle="tooltip" title="<?php echo 'Call Center'; ?>" data-placement="bottom">
                <?php $this->load->view('admin/includes/call'); ?>
             <a class="fa fa-phone menu-icon" style="font-size: 20px;"  onclick="myFunctionss();"></a>
          </li>
+            <?php }?>
+          
         
       </ul>
    </nav>

@@ -19,7 +19,7 @@ $join = [
 
 ];
 
-$where = [];
+$where = ['OR task_id = ' .$id,'OR assignto = ' .$id];
 $filter = [];
 
 $statusIds = [];

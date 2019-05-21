@@ -143,8 +143,9 @@ class Contents extends Admin_controller {
 		$idstaff = $this->db->get('tblstaff')->result_array();
 		$idtask = $this->db->get('tblstafftasks')->result_array();
 		$project = $this->db->get('tblprojects')->result_array();
+		$id  = $GLOBALS['current_user']->staffid;
 		$this->app->get_table_data('contents', [
-			'clientid' => $clientid, 'ids' => $idtask, 'staff' => $idstaff,
+			'clientid' => $clientid, 'ids' => $idtask, 'staff' => $idstaff,'id'=>$id
 		]);
 		// END FIX
 	}

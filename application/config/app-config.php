@@ -17,7 +17,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 
-define('APP_BASE_URL','http://localhost:8080/SRC/ProjectCharaContent');
+define('APP_BASE_URL','http://localhost:8080/SRC/');
+
 /*
 |--------------------------------------------------------------------------
 | Encryption Key
@@ -32,18 +33,18 @@ define('APP_BASE_URL','http://localhost:8080/SRC/ProjectCharaContent');
 | Auto updated added on install
 */
 
-define('APP_ENC_KEY','7bef1030d8f3fa81181469e600443e08');
+define('APP_ENC_KEY','cb1e5c638d6862c2c3937f9d54c938dd');
 /**
  * Database Credentials
  */
 /* The hostname of your database server. */
-define('APP_DB_HOSTNAME','remotemysql.com');
+define('APP_DB_HOSTNAME','localhost');
 /* The username used to connect to the database */
-define('APP_DB_USERNAME','9rR3Vmj3ip');
+define('APP_DB_USERNAME','root');
 /* The password used to connect to the database */
-define('APP_DB_PASSWORD','9qEPUpnVUK');
+define('APP_DB_PASSWORD','');
 /* The name of the database you want to connect to */
-define('APP_DB_NAME','9rR3Vmj3ip');
+define('APP_DB_NAME','deploy');
 
 
 /**

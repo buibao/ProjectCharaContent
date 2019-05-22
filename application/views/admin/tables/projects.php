@@ -145,18 +145,18 @@ foreach ($rResult as $aRow) {
     
     // Show Project Type
     
-    if($types){
-    foreach ($types as $value) {
-            if ($value['id'] == $aRow['project_type']) {
-                $row[] = $value['name'];
-                break;
-            }
-     	}
-    }
-    else{
-	$row[] = '#';
-    }
-	    
+    // if(count($types) > 0){
+    // foreach ($types as $value) {
+    //         if ($value['id'] == $aRow['project_type']) {
+    //             $row[] = $value['name'];
+    //             break;
+    //         }
+    //  	}
+    // }
+    // else{
+	
+    // }
+	    $row[] = '#';
    
     // Custom fields add values
     foreach ($customFieldsColumns as $customFieldColumn) {

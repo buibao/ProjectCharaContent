@@ -20,7 +20,7 @@ class Migration_Version_211 extends CI_Migration
 
         public function up()
         {  
-              if (!$this->db->table_exists('tblprojecttype')) {
+            
 
 $this->db->query("ALTER TABLE `tblclients` ADD `facebook` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL");
 $this->db->query("ALTER TABLE `tblcontacts` ADD `facebook` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL");
@@ -37,7 +37,7 @@ $this->db->query("ALTER TABLE `tblstaff` ADD `leader_id` int(11) NOT NULL,ADD `i
 $this->db->query("ALTER TABLE `tblstafftasks` ADD `count` int(11) NOT NULL, ADD `approveId` int(11) NOT NULL");
 
           
-                  }
+          
             
         }
 

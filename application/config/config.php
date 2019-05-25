@@ -28,7 +28,7 @@ if (file_exists(APPPATH.'config/app-config.php')) {
 
     $install_url .= 'install';
 
-    echo '<h1>Chara Content not installed</h1>';
+    echo '<h1>Chara Content MS not installed</h1>';
 
     echo '<p>1. To you use the automatic Perfex CRM installation tool click <a href="'.$install_url.'">here ('.$install_url.')</a></p>';
 

@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 
-define('APP_BASE_URL','http://localhost:8080/SRC/');
+define('APP_BASE_URL','http://localhost:8080/SRC/ProjectCharaContent/');
 
 /*
 |--------------------------------------------------------------------------
@@ -33,7 +33,7 @@ define('APP_BASE_URL','http://localhost:8080/SRC/');
 | Auto updated added on install
 */
 
-define('APP_ENC_KEY','cb1e5c638d6862c2c3937f9d54c938dd');
+define('APP_ENC_KEY','0675d88600b10d771a3fc888e5bcc2c7');
 /**
  * Database Credentials
  */
@@ -44,7 +44,7 @@ define('APP_DB_USERNAME','root');
 /* The password used to connect to the database */
 define('APP_DB_PASSWORD','');
 /* The name of the database you want to connect to */
-define('APP_DB_NAME','deploy');
+define('APP_DB_NAME','devchara_data');
 
 
 /**

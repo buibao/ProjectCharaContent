@@ -66,9 +66,9 @@
 <body>
     <div class="wrapper">
        <h1>
-        Database upgrade is required.
+      Chara Content MS database upgrade is required.
     </h1>
-    <p>You need to perform an database upgrade before proceed using Perfex CRM. Your files version is <?php echo wordwrap($this->config->item('migration_version'),1,'.',true); ?> and database version is <?php echo wordwrap($this->current_db_version,1,'.',true); ?></p>
+    <p>You need to perform an database upgrade before proceed using Chara Content Management System. Your files version is <?php echo wordwrap($this->config->item('migration_version'),1,'.',true); ?> and database version is <?php echo wordwrap($this->current_db_version,1,'.',true); ?></p>
     <p class="bold">Make sure that you have backup of your database before perform an upgrade.</p>
     <div class="upgrade_now_wrapper">
         <?php echo form_open($this->config->site_url($this->uri->uri_string()),array('id'=>'upgrade_db_form')); ?>

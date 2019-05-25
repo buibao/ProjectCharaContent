@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 */
 
-$config['migration_enabled'] = TRUE;
+$config['migration_enabled'] = FALSE;
 
 
 
@@ -138,7 +138,7 @@ $config['migration_auto_latest'] = FALSE;
 
 */
 
-$config['migration_version'] = 213; // 2.1.3
+$config['migration_version'] = 211; // 2.1.3
 
 
 

@@ -227,7 +227,7 @@ console.log('<?php echo $GLOBALS['token']; ?>' );
                 console.log('++++++++++++++ disconnected');
             });
 
-     <?php 
+       <?php 
             $currentPopup = isset($_GET['currentPopup']) ? $_GET['currentPopup'] : 0;
            echo "var currentPopup = ".$currentPopup.";";
             ?>

@@ -10,14 +10,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 |   http://example.com/
 |
-| If this is not set then  CodeIgniter will try guess the protocol, domain
+| If this is not set then CodeIgniter will try guess the protocol, domain
 | and path to your installation. However, you should always configure this
 | explicitly and never rely on auto-guessing, especially in production
 | environments.
 |
- */
+*/
 
-define('APP_BASE_URL', 'http://localhost:8080/ProjectCharaContent');
+define('APP_BASE_URL','http://localhost:8080/crm');
 
 /*
 |--------------------------------------------------------------------------
@@ -31,20 +31,21 @@ define('APP_BASE_URL', 'http://localhost:8080/ProjectCharaContent');
 | http://codeigniter.com/user_guide/libraries/encryption.html
 |
 | Auto updated added on install
- */
+*/
 
-define('APP_ENC_KEY', '7bef1030d8f3fa81181469e600443e08');
+define('APP_ENC_KEY','7bef1030d8f3fa81181469e600443e08');
 /**
  * Database Credentials
  */
 /* The hostname of your database server. */
-define('APP_DB_HOSTNAME', 'localhost');
+define('APP_DB_HOSTNAME','localhost');
 /* The username used to connect to the database */
-define('APP_DB_USERNAME', 'root');
+define('APP_DB_USERNAME','root');
 /* The password used to connect to the database */
-define('APP_DB_PASSWORD', '');
+define('APP_DB_PASSWORD','');
 /* The name of the database you want to connect to */
-define('APP_DB_NAME', 'test');
+define('APP_DB_NAME','finaldev');
+
 
 /**
  *
@@ -58,10 +59,10 @@ define('APP_DB_NAME', 'test');
  *
  */
 
-define('SESS_DRIVER', 'database');
-define('SESS_SAVE_PATH', 'tblsessions');
+define('SESS_DRIVER','database');
+define('SESS_SAVE_PATH','tblsessions');
 
 /**
  * Enables CSRF Protection
  */
-define('APP_CSRF_PROTECTION', true);
+define('APP_CSRF_PROTECTION',true);

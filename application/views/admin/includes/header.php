@@ -1,22 +1,6 @@
 <?php
    ob_start();
    ?>
-<style type="text/css">
-#header{
-    background: #415165;
-    background: -webkit-gradient(linear,left top,right top,from(#415165),color-stop(26%,#51647c),color-stop(73%,#51647c),to(#4f5d7a));
-    background: linear-gradient(to right,#415165 0,#51647c 26%,#51647c 73%,#4f5d7a 100%);
-    display: block;
-    height: 63px;
-    margin: 0;
-    padding: 0;
-    position: relative;
-    z-index: 99;
-    position: fixed;
-    top: 0;
-    width: 100%;
-}
-</style>
 <li id="top_search" class="dropdown" data-toggle="tooltip" data-placement="bottom" data-title="<?php echo _l('search_by_tags'); ?>">
    <input type="search" id="search_input" class="form-control" placeholder="<?php echo _l('top_search_placeholder'); ?>">
    <div id="search_results">
@@ -138,11 +122,17 @@
          <li class="dropdown notifications-wrapper header-notifications" data-toggle="tooltip" title="<?php echo _l('nav_notifications'); ?>" data-placement="bottom">
             <?php $this->load->view('admin/includes/notifications'); ?>
          </li>
-
-           <li  data-toggle="tooltip" title="<?php echo 'Call Center'; ?>" data-placement="bottom">
+           
+            <?php if ((has_permission('callcenter', '', 'view'))) {?>
+            <li  id="checkhidden"data-toggle="tooltip" title="<?php echo 'Call Center'; ?>" data-placement="bottom">
                <?php $this->load->view('admin/includes/call'); ?>
             <a class="fa fa-phone menu-icon" style="font-size: 20px;"  onclick="myFunctionss();"></a>
          </li>
+            <?php }?>
+		 <li data-toggle="modal" data-target="#Treecontact"title="<?php echo _l('nav_notifications'); ?>" data-placement="bottom">
+            <a class="fa fa-child menu-icon" style="font-size: 20px;"  ></a>
+         </li>
+
         
       </ul>
    </nav>
@@ -155,8 +145,70 @@
          } ?>
    </ul>
 </div>
+<!-- Modal Contact -->
+<div class="modal fade" id="Treecontact" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+           <!--  -->
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel"><?php echo "Staff View"; ?><br /><small class="color-white" id=""></small></h4>
+            </div>
+            <div class="modal-body">
+             <div id="treeview"></div>
+             </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _l('close'); ?></button>
+       
+    </div>
+</div>
+</div>
+</div>
+<script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-treeview/1.2.0/bootstrap-treeview.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-treeview/1.2.0/bootstrap-treeview.min.css" />
+<script type="text/javascript">
+$(document).ready(function(){
+  console.log("Hello ad4a5sd4a5s4da5" );
+ $.ajax({ 
+   url: '<?php echo base_url().'/admin/Tree';?>',
+   method:"GET",
+   dataType: "json",       
+   success: function(data)  
+   {
+    var dataArray = [];
+for (var key in data) {
+    if (data.hasOwnProperty(key)) {
+        dataArray.push(data[key]);
+    }
+};
+  console.log(data);
+ // $('#treeview').treeview({data: dataArray});
+   $('#treeview').treeview({
+          color: "#428bca",
+          expandIcon: "glyphicon glyphicon-stop",
+          collapseIcon: "glyphicon glyphicon-unchecked",
+          nodeIcon: "glyphicon glyphicon-user",
+          showTags: true,
+          data: dataArray
+        });
+
+   }   
+ });
+ 
+});
+</script>
 <script src="<?php echo base_url().'plugins/callcenter/assets/jquery.searchable-1.0.0.min.js'?>"></script>
-   
+<script type="text/javascript">
+    $(document).ready(function () {
+        <?php 
+            $currentPopup = isset($_GET['currentPopup']) ? $_GET['currentPopup'] : 0;
+           echo "var currentPopup = ".$currentPopup.";";
+         
+          ?>
+            if(currentPopup == 1){
+                $('#checkhidden').hide();
+           }
+    });
+</script>
 <script type="text/javascript">
    function myFunctionss() {
  var iframe = document.getElementsByClassName("stringee_iframe_wrapper")[0];

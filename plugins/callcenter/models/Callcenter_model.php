@@ -31,20 +31,33 @@ class Callcenter_model extends CRM_Model {
         // `time_start` BETWEEN '2019-05-01' AND '2019-05-04'
     //SELECT * FROM `tblcalllog` WHERE `time_start`  BETWEEN LIKE 'YYYY-MM-DD' AND like 'YYYY-MM-DD' ORDER BY `time_start`  ASC
     public function callByDayChart($inputFromNumber='',$inputToNumber='',$startDate='',$endDate='') {
-        $stringQuery = " from_number like '%".$inputFromNumber."%'" ." and to_number  like '%".$inputToNumber."%'";
-        $sql = "SELECT  time_start AS created_datetime,SUM(CAST(`duration`/60 AS DECIMAL(18,2))) AS total FROM tblcalllog WHERE duration > 0 and ".$stringQuery." GROUP BY time_start";
+       $stringQueryDate = "";
+        if(strcmp($startDate, 'YYYY-MM-DD') !=0){
+             $stringQueryDate = "AND (time_start  BETWEEN '".$startDate."' AND '".$endDate."') ";
+        }
+
+        $stringQuery = " from_number like '%".$inputFromNumber."%'" ." and to_number  like '%".$inputToNumber."%' " .$stringQueryDate;
+        $sql = "SELECT  time_start AS created_datetime,count(*) AS total FROM tblcalllog WHERE duration >= 0 and ".$stringQuery." GROUP BY time_start";
         $query = $this->db->query($sql);
         return $query->result_array();
     } 
     public function callSumChart($inputFromNumber='',$inputToNumber='',$startDate='',$endDate='') {
-         $stringQuery = " from_number like '%".$inputFromNumber."%'" ." and to_number  like '%".$inputToNumber."%'";
+         $stringQueryDate = "";
+        if(strcmp($startDate, 'YYYY-MM-DD') !=0){
+             $stringQueryDate = "AND (time_start  BETWEEN '".$startDate."' AND '".$endDate."') ";
+        }
+         $stringQuery = " from_number like '%".$inputFromNumber."%'" ." and to_number  like '%".$inputToNumber."%' ".$stringQueryDate;
         $sql = "SELECT SUM(duration) AS total FROM tblcalllog WHERE " . $stringQuery;   
         
         $query = $this->db->query($sql);
         return $query->row();
     } 
     public function callsChart($inputFromNumber='',$inputToNumber='',$startDate='',$endDate='') {
-        $stringQuery = " from_number like '%".$inputFromNumber."%'" ." and to_number  like '%".$inputToNumber."%'";
+         $stringQueryDate = "";
+        if(strcmp($startDate, 'YYYY-MM-DD') !=0){
+             $stringQueryDate = "AND (time_start  BETWEEN '".$startDate."' AND '".$endDate."') ";
+        }
+        $stringQuery = " from_number like '%".$inputFromNumber."%'" ." and to_number  like '%".$inputToNumber."%' ".$stringQueryDate;
         $sql = "SELECT *  FROM tblcalllog WHERE " . $stringQuery;   
       
         $query = $this->db->query($sql);

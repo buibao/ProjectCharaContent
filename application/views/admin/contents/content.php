@@ -11,13 +11,15 @@
                <div class="panel-body">
                   <div class="row">
                      <div class="col-md-12 project-overview-left">
-
+ 			
                         <?php echo form_open_multipart($this->uri->uri_string(), array('id' => 'content-form')); ?>
                         <h3 class="no-margin">
                            <?php echo $title; ?>
                            
                         </h3>
-
+			<div class="content" style="display: none;">
+                           <?php echo form_hidden('id',$content->id); ?>
+                        </div> 
                         <div class="checkbox ">
                            <input type="checkbox" name="status" id="status" <?php if (isset($content)) {
                                                                                  if ($content->status == 2) {
@@ -63,7 +65,7 @@
                            </div>
 
                         </div>
-                        <label for="task_title" class="control-label"> <small class="req text-danger">* </small><?php echo _l('photo_content'); ?></label>
+                        <label for="task_title" class="control-label"> <small class="req text-danger"></small><?php echo _l('photo_content'); ?></label>
                         <?php if ($attachments == null) { ?>
                            <div id="new-task-attachments">
                               <div class="row attachments">
@@ -71,7 +73,7 @@
                                     <div class="col-md-12">
                                        <div class="form-group">
                                           <div class="input-group col-md-12">
-                                             <input type="file" id="attachmentInput" extension="<?php echo str_replace('.', '', get_option('allowed_files')); ?>" filesize="<?php echo file_upload_max_size(); ?>" class="form-control " name="attachments[0]" required>
+                                             <input type="file" accept="image/*" onchange="validateFileType()" id="attachmentInput" extension="<?php echo str_replace('.', '', get_option('allowed_files')); ?>" filesize="<?php echo file_upload_max_size(); ?>" class="form-control " name="attachments[0]">
                                           </div>
                                        </div>
                                     </div>
@@ -167,9 +169,9 @@
                   </div>
 
                   <div class="btn-bottom-toolbar text-right">
-                     <button type="submit" class="btn btn-info"><?php echo _l('submit'); ?></button>
+                     <button type="submit" class="btn btn-info" id="submit" ><?php echo _l('submit'); ?></button>
 
-                     <button class="btn-tr btn btn-default " id="submitdraft">
+                     <button class="btn-tr btn btn-default " id="submitdraft" >
                         <?php echo _l('submitdraft'); ?>
                      </button>
 
@@ -204,6 +206,22 @@
 </div>
 </div>
 <?php init_tail(); ?>
+<script>
+    function validateFileType(){
+              var fileName = document.getElementById("attachmentInput").value;
+              var idxDot = fileName.lastIndexOf(".") + 1;
+              var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+              if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
+                 return true;
+              }else{
+              
+                  alert("Only jpg/jpeg and png files are allowed!");
+                  return false;
+                }  
+              }
+     
+    </script>
+   
 <script src='<?php echo base_url('assets/plugins/editor/vendor/emoji-picker/lib/js/config.js'); ?>'></script>
 <script src='<?php echo base_url('assets/plugins/editor/vendor/emoji-picker/lib/js/util.js'); ?>'></script>
 <script src='<?php echo base_url('assets/plugins/editor/vendor/emoji-picker/lib/js/jquery.emojiarea.js'); ?>'></script>
@@ -226,7 +244,6 @@
    $(document).ready(function() {
       listComment();
    });
-
    function listComment() {
       $.post("",
          function(data) {
@@ -240,34 +257,52 @@
                .replace(/\r/g, "\\r")
                .replace(/\t/g, "\\t")
                .replace(/\f/g, "\\f");
-
             // .replace(/\n/g, "\\n")
             //  .replace(/\r/g, "\\r")
             //  .replace(/\t/g, "\\t")
             //  .replace(/\f/g, "\\f");
-
             // remove non-printable and other non-valid JSON chars
             //datarecieve = datarecieve.replace(/[\u0000-\u001F]+/g,""); 
-
             var data = JSON.parse(datarecieve);
             console.log(data);
             var comments = "";
-
             var results = new Array();
-
             // var list = $("<ul class='outer-comment'>");
             // var item = $("<li>").html(comments);
-
             for (var i = 0;
                (i < data.length); i++) {
-
                comments = data[i]['description'];
-
             }
-
             $("#description").val(comments);
          });
    }
+</script>
+ <script>
+ $(function() {
+      _validate_form($('#content-form'), {
+      task_title: 'required',
+   //   subject: 'required',
+           subject: {
+               required: true,
+            //   email: true,
+               remote: {
+                  url: '<?php echo base_url('admin/misc/content_subject_exists'); ?>',
+                   type: 'post',
+                   data: {
+                       subject: function() {
+				console.log("Subject = " + $('input[name="subject"]').val());
+                           return $('input[name="subject"]').val();
+                       },
+                       id: function() {
+				console.log("Subject = " + $('input[name="id"]').val());
+                           return $('input[name="id"]').val();
+                       }
+                   }
+               }
+           }
+
+   });
+   });
 </script>
 <script type="text/javascript">
    $("#submitButton").click(function() {
@@ -285,8 +320,6 @@
          }
       });
    });
-
-
    $(function() {
       // Initializes and creates emoji set from sprite sheet
       window.emojiPicker = new EmojiPicker({
@@ -296,10 +329,8 @@
       });
       // '<?php 
             ?>'
-
       window.emojiPicker.discover();
    });
-
    $("#submitdraft").click(function() {
       var inputs = document.querySelector('#status');
       inputs.checked = true;
@@ -307,16 +338,12 @@
    _validate_form($('#content-form'), {
       task_title: 'required',
       subject: 'required',
-
    });
-
-
    $("#task_title")
       .change(function() {
          var str = "";
          var task_id = $("#task_title option:selected").val();
          console.log(task_id);
-
          $.getJSON("get_task_json", {
             task_id: task_id
          }, function(resp) {
@@ -332,20 +359,15 @@
    // $(document).ready(function() {
    //       $.ajaxSetup({cache: false});
    //        var winterval=setInterval(function () {
-
    //             $.getJSON("get_task_json", function (row) {
    //                var data=$.parseJSON(row);
-
-
    //                   if (data.startdate) {
    //                      $('#C1-Cycle').val(data.startdate);
    //                  }
    //                  if (data.duedate) {
    //                      $('#C2-Cycle-Cycle').val(data.duedate);
    //                  }
-
    //             });
-
    //        }, 1000);
    //   });
    // <!--end fix content date -->
@@ -355,12 +377,10 @@
    textarea {
       overflow: auto;
    }
-
    body.content {
       padding-left: 0;
       padding-top: 0;
    }
-
    .emoji-menu {
       position: absolute;
       right: 0;

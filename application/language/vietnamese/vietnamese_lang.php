@@ -430,7 +430,7 @@ $lang['settings_sales_invoice_number_format']                      = 'Định d�
 $lang['settings_sales_invoice_number_format_year_based']           = 'Hệ năm';
 $lang['settings_sales_invoice_number_format_number_based']         = 'Hệ số (000001)';
 $lang['settings_sales_company_info_note']                          = 'Các thông tin này sẽ được hiển thị trên hóa đơn/báo giá/thanh toán và các văn bản PDF khác có yêu cầu thông tin công ty';
-$lang['settings_sales_company_name']                               = 'Yên công ty';
+
 $lang['settings_sales_address']                                    = 'Địa chỉ';
 $lang['settings_sales_city']                                       = 'Thành phố';
 $lang['settings_sales_country_code']                               = 'Mã quốc gia';
@@ -2659,7 +2659,7 @@ $lang['task_recurring_months']                     = $lang['expense_recurring_mo
 $lang['task_recurring_years']                      = $lang['expense_recurring_years'];
 $lang['task_recurring_days']                       = $lang['expense_recurring_days'];
 $lang['task_recurring_weeks']                      = $lang['expense_recurring_weeks'];
-$lang['todays_tasks']                              = 'Today\'s tasks';
+
 $lang['payment_mode_invoices_only']                = 'Invoices Only';
 $lang['payment_mode_expenses_only']                = 'Expenses Only';
 $lang['task_no_checklist_items_found']             = 'Checklist items not found for this task';
@@ -3075,7 +3075,7 @@ $lang['task_users_working_on_tasks_multiple']                = 'Currently %s are
 $lang['task_users_working_on_tasks_single']                  = 'Currently %s is working on this task';
 
 # Version 1.9.0
-$lang['estimated_hours']                               = 'Estimated Hours';
+
 $lang['two_factor_auth_failed_to_send_code']           = 'Failed to send two step authentication code to email, SMTP settings may not be configured properly';
 $lang['two_factor_auth_code_sent_successfully']        = 'An email has been sent to %s with verification code to verify your login';
 $lang['enable_two_factor_authentication']              = 'Enable Two Factor Authentication';
@@ -3413,7 +3413,7 @@ $lang['subscription_is_canceled_no_resume']                     = 'This subscrip
 $lang['subscription_will_be_canceled_at_end_of_billing_period'] = 'This subscription will be canceled at the end of billing period.';
 $lang['customer_successfully_subscribed_to_subscription']       = 'Thank you for subscribing to %s';
 $lang['date_subscribed']                                        = 'Date Subscribed';
-$lang['reports']                                                = 'Reports';
+
 $lang['subscriptions_summary']                                  = 'Subscriptions Summary';
 $lang['calendar_only_assigned_tasks']                           = 'Show only tasks assigned to the logged in staff member';
 $lang['invoice_activity_subscription_payment_succeeded']        = 'Subscription Payment Succeeded, email sent to: %s';
@@ -3451,7 +3451,7 @@ $lang['request_data_removal']                                   = 'Request data 
 $lang['explanation_for_data_removal']                           = 'Explanation for data removal';
 $lang['briefly_describe_why_remove_data']                       = 'Briefly describe why you want to remove the data';
 $lang['date_published']                                         = 'Date Published';
-$lang['view']                                                   = 'View';
+
 $lang['customer_is_subscribed_to_subscription_info']            = 'The customer is subscribed to this subscription';
 $lang['save_last_order_for_tables'] = 'Save last order for tables';
 
@@ -3496,17 +3496,18 @@ $lang['draft'] ='Nháp';
 $lang['waiting_for_leader'] ='Nhóm trưởng đang duyệt';
 $lang['waiting_for_customer'] ='Khách hàng đang duyệt';
 $lang['approvedcontent'] ='Đã phê duyệt';
-$lang['waiting_for_post'] ='Đang post fabcebook';
-$lang['waiting_for_posting'] ='Đang post fabcebook';
-$lang['content_posted'] ='Đã post facebook';
+$lang['waiting_for_post'] ='Chờ đăng';
+$lang['waiting_for_posting'] ='Chờ đăng';
+$lang['content_posted'] ='Đã đăng';
 $lang['content_title'] ='Tiêu đề';
 $lang['content_description'] ='Nội dung';
 $lang['content'] ='Bài viết';
 $lang['submitdraft'] ='Tạo nháp';
 $lang['clients_contents'] ='Bài viết';
-$lang['post_content'] ='Post bài viết';
-$lang['posted'] ='Đã post facebook';
-$lang['summary_heading'] ='Tổng quan post bài viết';
+$lang['post_content'] ='Đăng bài viết';
+
+$lang['posted'] ='Đã đăng facebook';
+$lang['summary_heading'] ='Tổng quan đăng bài viết';
 $lang['kpi_reports'] ='Tổng quan KPI bài viết';
 $lang['name'] ='Tên';
 $lang['total_members'] ='Tổng số thành viên';
@@ -3545,6 +3546,45 @@ $lang['call_status'] ='Trạng thái';
 $lang['incoming_call'] ='Cuộc gọi đến';
 $lang['away_call'] ='Cuộc gọi đi';
 
+$lang['time_connected'] ='Thời gian kết nối';
+$lang['time_ended'] ='Thời gian kết thúc';
+
 
 // $lang['custom_field'] = 'Lĩnh vực';
 // $lang['fields'] = 'Lĩnh vực';
+
+$lang['new_customer_field'] = 'Nhóm lĩnh vực mới';
+$lang['customer_field_name'] = 'Tên lĩnh vực';
+$lang['callcenter'] = 'Tổng đài';
+$lang['kpi'] = 'KPI bài viết';
+$lang['reports']                                                = 'Báo cáo';
+$lang['post_facebook']                                                = 'Đăng bài viết';
+$lang['post_facebook']                                                = 'Đăng bài viết';
+$lang['estimated_hours']                               = 'Thời gian ước lượng';
+$lang['project_link_page']                               = 'Đường dẫn fanpage';
+$lang['project_link_web']                               = 'Đường dẫn website';
+$lang['project_type']                               = 'Loại dự án';
+$lang['settings_sales_company_name']                               = 'Tên công ty';
+$lang['view']                                                   = 'Xem';
+$lang['todays_tasks'] =  'Công việc hôm nay';
+$lang['post_contents'] ='Đăng bài viết';
+
+$lang['contentoverview']                                                   = 'TỔNG QUAN BÀI VIẾT';
+$lang['effect_of_content'] =  'HIỆU QUẢ BÀI VIẾT';
+$lang['kb_trend'] ='Xu hướng';
+
+$lang['effect_of_content'] =  'HIỆU QUẢ BÀI VIẾT';
+$lang['kb_you_trend'] ='YouTube';
+$lang['kb_google_trend'] ='Từ khóa Google';
+$lang['error_link_page_id']               = 'Lỗi Token Truy Cập Người Dùng ';
+$lang['error_page_id']               = 'Đường Dẫn Fanpage Trống!';
+
+$lang['check_content_infor_again']    = 'Nội Dung Bài Viết Lỗi';
+$lang['add_new_token']    = 'Vui Lòng Cập Nhật Token Quyền Truy Cập Người Dùng';
+$lang['get_token_to_update_infor']    = 'Vui Lòng Cập Nhật Token Để Xem Thông Tin Mới Nhất';
+
+$lang['access_token']    = 'Đăng ký Token Truy Cập';
+$lang['settings_facebook']    = 'Quyền Truy Cập Facebook';
+$lang['setting_call']    = 'Quyền Truy Cập VHT ';
+$lang['settings_call']    = 'Quyền Truy Cập VHT ';
+$lang['setting_facebook_access_token']    = 'Quyền Truy Cập Facebook ';

@@ -20,12 +20,7 @@ class Callcenter extends Admin_controller {
     
     public function callcenter() {
 
-         if (!has_permission('customers', '', 'view')) {
-            if (!have_assigned_customers() && !has_permission('customers', '', 'create')) {
-                access_denied('customers');
-            }
-        }
-              
+        
         $this->load->model('contracts_model');
         $data['contract_types'] = $this->contracts_model->get_contract_types();
         $data['groups']         = $this->clients_model->get_groups();
@@ -72,6 +67,11 @@ class Callcenter extends Admin_controller {
     }
       public function call_log()
     {
+
+        // $this->app->get_table_data('contents', [
+        //     'clientid' => $clientid, 'ids' => $idtask, 'staff' => $idstaff,'id'=>$id
+        // ]);
+
         if ($this->input->is_ajax_request()) {
             $this->app->get_table_data('call_log');
         }
@@ -86,13 +86,9 @@ class Callcenter extends Admin_controller {
     }
      public function table()
     {
-        if (!has_permission('customers', '', 'view')) {
-            if (!have_assigned_customers() && !has_permission('customers', '', 'create')) {
-                ajax_access_denied();
-            }
-        }
-
-        $this->app->get_table_data('clientscallcenter');
+      
+            $this->app->get_table_data('call_log');
+     
     }
    
    public function getNameClient(){
@@ -158,77 +154,54 @@ $_SESSION['image'] = $tringg;
 echo $tringg;
  }
  // Input Data
-    public function calllog($id){
-     $user  = $GLOBALS['current_user'];
-     $ids  = $user->staffid;
-     $User = $this->Callcenter_model->getSingle($ids);
-     //  $auth = base64_encode($User->APIKey .":". $User->APISecret);
-
-       $auth = base64_encode("c095eddb30c14184c57a8c2d2d1ad4f4:943abdbe302aef5ce0af91e4462a2c50");
+    public function calllog(){
+    $user  = $GLOBALS['current_user'];
+    $ids  = $user->staffid;
+    $User = $this->Callcenter_model->getSingle($ids);
+    $auth = base64_encode($User->APIKey .":". $User->APISecret);
     $context = stream_context_create([
     "http" => [
         "header" => "Authorization: Basic " . $auth
     ]
-]);
-
- $strings = 'https://acd-api.vht.com.vn/rest/cdrs?page='.$id."&limit=50&sort_type=DESC";
-
-    if(strlen($_SESSION['keyState']) > 2 || strlen($_SESSION['keyFromNumber']) > 2 || strlen($_SESSION['keyToNumber']) > 2 || strlen($_SESSION['keyStartTime']) > 5 ||  strlen($_SESSION['keyEndTime']) > 5  ){
+    ]);
+   for($i=1; $i <=2; $i++){
    
-    if(strlen($_SESSION['keyState']) > 2){
-         $strings = $strings . "&state=".$_SESSION['keyState'];
-    }
-    if(strlen($_SESSION['keyFromNumber']) > 2){
-         $strings  = $strings . "&from_number=".$_SESSION['keyFromNumber'];
-    }
-     if(strlen($_SESSION['keyStartTime']) > 5){
-         $strings  = $strings . "&date_started=".$_SESSION['keyStartTime'];
-    }
-    if(strlen($_SESSION['keyToNumber']) > 5){
-         $strings  = $strings . "&date_ended=".$_SESSION['keyEndTime'];
-    }
-   
-}else{
-    $strings = "https://acd-api.vht.com.vn/rest/cdrs?page=".$id."&limit=50&sort_type=DESC";
-}
+
+   $strings = 'https://acd-api.vht.com.vn/rest/cdrs?page='.$i.'&limit=50&sort_type=DESC';
 
 
-   
     $homepage = file_get_contents($strings, false, $context);
     $results = json_decode($homepage);
-    $pages = CEIL($results->total / 50);
     $dt = $results->items;  
 
-    //    foreach ($dt as $value ) {
-    //    $data['cdr_id']= $value->cdr_id;
-    //    $data['call_id']= $value->call_id;
-    //    $data['cause']= $value->cause;
-    //    $data['q850_cause']= $value->q850_cause;
-    //    $data['from_extension']= $value->from_extension;
-    //    $data['to_extension']= $value->to_extension;
-    //    $data['from_number']= $value->from_number;
-    //    $data['to_number']= $value->to_number;
-    //    $data['duration']= $value->duration;
-    //    $data['direction']= $value->direction;
+       foreach ($dt as $value ) {
+       $data['cdr_id']= $value->cdr_id;
+       $data['call_id']= $value->call_id;
+       $data['cause']= $value->cause;
+       $data['q850_cause']= $value->q850_cause;
+       $data['from_extension']= $value->from_extension;
+       $data['to_extension']= $value->to_extension;
+       $data['from_number']= $value->from_number;
+       $data['to_number']= $value->to_number;
+       $data['duration']= $value->duration;
+       $data['direction']= $value->direction;
 
-    //    $data['time_start']=date('Y-m-d',  $value->time_started); 
-    //    $data['time_connect']=  date('Y-m-d', $value->time_connected);
-    //    $data['time_end']=  date('Y-m-d', $value->time_ended);
+       $data['time_start']=date('Y-m-d',  $value->time_started); 
+       $data['time_connect']=  date('Y-m-d', $value->time_connected);
+       $data['time_end']=  date('Y-m-d', $value->time_ended);
 
-    //    $data['time_started']= date('D m/d/Y H:i:s', $value->time_started);
-    //    $data['time_connected']= date('D m/d/Y H:i:s', $value->time_connected);
-    //    $data['time_ended']= date('D m/d/Y H:i:s', $value->time_ended);
+       $data['time_started']= date('D m/d/Y H:i:s', $value->time_started);
+       $data['time_connected']= date('D m/d/Y H:i:s', $value->time_connected);
+       $data['time_ended']= date('D m/d/Y H:i:s', $value->time_ended);
 
-    //    $data['recording_path']= $value->recording_path;
-    //    $data['recording_url']= $value->recording_url;
-    //    $data['record_file_size']= $value->record_file_size;
+       $data['recording_path']= $value->recording_path;
+       $data['recording_url']= $value->recording_url;
+       $data['record_file_size']= $value->record_file_size;
 
-    //    $this->Callcenter_model->insertlog($data);
+       $this->Callcenter_model->insertlog($data);
       
-    // }  
-
- $this->load->view('callcenter_calllogs',array( 'dt' => $dt, 'results'=>$results,'pages' => $pages,'idPage'=>$id));
-  
+    }  
+   }
 }
  public function searchCall(){
      $data = $this->input->post();
@@ -246,7 +219,7 @@ echo $tringg;
 
     $context = stream_context_create([
     "http" => [
-        "header" => "Authorization: Basic YzA5NWVkZGIzMGMxNDE4NGM1N2E4YzJkMmQxYWQ0ZjQ6OTQzYWJkYmUzMDJhZWY1Y2UwYWY5MWU0NDYyYTJjNTA="
+        "header" => "Authorization: Basic $auth"
     ]
 ]);
 $_SESSION['keyState']  =   $data['Status'];

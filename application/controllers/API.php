@@ -51,9 +51,10 @@ class API extends Admin_controller
     $ids  = $user->staffid;
      $User = $this->Callcenter_model->getSingle($ids);
    $auth =  base64_encode($User->APIKey .":". $User->APISecret);
+  // echo json_encode($auth);
     $context = stream_context_create([
     "http" => [
-        "header" => "Authorization: Basic YzA5NWVkZGIzMGMxNDE4NGM1N2E4YzJkMmQxYWQ0ZjQ6OTQzYWJkYmUzMDJhZWY1Y2UwYWY5MWU0NDYyYTJjNTA="
+        "header" => "Authorization: Basic $auth"
     ]
 ]);
 
@@ -69,25 +70,25 @@ class API extends Admin_controller
     }
       public function Contact(){
         
-$inputFromNumber = $_POST['inputFromNumber'];
-$inputToNumber = $_POST['inputToNumber'];
-$reportrange = $_POST['reportrange'];
-$str_arr = explode (" - ", $reportrange);
-$check ='';  
-if(strcmp($str_arr[0], 'YYYY-MM-DD') ==0){
-$check = 'done have';
-}
-$calls = $this->Callcenter_model->callsChart($inputFromNumber,$inputToNumber,$str_arr[0],$str_arr[1]);
-$rowcount = count($calls);
-$callChart = $this->Callcenter_model->callByDayChart($inputFromNumber,$inputToNumber,$str_arr[0],$str_arr[1]);
-$callSum = $this->Callcenter_model->callSumChart($inputFromNumber,$inputToNumber,$str_arr[0],$str_arr[1]);
-$results2->data->callByDay = $callChart;
-$results2->data->callSum = gmdate("H:i:s", $callSum->total);
-$results2->data->total = $calls;
-$results2->data->totalCount = $rowcount;
-$results2->data->stringG1 = $str_arr[0];
-$results2->data->stringG2 = $str_arr[1];
-$results2->data->stringG3 = $check;
+        $inputFromNumber = $_POST['inputFromNumber'];
+        $inputToNumber = $_POST['inputToNumber'];
+        $reportrange = $_POST['reportrange'];
+        $str_arr = explode (" - ", $reportrange);
+        $check ='';  
+        if(strcmp($str_arr[0], 'YYYY-MM-DD') ==0){
+        $check = 'done have';
+        }
+        $calls = $this->Callcenter_model->callsChart($inputFromNumber,$inputToNumber,$str_arr[0],$str_arr[1]);
+        $rowcount = count($calls);
+        $callChart = $this->Callcenter_model->callByDayChart($inputFromNumber,$inputToNumber,$str_arr[0],$str_arr[1]);
+        $callSum = $this->Callcenter_model->callSumChart($inputFromNumber,$inputToNumber,$str_arr[0],$str_arr[1]);
+        $results2->data->callByDay = $callChart;
+        $results2->data->callSum = gmdate("H:i:s", $callSum->total);
+        $results2->data->total = $calls;
+        $results2->data->totalCount = $rowcount;
+        $results2->data->stringG1 = $str_arr[0];
+        $results2->data->stringG2 = $str_arr[1];
+        $results2->data->stringG3 = $check;
         echo json_encode($results2);
     }
     

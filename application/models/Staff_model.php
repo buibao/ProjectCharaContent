@@ -20,7 +20,59 @@ class Staff_model extends CRM_Model
 
     }
 
+ public function get_Tree($id = '', $where = [])
 
+    {
+
+        $select_str = 'staffid as id ,leader_id as parent_id,CONCAT(firstname," ",lastname) as text';
+
+
+
+        // Used to prevent multiple queries on logged in staff to check the total unread notifications in admin_controller.php
+
+        if (is_staff_logged_in() && $id != '' && $id == get_staff_user_id()) {
+
+            $select_str .= ',(SELECT COUNT(*) FROM tblnotifications WHERE touserid=' . get_staff_user_id() . ' and isread=0) as total_unread_notifications, (SELECT COUNT(*) FROM tbltodoitems WHERE finished=0 AND staffid=' . get_staff_user_id() . ') as total_unfinished_todos';
+
+        }
+
+
+
+        $this->db->select($select_str);
+
+
+
+
+
+        $this->db->where($where);
+
+
+
+        if (is_numeric($id)) {
+
+            $this->db->where('staffid', $id);
+
+            $staff = $this->db->get('tblstaff')->row();
+
+            if ($staff) {
+
+                $staff->permissions = $this->get_staff_permissions($id);
+
+            }
+
+
+
+            return $staff;
+
+        }
+
+        $this->db->order_by('firstname', 'desc');
+
+
+
+        return $this->db->get('tblstaff')->result_array();
+
+    }
 
     public function delete($id, $transfer_data_to)
 

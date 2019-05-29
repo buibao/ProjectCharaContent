@@ -1,19 +1,14 @@
 <?php
-
 defined('BASEPATH') or exit('No direct script access allowed');
-
 class Contents extends Admin_controller {
 	public function __construct() {
 		parent::__construct();
 		$this->load->model('contents_model');
-		$this->load->model('tasks_model');
 	}
-
 	/* List all contents */
 	public function index() {
 		$data['title'] = _l('contents');
 		$this->load->view('admin/contents/manage', $data);
-
 	}
 	/* Edit contract or add new contract */
 	public function content($id = '') {
@@ -21,16 +16,12 @@ class Contents extends Admin_controller {
 		unset($overview[0]);
 		$overview = ['staff_id' => $staff_id, 'detailed' => $overview,
 		];
-
 		$data['tasksCustom'] = $this->tasks_model->get_user_tasks_assigned();
-
 		if ($this->input->post()) {
 			if ($id == '') {
 				if (!has_permission('contents', '', 'create')) {
 					access_denied('contents');
 				}
-
-
 				$id = $this->contents_model->add($this->input->post());
 				if ($id->id) {
 					$uploadedFiles = handle_content_attachments_array($id->id);
@@ -62,7 +53,6 @@ class Contents extends Admin_controller {
 				redirect(admin_url('contents'));
 				// redirect(admin_url('contents/content/' . $id));
 			}
-
 			//end update
 		}
 		$data['content'] = $this->contents_model->get($id, [], true);
@@ -75,11 +65,9 @@ class Contents extends Admin_controller {
 						foreach ($available['available'] as $av) {
 							if ($av == 'content') {
 								array_push($_content_merge_fields, $f);
-
 								break;
 							}
 						}
-
 						break;
 					}
 				} elseif ($type == 'other') {
@@ -126,7 +114,6 @@ class Contents extends Admin_controller {
 		// $data['id'] = $data['attachments']->id;
 		// $data['id'] = $data['attachments']->id;
 		// $data['id'] = $data['attachments']->id;
-
 		$data['content_merge_fields'] = $_content_merge_fields;
 		$title = $data['content']->subject;
 		$data['title'] = $title;
@@ -144,12 +131,10 @@ class Contents extends Admin_controller {
 	// 	$this->db->select("*");
 	// 	$this->db->from('tblstafftasks');
 	// 	$query = $this->db->get();
-
 	// 	foreach ($query->result() as $row) {
 	// 		echo json_encode($row);
 	// 	}
 	// }
-
 	public function table($clientid = '') {
 		if (!has_permission('contents', '', 'view') && !has_permission('contents', '', 'view_own')) {
 			ajax_access_denied();
@@ -159,14 +144,11 @@ class Contents extends Admin_controller {
 		$idtask = $this->db->get('tblstafftasks')->result_array();
 		$project = $this->db->get('tblprojects')->result_array();
 		$id  = $GLOBALS['current_user']->staffid;
-
 		$this->app->get_table_data('contents', [
 			'clientid' => $clientid, 'ids' => $idtask, 'staff' => $idstaff,'id'=>$id
 		]);
 		// END FIX
-
 	}
-
 	/* Delete content from database */
 	public function delete($id) {
 		if (!has_permission('contents', '', 'delete')) {
@@ -211,7 +193,6 @@ class Contents extends Admin_controller {
 				redirect(admin_url('contents'));
 				break;
 			}
-
 		}
 		$hostname = $this->db->hostname;
 		$username = $this->db->username;
@@ -242,7 +223,6 @@ class Contents extends Admin_controller {
 		$data['id_content'] = $content->id;
 		$data['content'] = $content;
 		$data['title'] = $content->subject;
-
 		$task = $this->tasks_model->get($content->task_title);
 		if ($task->rel_type == "project") {
 				$project = $this->projects_model->get($task->rel_id);

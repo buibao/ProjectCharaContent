@@ -44,9 +44,6 @@ foreach ($groups as $group) {
         array_push($groupIds, $group['id']);
     }
 }
-if (count($groupIds) > 0) {
-    array_push($filter, 'AND tblclients.userid IN (SELECT customer_id FROM tblcustomergroups_in WHERE groupid IN (' . implode(', ', $groupIds) . '))');
-}
 
 $fields   = $this->ci->clients_model->get_fields();
 
@@ -59,7 +56,9 @@ foreach ($fields as $field) {
 if (count($fieldsIds) > 0) {
     array_push($filter, 'AND tblclients.userid IN (SELECT customer_id FROM tblcustomerfields_in WHERE fieldid IN (' . implode(', ', $fieldsIds) . '))');
 }
-
+if (count($groupIds) > 0) {
+    array_push($filter, 'AND tblclients.userid IN (SELECT customer_id FROM tblcustomergroups_in WHERE groupid IN (' . implode(', ', $groupIds) . '))');
+}
 // FIX SOURCE
 //Filter by custom groups
 //$group   = $this->ci->clients_model->get_fields();

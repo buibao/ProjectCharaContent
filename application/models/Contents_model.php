@@ -1,13 +1,10 @@
 <?php
-
 defined('BASEPATH') or exit('No direct script access allowed');
 class Contents_model extends CRM_Model
 {
 	public function __construct()
 	{
 		parent::__construct();
-	    $this->load->model('tasks_model');
-	    $this->load->model('projects_model');
 	}
 	public function getDatabase()
 	{
@@ -19,7 +16,6 @@ class Contents_model extends CRM_Model
 		// echo "<pre>";
 		// var_dump($ketqua);// in ra
 	}
-
 	/**
 	 * Get content/s
 	 * @param  mixed  $id         contract id
@@ -27,17 +23,34 @@ class Contents_model extends CRM_Model
 	 * @param  boolean $for_editor if for editor is false will replace the field if not will not replace
 	 * @return mixed
 	 */
-
 	// public function get($id )
 	// {
 	//         $this->db->where('tblcontents.id', $id);
 	//         $content = $this->db->get('tblcontents')->row();
 	//         return $content;
 	// }
+
+	public function getTaskId($idContent){
+		$this->db->select("task_title");
+		$this->db->from('tblcontents');
+		$this->db->where('id', $idContent);
+		return $this->db->get()->row();
+	}
+	public function getCount($idTask){
+		$this->db->select("count");
+		$this->db->from('tblstafftasks');
+		$this->db->where('id', $idTask);
+		return $this->db->get()->row();
+	}
+	public function get_Count_Content_By_TaskID($idTask){
+		$sql = 'SELECT * FROM tblcontents where task_title =' .$idTask. ' AND status = 5';
+		$query = $this->db->query($sql);
+		return $query->num_rows();
+	}
+
 	public function getAllContent($id)
 	{
 		$this->db->where('id', $id);
-
 		return $this->db->get('tblcontents')->row();
 	}
 	public function get_task_json($task_id = '')
@@ -45,15 +58,12 @@ class Contents_model extends CRM_Model
 		$this->db->select("*");
 		$this->db->from('tblstafftasks');
 		$this->db->where('id', $task_id);
-
 		$query = $this->db->get();
-
 		$resp = $query->result();
 		return json_encode($resp);
 	}
 	public function get($id = '', $where = [], $for_editor = false)
 	{
-
 		if (is_numeric($id)) {
 			// $this->db->where('tblcontents.id', $id);
 			// $content = $this->db->get('tblcontents')->row();
@@ -73,7 +83,6 @@ class Contents_model extends CRM_Model
 			// 		}
 			// 	}
 			// }
-
 			// return $content;
 			$this->db->where('tblcontents.id', $id);
 			$content = $this->db->get('tblcontents')->row();
@@ -85,14 +94,12 @@ class Contents_model extends CRM_Model
 			$contents[$i]['attachments'] = $this->get_content_attachments('', $content['id']);
 			$i++;
 		}
-
 		return $contents;
 	}
 	public function get_contents_years()
 	{
 		return $this->db->query('SELECT DISTINCT(YEAR(start_date)) as year FROM tblcontents')->result_array();
 	}
-
 	/**
 	 * @param  integer ID
 	 * @return object
@@ -102,16 +109,13 @@ class Contents_model extends CRM_Model
 	{
 		if (is_numeric($attachment_id)) {
 			$this->db->where('id', $attachment_id);
-
 			return $this->db->get('tblfiles')->row();
 		}
 		$this->db->order_by('dateadded', 'desc');
 		$this->db->where('rel_id', $id);
 		$this->db->where('rel_type', 'content');
-
 		return $this->db->get('tblfiles')->result_array();
 	}
-
 	/**
 	 * @param   array $_POST data
 	 * @return  integer Insert ID
@@ -124,7 +128,6 @@ class Contents_model extends CRM_Model
 		} else {
 			$status = 2;
 		}
-
 		$hostname = $this->db->hostname;
 		$username = $this->db->username;
 		$password = $this->db->password;
@@ -142,7 +145,6 @@ class Contents_model extends CRM_Model
 		$dataProject= $this->projects_model->get($projectId);
 		$task_id = $dataTask->approveId;
 		$clientId  = $dataProject->clientid;
-
 				 
 		$query = "INSERT INTO tblcontents(subject,task_title,description,status,assignto,hash,datestart,dateend,project_id,task_id,clientId) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 		
@@ -171,7 +173,6 @@ class Contents_model extends CRM_Model
 			$sql_stmt,
 			'bind_param'
 		), $param_value_reference);
-
 		$sql_stmt->execute();
 		logActivity('New Content Added [' . $subject . ']');
 		$last = $this->db->order_by('id',"desc")
@@ -180,7 +181,6 @@ class Contents_model extends CRM_Model
 		->row();
 		return $last;
 	}
-
 	/**
 	 * @param  array $_POST data
 	 * @param  integer Contract ID
@@ -194,7 +194,6 @@ class Contents_model extends CRM_Model
 		} else {
 			$status = 2;
 		}
-
 		$hostname = $this->db->hostname;
 		$username = $this->db->username;
 		$password = $this->db->password;
@@ -232,7 +231,6 @@ class Contents_model extends CRM_Model
 			$sql_stmt,
 			'bind_param'
 		), $param_value_reference);
-
 		$sql_stmt->execute();
 		logActivity('Content Updated [' . $subject . ']');
 		return true;
@@ -245,10 +243,8 @@ class Contents_model extends CRM_Model
 	public function delete($id)
 	{
 		do_action('before_contract_deleted', $id);
-
 		$this->db->where('id', $id);
 		$this->db->delete('tblcontents');
-
 		return true;
 	}
 	function search($keyword)
@@ -297,18 +293,14 @@ class Contents_model extends CRM_Model
 				'filter_default' => false,
 			],
 		];
-
 		return do_action('before_get_credit_notes_statuses', $statuses);
 	}
-
 	public function update_status($id)
 	{
-
 		$this->db->where('id', $id);
 		$this->db->update('tblcontents', ['status' => 5]);
 		return true;
 	}
-
 	public function remove_content_attachment($id)
 	{
 		$comment_removed = false;

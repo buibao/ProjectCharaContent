@@ -55,15 +55,12 @@ class Invoice_items extends Admin_controller
                     if ($id) {
                         $success = true;
                         $message = _l('added_successfully', _l('invoice_item'));
-                        set_alert('success', _l('added_successfully', _l('invoice_item')));
-                        redirect(admin_url('invoice_items'));
                     }
-                    // echo json_encode([
-                    //     'success' => $success,
-                    //     'message' => $message,
-                    //     'item'    => $this->invoice_items_model->get($id),
-                    // ]);
-
+                    echo json_encode([
+                        'success' => $success,
+                        'message' => $message,
+                        'item'    => $this->invoice_items_model->get($id),
+                    ]);
                 } else {
                     if (!has_permission('items', '', 'edit')) {
                         header('HTTP/1.0 400 Bad error');
@@ -74,13 +71,11 @@ class Invoice_items extends Admin_controller
                     $message = '';
                     if ($success) {
                         $message = _l('updated_successfully', _l('invoice_item'));
-                        set_alert('success', _l('added_successfully', _l('invoice_item')));
-                        redirect(admin_url('invoice_items'));
                     }
-                    // echo json_encode([
-                    //     'success' => $success,
-                    //     'message' => $message,
-                    // ]);
+                    echo json_encode([
+                        'success' => $success,
+                        'message' => $message,
+                    ]);
                 }
             }
         }

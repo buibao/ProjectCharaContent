@@ -9,7 +9,6 @@ $aColumns = [
 	'datestart',
 	'dateend',
 	'status',
-	'project_id',
 	'assignto',
 ];
 
@@ -19,8 +18,8 @@ $sTable = 'tblcontents';
 $join = [
 
 ];
-//$queSql = '|| task_id = ' . $id . '|| assignto =' .$id;
-$where = ['OR task_id = ' .$id,'OR assignto = ' .$id];
+
+$where = ['OR assignto = ' .$id,'OR task_id = ' .$id];
 $filter = [];
 
 $statusIds = [];
@@ -119,29 +118,20 @@ foreach ($rResult as $aRow) {
 	$status = get_content_status_by_id($aRow['status']);
 	$row[] = '<span class="label label inline-block project-status-' . $aRow['status'] . '" style="color:' . $status['color'] . ';border:1px solid ' . $status['color'] . '">' . $status['name'] . '</span>';
 	//$row[] = $aRow['status'];
-	if ($aRow['project_id'] == 0) {
-		$row[] = "#";
-	} else {
-		foreach ($project_id as $value1) {
-			if ($value1['id'] == $aRow['project_id']) {
-				$row[] = $value1['name'];
-				break;
-			}
-
-		}
-	}
+	
 
 	// fix assignto
-
+	if($staff){
 	foreach ($staff as $value) {
 		if ($value['staffid'] == $aRow['assignto']) {
 			$row[] = $value['firstname'] . " " . $value['lastname'];
 			break;
 		}
 	}
-
-	$row[] = $aRow['assignto'];
-
+	}
+	else{
+	$row[] = "#";
+	}
 	//$row[] = $aRow['project_id'];
 	// Custom fields add values
 	foreach ($customFieldsColumns as $customFieldColumn) {

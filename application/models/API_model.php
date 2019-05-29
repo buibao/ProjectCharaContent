@@ -28,8 +28,7 @@ class API_model extends CRM_Model {
         if($query->num_rows()>0)
                 return $query->result_array();
             return false;
-    }
-      
+}
 
    
 }

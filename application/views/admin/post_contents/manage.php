@@ -13,19 +13,8 @@
           
           <div class="panel-body">
             <div class="_buttons">
-            <?php echo form_open(); ?>
-            <div class="col-md-1 ">
-            <button id="popoverId" class="btn btn-primary" style="height:35px;">Add Token</button>
-            </div>
-            <div class="col-md-10 " style="margin-left:30px;">
-            <?php echo render_input('tokenAccess','',$value); ?>
-            </div>
-
-            
-            <?php echo form_close(); ?>  
-            </div>
             <div class="clearfix"></div>
-            <hr class="hr-panel-heading" />
+            
             <?php $where_own = array();
             if (!has_permission('contents', '', 'view')) {
               $where_own = array('addedfrom' => get_staff_user_id());
@@ -71,7 +60,6 @@
   <?php init_tail(); ?>
   <script>
     $(function() {
-
       var ContentsServerParams = {};
         
       initDataTable('.table-post_contents', admin_url + 'post_contents/table', undefined, undefined, ContentsServerParams, <?php echo do_action('post_contents_table_default_order', json_encode(array(5, 'asc'))); ?>);

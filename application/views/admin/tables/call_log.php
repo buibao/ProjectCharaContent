@@ -28,6 +28,13 @@ $aColumns =  [
 
 $sIndexColumn = 'cdr_id';
 $sTable       = 'tblcalllog';
+
+$where = [];
+
+// Add blank where all filter can be stored
+$filter = [];
+
+$join = [];
 //$join         = ['JOIN tblclients ON tblclients.userid=tblcontacts.userid'];
 
 //$custom_fields = get_table_custom_fields('contacts');
@@ -38,13 +45,25 @@ $sTable       = 'tblcalllog';
 //     array_push($aColumns, 'ctable_' . $key . '.value as ' . $selectAs);
 //     array_push($join, 'LEFT JOIN tblcustomfieldsvalues as ctable_' . $key . ' ON tblcontacts.id = ctable_' . $key . '.relid AND ctable_' . $key . '.fieldto="' . $field['fieldto'] . '" AND ctable_' . $key . '.fieldid=' . $field['id']);
 // }
+// $where = ['OR task_id = ' .$id,'OR assignto = ' .$id];
+//SELECT *  FROM tblcalllog WHERE   from_number like '%0328947019%' and to_number  like '%%' AND (time_start  BETWEEN '2019-04-17' AND '2019-05-16')
+// 'inputFromNumber' => $inputFromNumber,'inputToNumber'=>$inputToNumber
 
-$where = [];
+//
+if ($this->ci->input->post('inputFromNumber') || $this->ci->input->post('inputToNumber')) {
+    $inputFromNumber = $this->ci->input->post('inputFromNumber');
+    $inputToNumber = $this->ci->input->post('inputToNumber');
+    array_push($where, "AND (from_number like '%".$inputFromNumber."%'" ." and to_number  like '%".$inputToNumber."%' )");
+}
+ 
+if ($this->ci->input->post('reportrange')) {
+  $reportrange = $this->ci->input->post('reportrange');
+  $str_arr = explode (" - ", $reportrange);
+        if(strcmp($str_arr[0], 'YYYY-MM-DD') !=0){
+             array_push($where, "AND (time_start  BETWEEN '".$str_arr[0]."' AND '".$str_arr[1]."') ");
+        }
+}
 
-// Add blank where all filter can be stored
-$filter = [];
-
-$join = [];
 
 // if (!has_permission('customers', '', 'view')) {
 //     array_push($where, 'AND tblcontacts.userid IN (SELECT customer_id FROM tblcustomeradmins WHERE staff_id=' . get_staff_user_id() . ')');
@@ -89,8 +108,14 @@ foreach ($rResult as $aRow) {
     // }
 
     // $rowName .= '</div>';
+
+    // <a href="http://localhost:8080/ProjectCharaContent/admin/todo" data-toggle="tooltip" title="" data-placement="bottom" data-original-title="Việc cần làm" aria-describedby="tooltip264643">444444
+    
+    //         </a>
      $type = '';
      $urlRecording ='';
+     $fromNumber='';
+     $toNumber='';
      if ($aRow['direction'] == 3 ) {
       $type = "<img src='https://developer.stringee.com/static/assets/images/icon-in2ex.png' class='icon-call' style='width: 50px;height: 20px;' />";
        } else {
@@ -102,10 +127,45 @@ foreach ($rResult as $aRow) {
        $urlRecording = "<td><a href='".$aRow['recording_url']."' class='btn btn-danger btn-xs text-white btnDownload' target='_blank' >Mở file</a></td>" ;
       }
 
+      // From Number
+      if (strlen($aRow['from_number']) > 5) {
+          $sql = "SELECT * FROM tbl_client_contact WHERE phonecontact='".$aRow['from_number']."' OR phoneclient='".$aRow['from_number']."'";
+     $query =  $this->ci->db->query($sql)->row();
+     $num_rows = count($query);
+
+      if($num_rows > 0){
+         $stringTitle = $aRow['from_number'] . " - " . $query->company;
+        $stringName = $query->lastname . " - " . $query->firstname;
+        $fromNumber = "<td><a data-toggle='tooltip' title='' data-placement='bottom' data-original-title='".$stringTitle."'>".$stringName."</a></td>" ;
+      }else{
+        $fromNumber = $aRow['from_number'];
+      }
+      }else{
+         $fromNumber = $aRow['from_number'];
+      }
+   
+      // To Number
+      if (strlen($aRow['to_number']) > 5) {
+         $sql2 = "SELECT * FROM tbl_client_contact WHERE phonecontact='".$aRow['to_number']."' OR phoneclient='".$aRow['to_number']."'";
+     $query2 =  $this->ci->db->query($sql2)->row();
+     $num_rows2 = count($query2);
+
+      if($num_rows2 > 0){
+         $stringTitle2 = $aRow['to_number'] . " - " . $query2->company;
+        $stringName2 = $query2->lastname . " - " . $query2->firstname;
+        $toNumber = "<td><a data-toggle='tooltip' title='' data-placement='bottom' data-original-title='".$stringTitle2."'>".$stringName2."</a></td>" ;
+      }else{
+        $toNumber = $aRow['to_number'];
+      }
+      }else{
+        $toNumber = $aRow['to_number'];
+      }
+      
+
     $row[] = $aRow['cdr_id'];
     $row[] = $type;
-    $row[] = $aRow['from_number'];
-    $row[] = $aRow['to_number'];
+    $row[] = $fromNumber;
+    $row[] = $toNumber;
     $row[] = $aRow['duration'];
     $row[] = $urlRecording;
     $row[] = $aRow['time_connected'];
@@ -153,9 +213,9 @@ foreach ($rResult as $aRow) {
     $row['DT_RowClass'] = 'has-row-options';
 
     // if ($aRow['registration_confirmed'] == 0) {
-    //     $row['DT_RowClass'] .= ' alert-info requires-confirmation';
-    //  $row['Data_Title']  = _l('customer_requires_registration_confirmation');
-    //     $row['Data_Toggle'] = 'tooltip';
+    //    $row['DT_RowClass'] .= ' alert-info requires-confirmation';
+   //  $row['Data_Title']  = _l('customer_requires_registration_confirmation');
+    //  $row['Data_Toggle'] = 'tooltip';
     // }
     $output['aaData'][] = $row;
 }

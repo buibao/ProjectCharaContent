@@ -41,11 +41,12 @@
                         <?php echo render_input( 'title', 'contact_position',$value); ?>
 
                         <?php $value=( isset($contact) ? $contact->email : ''); ?>
+		        <?php echo render_input( 'email', 'client_email',$value, 'email'); ?>
                         <!-- FIX SOURCE -->
                         <?php $value=( isset($contact) ? $contact->facebook : ''); ?>
                          <?php echo render_input( 'facebook', 'client_facebook',$value, 'facebook'); ?>
                         <!--  -->
-                        <?php echo render_input( 'email', 'client_email',$value, 'email'); ?>
+                       
                         <?php $value=( isset($contact) ? $contact->phonenumber : ''); ?>
                         <?php echo render_input( 'phonenumber', 'client_phonenumber',$value,'text',array('autocomplete'=>'off')); ?>
                         <div class="form-group contact-direction-option">

@@ -1,4 +1,6 @@
 <?php init_head(); ?>
+
+</style>
 <div id="wrapper">
   <div class="content">
     <div class="row">
@@ -10,7 +12,13 @@
                 <div class="panel panel-bordered overlayAjax">
                     <div class="panel-heading">
                         <h3 class="panel-title">Call Reports</h3>
-                        
+                        <div class="btnRightCorner">
+                          <img data-toggle='tooltip' title='' data-placement='bottom' data-original-title='Reload Data' class="btnRightCorner" id="btnRightCorner" src="https://loading.io/spinners/download/index.save-to-disk-loader.svg" width="50px">
+              <!--     <button type="button" class="btn btn-warning btn-sm" id="btnExportExcel" >
+                 <i class="front-icon animation-scale-up" aria-hidden="true"><img src="https://loading.io/spinners/download/index.save-to-disk-loader.svg" width="14"></i>
+                &nbsp;Reload Data
+                     </button> -->
+                     </div>
                     </div>
                     <div class="panel-body">
                         <!-- <?php //echo form_open("admin/callcenter/searchCall");?> -->
@@ -52,16 +60,18 @@
                             <div class="form-group">
                                 <div id="reportrange" class="pull-right form-control mr-10">
                                     <i class="icon" aria-hidden="true"><img src="https://developer.stringee.com/static/assets/images/icon16/calendar.png" /></i>&nbsp;
-                                    <span></span> <b class="caret"></b>
+                                    <span ></span> <b class="caret"></b>
                                 </div>
                                 <button type="button" class="btn btn-default btm-xs" id="btnResetDateRange">All Days</button>
                             </div>
+                            
+
                             <div class="form-group">
                                 <button type="button" class="btn btn-success" id="btnSearchCall">Search</button>
                             </div>
                         </form>
 
-
+      <input type="text" class="reportrangeSearch" id="reportrangeSearch" name="reportrangeSearch" autocomplete="off" style="display: none;">
 
                        <!--  <?php //echo form_close();?> -->
                         <div class='form-inline'>   
@@ -151,19 +161,12 @@
        <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.4/dist/loadingoverlay.min.js"></script>
         <link rel="stylesheet" href="https://developer.stringee.com/static/assets/css/site-custom.css">
          <script src="https://developer.stringee.com/static/global/vendor/babel-external-helpers/babel-external-helpers.js"></script>
-   <script src="https://developer.stringee.com/static/global/vendor/tether/tether.js"></script>
+  <!--  <script src="https://developer.stringee.com/static/global/vendor/tether/tether.js"></script> -->
         <script src="https://developer.stringee.com/static/assets/js/jquery.twbsPagination.min.js"></script>
       
-        <script src="https://developer.stringee.com/static/global/vendor/bootstrap/bootstrap.js"></script>
+       <!--  <script src="https://developer.stringee.com/static/global/vendor/bootstrap/bootstrap.js"></script> -->
         <script src="https://developer.stringee.com/static/global/vendor/animsition/animsition.js"></script>
-
-      <!--   <script src="https://developer.stringee.com/static/assets/js/Site.js"></script> -->
-        <!-- Page -->
-    
         <script src="https://developer.stringee.com/static/assets/js/site-custom.js"></script>
-<!-- Include Required Prerequisites -->
-<!-- <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script> -->
-<!-- Include Date Range Picker -->
 <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
 <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
 <link rel="stylesheet" href="https://developer.stringee.com/static/global/vendor/c3/c3.css">
@@ -172,33 +175,6 @@
 <script src="https://developer.stringee.com/static/global/vendor/d3/d3.min.js"></script>
 <script src="https://developer.stringee.com/static/global/vendor/c3/c3.min.js"></script>
 <?php $this->load->view('admin/clients/client_js'); ?>
-<script>
- $(function(){
-  var optionsHeading = [];
-  var allContactsServerParams = {
-   "custom_view": "[name='custom_view']",
- }
- <?php if(is_gdpr() && get_option('gdpr_enable_consent_for_contacts') == '1'){ ?>
-  optionsHeading.push($('#th-consent').index());
-  <?php } ?>
-  _table_api = initDataTable('.table-call_logs', window.location.href, optionsHeading, optionsHeading, allContactsServerParams, [0,'asc']);
-  if(_table_api) {
-   <?php if(is_gdpr() && get_option('gdpr_enable_consent_for_contacts') == '1'){ ?>
-    _table_api.on('draw', function () {
-      var tableData = $('.table-call_logs').find('tbody tr');
-      $.each(tableData, function() {
-        $(this).find('td:eq(2)').addClass('bg-light-gray');
-      });
-    });
-    $('select[name="custom_view"]').on('change', function(){
-      _table_api.ajax.reload()
-      .columns.adjust()
-      .responsive.recalc();
-    });
-    <?php } ?>
-  }
-});
-</script>
 <script>
 
 
@@ -220,6 +196,9 @@
                                                             posX,
                                                         ]
                                                     },
+                                                     zoom: {
+                                                          enabled: true
+                                                      },
                                                          color: {
                                                            pattern: ["#62a8ea"]
                                                          },
@@ -236,12 +215,12 @@
                                                         },
                                                         y: {
                                                             max: maxPosY,
-                                                            min: 0.5,
-                                                            tick: {
-                                                                outer: true,
-                                                                count: posY.length,
-                                                                values: posY
-                                                            }
+                                                            min: 0,
+                                                             tick: {
+                                                                 outer: true,
+                                                                //count: posY.length,
+                                                               //  values: posY
+                                                             }
                                                         }
                                                     },
                                                     grid: {
@@ -264,24 +243,9 @@
                                                 // var inputUserID = $('#inputUserID');
                                                 var reportrange = $('#reportrange span').html();
                                                 var urlAPI = '<?php echo base_url().'API/Contact/';?>';
+                                              
                                                 $.ajax({
-//                                                     type: 'post',
-//                                                     url: 'admin/callcenter/calllog/',
-//                                                     data: {
-//                                                         'id'
-//                                                         // 'inputFromNumber': inputFromNumber.val(),
-//                                                         // 'inputToNumber': inputToNumber.val(),
-//                                                         // 'inputUserID': inputUserID.val(),
-//                                                         // 'selectFromInternal': selectFromInternal.val(),
-//                                                         // 'selectToInternal': selectToInternal.val(),
-//                                                         // 'selectProjectId': selectProjectId.val(),
-//                                                         // 'reportrange': reportrange,
-//                                                         // 'pageNumber': pageNumber,
-// //                                                      accountSid: accountSid,
-//                                                       //  accountId: accountId,
-//                                                         //isVideocall: $('#isVideocall option:selected').val()
-//                                                     },
-//                                                     dataType: 'json',
+                                                 
                                                         type: 'post',
                                                          url: urlAPI,
                                                            data: {
@@ -292,10 +256,7 @@
                                                            dataType:"json",
                                                      success: function (response) {
                                                         console.log(response);
-                                                        // if (response.status == 500) {
-                                                        //     console.log('Session expired');
-                                                        //     window.location.href = "/account/logout";
-                                                        // }
+                                                       
                                                         var phoneCalls = response.data.total;
                                                         var page = 1;
                                                         var totalPage = 3;
@@ -347,7 +308,7 @@
                                                         console.log(xhr);
                                                         console.log("Details: " + desc + "\nError:" + err);
                                                     }
-                                                })
+                                                });
 
                                             }
 
@@ -431,15 +392,45 @@
 
                                             // CLICK SEARCH
                                             $('#btnSearchCall').click(function () {
+
+                                                   
                                                 $('#paginationCall').twbsPagination('destroy');
                                                 console.log($('#inputFromNumber').val());
                                                 console.log($('#inputToNumber').val());
                                                  console.log($('#reportrange span').html());
-                                               
+                                                document.getElementById("reportrangeSearch").value = $('#reportrange span').html();
                                                 loadTableCallReports();
+                                                $(".btn-dt-reload").click();
 
 
                                             });
+                                            // CLICK LOAD
+                                            $('#btnRightCorner').click(function () {
+
+                                               var urlAPILoad = '<?php echo base_url().'admin/callcenter/calllog';?>';
+                                                $.ajax({
+                                                 
+                                                        type: 'GET',
+                                                         url: urlAPILoad,
+                                                        dataType:"json",
+                                                     success: function (response) {
+                                                      console.log("DONE");
+                                                     }
+
+                                                   });
+
+                                                $('#btnSearchCall').click();
+                                                // $('#paginationCall').twbsPagination('destroy');
+                                                // console.log($('#inputFromNumber').val());
+                                                // console.log($('#inputToNumber').val());
+                                                //  console.log($('#reportrange span').html());
+                                                // document.getElementById("reportrangeSearch").value = $('#reportrange span').html();
+                                                // loadTableCallReports();
+                                             //   $(".btn-dt-reload").click();
+
+                                            });
+
+                                            
 
                                             $(document).on('click', '.btnPagination', function () {
                                                 var page = $(this).find('.page-link').text();
@@ -448,6 +439,7 @@
 
                                             function dateTimeSelect() {
                                                 // DATE TIME SELECT
+
                                                 var start = moment().subtract(29, 'days');
                                                 var end = moment();
                                                 function cb(start, end) {
@@ -478,6 +470,7 @@
                                                     $('#reportrange span').html('YYYY-MM-DD - YYYY-MM-DD');
                                                     $('.dateRange').html('All dates');
                                                 });
+                                                document.getElementById("reportrangeSearch").value = $('#reportrange span').html();
                                             }
 
 
@@ -507,5 +500,42 @@
     gtag('config', 'UA-111461280-1');
     gtag('config', 'AW-810064151');
   </script>
+<script>
+ $(function(){
+  var optionsHeading = [];
+  var allContactsServerParams = {};
+      allContactsServerParams['inputFromNumber'] = '[name="inputFromNumber"]';
+      allContactsServerParams['inputToNumber'] = '[name="inputToNumber"]';
+      allContactsServerParams['reportrange'] = '[name="reportrangeSearch"]';
+ 
+ <?php if(is_gdpr() && get_option('gdpr_enable_consent_for_contacts') == '1'){ ?>
+  optionsHeading.push($('#th-consent').index());
+  <?php } ?>
+  _table_api = initDataTable('.table-call_logs', window.location.href, optionsHeading, optionsHeading, allContactsServerParams, [0,'asc']);
+  if(_table_api) {
+   <?php if(is_gdpr() && get_option('gdpr_enable_consent_for_contacts') == '1'){ ?>
+    _table_api.on('draw', function () {
+      var tableData = $('.table-call_logs').find('tbody tr');
+      $.each(tableData, function() {
+        $(this).find('td:eq(2)').addClass('bg-light-gray');
+      });
+    });
+    $('select[name="custom_view"]').on('change', function(){
+      _table_api.ajax.reload()
+      .columns.adjust()
+      .responsive.recalc();
+    });
+    <?php } ?>
+  }
+});
+</script>
+<style type="text/css">
+  .btnRightCorner {
+    position: absolute;
+    right: 6px;
+    top: -2px;
+    display: flex;
+}
+
 </body>
 </html>

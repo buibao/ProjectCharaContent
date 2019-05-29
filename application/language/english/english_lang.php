@@ -3761,6 +3761,31 @@ $lang['incoming_call'] ='CallAway';
 $lang['away_call'] ='IncomingCall';
 
 
+$lang['effect_of_content'] ='EFFECT OF CONTENT';
+$lang['get_token_to_update_infor'] ='Please Add New Token To Update Infor';
+
+$lang['approved_by'] ='Approved By';
+$lang['count'] ='Amount Of Content';
+$lang['add_new_token'] = 'Please Add New Token';
+
+$lang['access_token']    = 'User Access Token';
+$lang['settings_facebook']    = 'Facebook User Access Token';
+$lang['setting_call']    = 'VHT Call Center'; 
+$lang['settings_call']    = 'VHT User Access Token';
+$lang['setting_facebook_access_token']    = 'Facebook ';
+
+$lang['kpi_reports']    = 'KPI Overview';
+$lang['total_members']    = 'Members Total';
+$lang['personal_contents']    = 'Personal Contents Total'; 
+$lang['team_contents']    = 'Team Contents Total';
+$lang['personal_kpi']    = 'Personal Content KPI';
+$lang['team_kpi']    = 'Team Content KPI';
+
+$lang['leader']    = 'Leader';
+
+
+
+
 
 
 

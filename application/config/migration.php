@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | and disable it back when you're done.
 |
 */
-$config['migration_enabled'] = false;
+$config['migration_enabled'] = true;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,7 +68,7 @@ $config['migration_auto_latest'] = FALSE;
 | be upgraded / downgraded to.
 |
 */
-$config['migration_version'] = 201; // 2.0.1
+$config['migration_version'] = 213; // 2.0.1
 
 /*
 |--------------------------------------------------------------------------

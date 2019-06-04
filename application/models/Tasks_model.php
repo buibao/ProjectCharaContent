@@ -765,6 +765,19 @@ class Tasks_model extends CRM_Model
                     ]);
             $affectedRows++;
         }
+	 if (isset($data['count'])) {
+            $countTaskOld = $this->tasks_model->get($id)->count;
+            if( $data['count'] > $countTaskOld ){
+                $data['status'] = 4;
+            }else{
+                $numContentPoted = $this->contents_model->getContentPosted($id);
+                if($numContentPoted < $data['count']){
+                   $data['status'] = 4;
+                }else{
+                   $data['status'] = 5;
+                }
+            }
+        }
 
         $this->db->where('id', $id);
         $this->db->update('tblstafftasks', $data);

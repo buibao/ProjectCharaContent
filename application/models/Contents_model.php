@@ -331,4 +331,10 @@ class Contents_model extends CRM_Model
 		}
 		return ['success' => $deleted];
 	}
+	public function getContentPosted($idTask){
+	                $this->db->where('task_title',$idTask);
+	                $this->db->where('status',5);
+	  	$Rows = $this->db->get('tblcontents')->row();
+	    return count($Rows);
+	}
 }

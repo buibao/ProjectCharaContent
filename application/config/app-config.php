@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 
-define('APP_BASE_URL','http://localhost:8080/crm');
+define('APP_BASE_URL','https://dev.characontent.com/');
 
 /*
 |--------------------------------------------------------------------------
@@ -40,11 +40,11 @@ define('APP_ENC_KEY','7bef1030d8f3fa81181469e600443e08');
 /* The hostname of your database server. */
 define('APP_DB_HOSTNAME','localhost');
 /* The username used to connect to the database */
-define('APP_DB_USERNAME','root');
+define('APP_DB_USERNAME','gubinnwr_dev');
 /* The password used to connect to the database */
-define('APP_DB_PASSWORD','');
+define('APP_DB_PASSWORD','Fv5Dr+(]C_vW');
 /* The name of the database you want to connect to */
-define('APP_DB_NAME','finaldev');
+define('APP_DB_NAME','gubinnwr_dev');
 
 
 /**

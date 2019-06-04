@@ -52,6 +52,8 @@
                                echo '<span class="text-success" style="border:1px solid;border-radius: 4px 4px 4px 4px">' . _l('approvecontent') . '</span>';
                            } else if ($content['status'] ==3) {
                                echo '<span class="bold" style="color:#FFA500;border:1px solid;border-radius: 4px 4px 4px 4px" >' . _l('waiting_for_customer') . '</span>';
+                           }else if ($content['status'] ==5) {
+                               echo '<span class="bold" style="color:#FFA500;border:1px solid;border-radius: 4px 4px 4px 4px" >' . _l('approvedcontent') . '</span>';
                            }
                            ?>                        </td>
                        <td data-order="<?php echo $content['datestart']; ?>"><?php echo _d($content['datestart']); ?></td>

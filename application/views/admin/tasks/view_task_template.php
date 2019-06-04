@@ -8,7 +8,7 @@
    <h4 class="modal-title"><?php echo $task->name; ?></h4>
 
 	<!-- fix progress tast -->
-    <h4 name="idcount"><?php echo $task->count; ?></h4> 
+    <h4 name="idcount" style="display: none;" ><?php echo $task->count; ?></h4> 
     <!-- end fix -->
 
       <?php if($task->billed == 1){ ?>

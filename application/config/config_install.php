@@ -27,12 +27,20 @@ if (file_exists(APPPATH.'config/app-config.php')) {
     $install_url .= str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']);
 
     $install_url .= 'install';
+    $install_url2 = isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on' ? 'https' : 'http';
 
-    echo '<h1>Perfex CRM not installed</h1>';
+    $install_url2 .= '://'. $_SERVER['HTTP_HOST'];
 
-    echo '<p>1. To you use the automatic Perfex CRM installation tool click <a href="'.$install_url.'">here ('.$install_url.')</a></p>';
+    $install_url2 .= str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']);
+
+    $install_url2 .= 'document/index.php';
+
+    echo '<h1>Chara Content Management System not installed</h1>';
+
+    echo '<p>1. To you use the automatic Chara Content Management System installation tool click <a href="'.$install_url.'">here ('.$install_url.')</a></p>';
 
     echo '<p>2. If you are installing manually rename the config file located in application/config/app-config-sample.php to app-config.php and populate the defined fields.</p>';
+     echo '<p>Click here can help you install <a target="_blank" href="'.$install_url2.'">here ('.$install_url2.')</a></p>';
 
     die();
 

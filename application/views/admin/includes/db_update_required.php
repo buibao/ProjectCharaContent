@@ -68,7 +68,7 @@
        <h1>
         Database upgrade is required.
     </h1>
-    <p>You need to perform an database upgrade before proceed using Perfex CRM. Your files version is <?php echo wordwrap($this->config->item('migration_version'),1,'.',true); ?> and database version is <?php echo wordwrap($this->current_db_version,1,'.',true); ?></p>
+    <p>You need to perform an database upgrade before proceed using Chara Content Management System. Your files version is <?php echo wordwrap($this->config->item('migration_version'),1,'.',true); ?> and database version is <?php echo wordwrap($this->current_db_version,1,'.',true); ?></p>
     <p class="bold">Make sure that you have backup of your database before perform an upgrade.</p>
     <div class="upgrade_now_wrapper">
         <?php echo form_open($this->config->site_url($this->uri->uri_string()),array('id'=>'upgrade_db_form')); ?>
@@ -77,7 +77,7 @@
         <?php echo form_close(); ?>
     </div>
     <?php echo form_close(); ?>
-    <small class="note">This message may shown if you uploaded files from newer version downloaded from CodeCanyon to your existing installation or you used auto upgrade tool.</small>
+   <!--  <small class="note">This message may shown if you uploaded files from newer version downloaded from CodeCanyon to your existing installation or you used auto upgrade tool.</small> -->
 </div>
 <script>
     function upgradeDB() {
